@@ -11,6 +11,9 @@ public class Scintilla {
 
     public static void start() {
         INSTANCE.finalize();
-        PlatformUtils.openBrowserAtPath(INSTANCE.getHostUrl() + "/app/");
+        String httpPrefix = (Environment.isSecure() ? "https://" : "http://");
+        String ipAddress = "127.0.0.1";
+        int port = Environment.getPort();
+        PlatformUtils.openBrowserAtPath(httpPrefix + ipAddress + ":" + port + "/app/");
     }
 }
