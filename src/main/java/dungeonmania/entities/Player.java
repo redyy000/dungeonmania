@@ -51,7 +51,7 @@ public class Player extends Entity implements Battleable {
     }
 
     public void useWeapon(Game game) {
-        return getWeapon().use(game);
+        getWeapon().use(game);
     }
 
     public List<String> getBuildables() {
@@ -187,5 +187,10 @@ public class Player extends Entity implements Battleable {
     @Override
     public void onDestroy(GameMap gameMap) {
         return;
+    }
+
+    @Override
+    public double getHealth() {
+        return getBattleStatistics().getHealth();
     }
 }
