@@ -19,7 +19,7 @@ public class BattleFacade {
     private List<BattleResponse> battleResponses = new ArrayList<>();
 
     public void battle(Game game, Player player, Enemy enemy) {
-        // 0. init
+        // 0. init  CHANGE condense get battle statistics and gethealth
         double initialPlayerHealth = player.getBattleStatistics().getHealth();
         double initialEnemyHealth = enemy.getBattleStatistics().getHealth();
         String enemyString = NameConverter.toSnakeCase(enemy);
