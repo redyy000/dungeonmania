@@ -11,6 +11,6 @@ public class HostileMovement implements EnemyMovement {
     public void move(Game game, Entity entity) {
         GameMap map = game.getMap();
         Position nextPos = map.dijkstraPathFind(entity.getPosition(), map.getPlayer().getPosition(), entity);
-        map.moveTo(entity, nextPos);        
-    } 
+        map.moveTo(entity, nextPos);
+    }
 }

@@ -20,15 +20,14 @@ public class RandomMovement implements EnemyMovement {
         Random randGen = new Random();
         List<Position> pos = entity.getPosition().getCardinallyAdjacentPositions();
         pos = pos
-            .stream()
-            .filter(p -> map.canMoveTo(entity, p)).collect(Collectors.toList());
+                .stream()
+                .filter(p -> map.canMoveTo(entity, p)).collect(Collectors.toList());
         if (pos.size() == 0) {
             nextPos = entity.getPosition();
             map.moveTo(entity, nextPos);
         } else {
             nextPos = pos.get(randGen.nextInt(pos.size()));
             map.moveTo(entity, nextPos);
-        }        
+        }
     }
-    
 }

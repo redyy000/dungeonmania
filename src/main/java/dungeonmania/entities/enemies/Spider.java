@@ -5,8 +5,7 @@ import java.util.List;
 import dungeonmania.Game;
 import dungeonmania.entities.Boulder;
 import dungeonmania.entities.Entity;
-import dungeonmania.entities.enemies.enemyMovement.EnemyMovement;
-import dungeonmania.entities.enemies.enemyMovement.SpiderMovement;
+
 import dungeonmania.util.Position;
 
 
@@ -51,10 +50,9 @@ public class Spider extends Enemy {
     public void move(Game game) {
         // EnemyMovement movementStrategy = new SpiderMovement();
         // movementStrategy.move(game, this);
-        // TODO: if possible, use strategy for movement.
         Position nextPos = movementTrajectory.get(nextPositionElement);
         List<Entity> entities = game.getMap().getEntities(nextPos);
-        if (entities != null && entities.size() > 0 && entities.stream().anyMatch(e -> e instanceof Boulder)) { // could use canmoveonto?
+        if (entities != null && entities.size() > 0 && entities.stream().anyMatch(e -> e instanceof Boulder)) {
             forward = !forward;
             updateNextPosition();
             updateNextPosition();
@@ -88,6 +86,4 @@ public class Spider extends Enemy {
     public void setNextPositionElement(int nextPositionElement) {
         this.nextPositionElement = nextPositionElement;
     }
-
-    
 }
