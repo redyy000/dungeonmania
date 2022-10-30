@@ -53,14 +53,4 @@ public class Door extends Entity {
     public void open() {
         open = true;
     }
-
-    @Override
-    public void onMovedAway(GameMap map, Entity entity) {
-        return;
-    }
-
-    @Override
-    public void onDestroy(GameMap gameMap) {
-        return;
-    }
 }

@@ -74,14 +74,4 @@ public class Portal extends Entity {
             portal.bind(this);
         }
     }
-
-    @Override
-    public void onMovedAway(GameMap map, Entity entity) {
-        return;
-    }
-
-    @Override
-    public void onDestroy(GameMap gameMap) {
-        return;
-    }
 }

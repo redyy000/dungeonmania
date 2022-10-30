@@ -32,14 +32,4 @@ public class Boulder extends Entity {
         }
         return true;
     }
-
-    @Override
-    public void onMovedAway(GameMap map, Entity entity) {
-        return;
-    }
-
-    @Override
-    public void onDestroy(GameMap gameMap) {
-        return;
-    }
 }
