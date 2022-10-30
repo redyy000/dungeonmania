@@ -31,7 +31,7 @@ public class PlayerState {
     }
     public void transitionInvincible() {
         this.isInvisible = false;
-        this.isInvincible = true;  
+        this.isInvincible = true;
     }
     public void transitionBase() {
         this.isInvisible = false;
