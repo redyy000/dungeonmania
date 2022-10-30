@@ -51,4 +51,9 @@ public abstract class Enemy extends Entity implements Battleable {
     }
 
     public abstract void move(Game game);
+
+    @Override
+    public double getHealth() {
+        return getBattleStatistics().getHealth();
+    }
 }
