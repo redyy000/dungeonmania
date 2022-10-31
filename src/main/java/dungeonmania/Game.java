@@ -13,6 +13,7 @@ import dungeonmania.entities.collectables.Bomb;
 import dungeonmania.entities.collectables.Treasure;
 import dungeonmania.entities.collectables.potions.Potion;
 import dungeonmania.entities.enemies.Enemy;
+import dungeonmania.entities.enemies.ZombieToastSpawner;
 import dungeonmania.exceptions.InvalidActionException;
 import dungeonmania.goals.Goal;
 import dungeonmania.map.GameMap;
@@ -28,6 +29,7 @@ public class Game {
     private int initialTreasureCount;
     private EntityFactory entityFactory;
     private boolean isInTick = false;
+    private int killedEnemies = 0;
     public static final int PLAYER_MOVEMENT = 0;
     public static final int PLAYER_MOVEMENT_CALLBACK = 1;
     public static final int AI_MOVEMENT = 2;
@@ -88,6 +90,7 @@ public class Game {
         }
         if (enemy.getBattleStatistics().getHealth() <= 0) {
             map.destroyEntity(enemy);
+            this.killedEnemies++;
         }
     }
 
@@ -220,5 +223,10 @@ public class Game {
     public int getInitialTreasureCount() {
         return initialTreasureCount;
     }
-
+    public int getKilledEnemies() {
+        return this.killedEnemies;
+    }
+    public int numSpawners() {
+        return this.map.getEntities(ZombieToastSpawner.class).size();
+    }
 }

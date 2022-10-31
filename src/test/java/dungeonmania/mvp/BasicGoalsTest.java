@@ -125,4 +125,73 @@ public class BasicGoalsTest {
         // assert goal met
         assertEquals("", TestUtils.getGoals(res));
     }
+
+    @Test
+    @Tag("13-5")
+    @DisplayName("Test killing 3 enemies goal(mercs only)")
+    public void enemies() {
+        DungeonManiaController dmc;
+        dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_enemiesGoalTest_mercs", "_c_enemiesGoalTest");
+
+        // move player to right
+        res = dmc.tick(Direction.RIGHT);
+        // assert no fights
+        assertEquals(3, TestUtils.getEntities(res, "mercenary").size());
+        assertTrue(TestUtils.getGoals(res).contains(":enemies"));
+
+        // move player to right, fight once
+        res = dmc.tick(Direction.RIGHT);
+        // assert goal not met, killed 1.
+        assertEquals(2, TestUtils.getEntities(res, "mercenary").size());
+        assertTrue(TestUtils.getGoals(res).contains(":enemies"));
+
+        // move player to right, fight twice
+        res = dmc.tick(Direction.RIGHT);
+        // assert goal not met, killed 2.
+        assertEquals(1, TestUtils.getEntities(res, "mercenary").size());
+        assertTrue(TestUtils.getGoals(res).contains(":enemies"));
+
+        // move player to right, fight three
+        res = dmc.tick(Direction.RIGHT);
+        // assert goal met, killed 3.
+        assertEquals(0, TestUtils.getEntities(res, "mercenary").size());
+        assertEquals("", TestUtils.getGoals(res));
+
+    }
+
+    @Test
+    @Tag("13-6")
+    @DisplayName("Test killing 1 enemy, 1 zts goal")
+    public void enemieswithZTS() {
+        DungeonManiaController dmc;
+        dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_enemiesGoalTest_zts", "_c_enemiesGoalTest");
+        String spawnerId = TestUtils.getEntities(res, "zombie_toast_spawner").get(0).getId();
+
+        // move player down 3 times kill all. No done.
+        res = dmc.tick(Direction.DOWN);
+        assertEquals(2, TestUtils.getEntities(res, "mercenary").size());
+        res = dmc.tick(Direction.DOWN);
+        assertEquals(1, TestUtils.getEntities(res, "mercenary").size());
+        res = dmc.tick(Direction.DOWN);
+        assertEquals(0, TestUtils.getEntities(res, "mercenary").size());
+        assertTrue(TestUtils.getGoals(res).contains(":enemies"));
+
+        //right, get sword.
+        res = dmc.tick(Direction.RIGHT);
+        assertEquals(1, TestUtils.getInventory(res, "sword").size());
+
+        // break spawner
+        res = assertDoesNotThrow(() -> dmc.interact(spawnerId));
+        assertEquals(0, TestUtils.countType(res, "zombie_toast_spawner"));
+
+        // goal done.
+        assertEquals("", TestUtils.getGoals(res));
+    }
+
+    private int getNumKilled(DungeonResponse res) {
+        // If we have had x battles and the player is still alive, we must have killed x spiders
+        return res.getBattles().size();
+    }
 }
