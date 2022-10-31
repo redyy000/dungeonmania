@@ -6,8 +6,8 @@ import dungeonmania.entities.Interactable;
 import dungeonmania.entities.Player;
 import dungeonmania.entities.collectables.Treasure;
 import dungeonmania.entities.enemies.enemyMovement.EnemyMovement;
+import dungeonmania.entities.enemies.enemyMovement.FollowMovement;
 import dungeonmania.entities.enemies.enemyMovement.HostileMovement;
-import dungeonmania.entities.enemies.enemyMovement.RandomMovement;
 import dungeonmania.map.GameMap;
 import dungeonmania.util.Position;
 
@@ -65,8 +65,8 @@ public class Mercenary extends Enemy implements Interactable {
     @Override
     public void move(Game game) {
         EnemyMovement moveStrategy;
-        if (allied) {
-            moveStrategy = new RandomMovement();
+        if (allied && game.getPlayer().isCardinallyAdjacentToOrEqual(this.getPosition())) {
+            moveStrategy = new FollowMovement();
         } else {
             moveStrategy = new HostileMovement();
         }
