@@ -168,6 +168,70 @@ public class MercenaryTest {
         assertEquals(0, res.getBattles().size());
     }
 
+    @Test
+    @Tag("12-7")
+    @DisplayName("Testing an allied mercenary follows the player")
+    public void allyMovement() {
+        //                 Wall    Wall   Wall
+        // P1       Tr      __      M1    Wall
+        //                 Wall    Wall   Wall
+        DungeonManiaController dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_mercenaryTest_allyMovement", "c_mercenaryTest_allyMovement");
+        String mercId = TestUtils.getEntitiesStream(res, "mercenary").findFirst().get().getId();
+
+        assertEquals(new Position(4, 1), getMercPos(res));
+
+        //move once pick up treasure
+        res = dmc.tick(Direction.RIGHT); // at 2.
+        assertEquals(new Position(3, 1), getMercPos(res));
+        assertEquals(1, TestUtils.getInventory(res, "treasure").size());
+
+        //interact
+        res = assertDoesNotThrow(() -> dmc.interact(mercId)); //player still at 2.
+        assertEquals(0, TestUtils.getInventory(res, "treasure").size());
+        // now he should move next to player's "last square". Hence it should move to 1.
+        assertEquals(new Position(1, 1), getMercPos(res));
+
+        //check he follows well with some random movements.
+        res = dmc.tick(Direction.DOWN); //at 2 2
+        assertEquals(new Position(2, 1), getMercPos(res));
+        res = dmc.tick(Direction.DOWN); // at 2 3, previous 2 2.
+        assertEquals(new Position(2, 2), getMercPos(res));
+        res = dmc.tick(Direction.UP); // Note that the player can move into the Merc, and they swap.
+        assertEquals(new Position(2, 3), getMercPos(res));
+        res = dmc.tick(Direction.LEFT);
+        assertEquals(new Position(2, 2), getMercPos(res));
+        res = dmc.tick(Direction.LEFT);
+        assertEquals(new Position(1, 2), getMercPos(res));
+    }
+
+    @Test
+    @Tag("12-7")
+    @DisplayName("Testing an allied mercenary follows/sticks only after getting close")
+    public void allyMovementFar() {
+        //                                  Wall    Wall   Wall    Wall    Wall    Wall
+        // P1       P2      P3      P4      M4      M3      M2      M1      .      Wall
+        //                                  Wall    Wall   Wall    Wall    Wall    Wall
+        DungeonManiaController dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_mercenaryTest_bribeRadius", "c_mercenaryTest_allyMovement");
+        String mercId = TestUtils.getEntitiesStream(res, "mercenary").findFirst().get().getId();
+
+        //move once pick up treasure
+        res = dmc.tick(Direction.RIGHT); // at 2.
+        assertEquals(new Position(7, 1), getMercPos(res));
+        assertEquals(1, TestUtils.getInventory(res, "treasure").size());
+
+        //interact
+        res = assertDoesNotThrow(() -> dmc.interact(mercId)); //player still at 2. M at 6 because move closer.
+        assertEquals(0, TestUtils.getInventory(res, "treasure").size());
+        assertEquals(new Position(6, 1), getMercPos(res)); //shouldnt stick yet.
+
+        res = dmc.tick(Direction.RIGHT); // at 3, Merc at 5.
+        assertEquals(new Position(5, 1), getMercPos(res));
+
+        res = dmc.tick(Direction.RIGHT); // at 4, Merc adjacent and would go to 3 hence.
+        assertEquals(new Position(3, 1), getMercPos(res));
+    }
     private Position getMercPos(DungeonResponse res) {
         return TestUtils.getEntities(res, "mercenary").get(0).getPosition();
     }

@@ -182,4 +182,12 @@ public class Player extends Entity implements Battleable {
     public double getHealth() {
         return getBattleStatistics().getHealth();
     }
+
+    public boolean isCardinallyAdjacentToOrEqual(Position pos) {
+        if (this.getPosition().getCardinallyAdjacentPositions().contains(pos)
+           || this.getPosition().equals(pos)) {
+            return true;
+        }
+        return false;
+    }
 }
