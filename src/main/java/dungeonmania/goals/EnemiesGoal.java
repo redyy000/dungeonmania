@@ -1,5 +1,7 @@
 package dungeonmania.goals;
 
+import org.json.JSONObject;
+
 import dungeonmania.Game;
 
 
@@ -24,5 +26,12 @@ public class EnemiesGoal implements Goal {
     public String toString(Game game) {
         if (this.achieved(game)) return "";
         return ":enemies"; //surely this is the right string
+    }
+
+    @Override
+    public JSONObject getJson() {
+        JSONObject j = new JSONObject();
+        j.put("goal", "enemies");
+        return j;
     }
 }

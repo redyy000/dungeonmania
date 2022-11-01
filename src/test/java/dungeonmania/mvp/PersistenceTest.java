@@ -38,10 +38,15 @@ public class PersistenceTest {
         assertTrue(TestUtils.getGoals(res).contains(":exit"));
 
         res = assertDoesNotThrow(() -> dmc.saveGame("testLoad"));
+        // Wait for a bit to let the thing write.
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         //load
         res = dmc.loadGame("testLoad");
-
     }
 
     @Test
@@ -50,12 +55,20 @@ public class PersistenceTest {
         DungeonManiaController dmc;
         dmc = new DungeonManiaController();
         DungeonResponse res = dmc.newGame("d_basicGoalsTest_exit", "c_basicGoalsTest_exit");
+        Position posAtStart = TestUtils.getPlayerPos(res);
+
         // move player to right, changing the game.
         res = dmc.tick(Direction.RIGHT);
 
         Position posAtSave = TestUtils.getPlayerPos(res); //save game
+        assertNotEquals(posAtSave, posAtStart);
         res = assertDoesNotThrow(() -> dmc.saveGame("testSavePos"));
-
+        // Wait for a bit to let the thing write.
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         //move right twice.
         res = dmc.tick(Direction.RIGHT);
         res = dmc.tick(Direction.RIGHT);

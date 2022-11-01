@@ -118,17 +118,13 @@ public class DungeonManiaController {
 
         // save all entities positions to JSON. Do not use a debug Mercenary when testing saves :).
         JSONObject currentDungeon = new JSONObject();
-        String dungeonPath = String.format("/dungeons/%s.json", "2_doors");
         List<JSONObject> entityJsons = game.getMap().getEntities().stream()
                                     .map(e -> e.getJSON())
                                     .collect(Collectors.toList());
         JSONArray entityJsonArray = new JSONArray(entityJsons);
         currentDungeon.put("entities", entityJsonArray);
-        try {
-            currentDungeon = new JSONObject(FileLoader.loadResourceFile(dungeonPath));
-        } catch (IOException e) {
-            currentDungeon = null;
-        }
+        currentDungeon.put("goal-condition", game.getGoals().getJson());
+
         newgameJson.put("dungeon", currentDungeon);
 
 
