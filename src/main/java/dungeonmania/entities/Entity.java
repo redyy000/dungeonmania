@@ -6,6 +6,8 @@ import dungeonmania.util.Position;
 
 import java.util.UUID;
 
+import org.json.JSONObject;
+
 public abstract class Entity {
     public static final int FLOOR_LAYER = 0;
     public static final int ITEM_LAYER = 1;
@@ -89,5 +91,13 @@ public abstract class Entity {
 
     public Direction getFacing() {
         return this.facing;
+    }
+
+    public JSONObject getJSON() {
+        JSONObject j = new JSONObject();
+        j.put("type", this.getClass().getSimpleName());
+        j.put("x", this.position.getX());
+        j.put("y", this.position.getY());
+        return j;
     }
 }

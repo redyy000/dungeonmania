@@ -1,5 +1,8 @@
 package dungeonmania.goals;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import dungeonmania.Game;
 
 public class OrGoal implements Goal {
@@ -22,5 +25,17 @@ public class OrGoal implements Goal {
     public String toString(Game game) {
         if (achieved(game)) return "";
         else return "(" + goal1.toString(game) + " OR " + goal2.toString(game) + ")";
+    }
+
+    @Override
+    public JSONObject getJson() {
+        JSONArray subgoalsJ = new JSONArray();
+        subgoalsJ.put(this.goal1.getJson());
+        subgoalsJ.put(this.goal2.getJson());
+
+        JSONObject j = new JSONObject();
+        j.put("goal", "OR");
+        j.put("subgoals", subgoalsJ);
+        return j;
     }
 }
