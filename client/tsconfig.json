@@ -1,8 +1,0 @@
-{
-  "compilerOptions": {
-    "target": "es2021",
-    "sourceMap": true,
-    "moduleResolution": "Node"
-  },
-  "include": ["**/*.ts", "src/utils/OutlinePipeline.js", "src/utils/OutlinePipeline.js"]
-}
