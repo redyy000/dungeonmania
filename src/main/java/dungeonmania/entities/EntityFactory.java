@@ -103,6 +103,25 @@ public class EntityFactory {
         return new Mercenary(pos, mercenaryHealth, mercenaryAttack, mercenaryBribeAmount, mercenaryBribeRadius);
     }
 
+    public Assassin buildAssassin(Position pos) {
+        double health = config.optDouble("assassin_health", Assassin.DEFAULT_HEALTH);
+        double attack = config.optDouble("assassin_attack", Assassin.DEFAULT_ATTACK);
+        int bribeAmount = config.optInt("assassin_bribe_amount", Assassin.DEFAULT_BRIBE_AMOUNT);
+        int bribeRadius = config.optInt("assassin_bribe_radius", Assassin.DEFAULT_BRIBE_RADIUS);
+        double failBribeProb = config.optDouble("assassin_bribe_fail_rate", Assassin.DEFAULT_BRIBE_PROBABILITY);
+        return new Assassin(pos, health, attack, bribeAmount, bribeRadius, failBribeProb);
+    }
+
+    // for debugging Assassin using a seed
+    public Assassin buildAssassin(Position pos, int seed) {
+        double health = config.optDouble("assassin_health", Assassin.DEFAULT_HEALTH);
+        double attack = config.optDouble("assassin_attack", Assassin.DEFAULT_ATTACK);
+        int bribeAmount = config.optInt("assassin_bribe_amount", Assassin.DEFAULT_BRIBE_AMOUNT);
+        int bribeRadius = config.optInt("assassin_bribe_radius", Assassin.DEFAULT_BRIBE_RADIUS);
+        double failBribeProb = config.optDouble("assassin_bribe_fail_rate", Assassin.DEFAULT_BRIBE_PROBABILITY);
+        return new Assassin(pos, health, attack, bribeAmount, bribeRadius, failBribeProb, seed);
+    }
+
     public Bow buildBow() {
         int bowDurability = config.optInt("bow_durability");
         return new Bow(bowDurability);
@@ -126,6 +145,11 @@ public class EntityFactory {
             return buildZombieToastSpawner(pos);
         case "mercenary":
             return buildMercenary(pos);
+        case "assassin":
+            return buildAssassin(pos);
+        case "assassin_debug":
+            int seed = jsonEntity.getInt("seed");
+            return buildAssassin(pos, seed);
         case "wall":
             return new Wall(pos);
         case "boulder":

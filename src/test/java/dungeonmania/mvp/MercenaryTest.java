@@ -169,7 +169,7 @@ public class MercenaryTest {
     }
 
     @Test
-    @Tag("12-7")
+    @Tag("12-8")
     @DisplayName("Testing an allied mercenary follows the player")
     public void allyMovement() {
         //                 Wall    Wall   Wall
@@ -206,7 +206,7 @@ public class MercenaryTest {
     }
 
     @Test
-    @Tag("12-7")
+    @Tag("12-9")
     @DisplayName("Testing an allied mercenary follows/sticks only after getting close")
     public void allyMovementFar() {
         //                                  Wall    Wall   Wall    Wall    Wall    Wall
@@ -232,7 +232,58 @@ public class MercenaryTest {
         res = dmc.tick(Direction.RIGHT); // at 4, Merc adjacent and would go to 3 hence.
         assertEquals(new Position(3, 1), getMercPos(res));
     }
+
+    @Test
+    @Tag("12-10")
+    @DisplayName("Testing a bribe only works sometimes")
+    public void assassinFailBribe() {
+        //                                  Wall    Wall   Wall    Wall    Wall    Wall
+        // P1       P2      P3      P4      M4      M3      M2      M1      .      Wall
+        //                                  Wall    Wall   Wall    Wall    Wall    Wall
+        DungeonManiaController dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_assassinTest", "c_mercenaryTest_allyMovement");
+        // note that despite making it as an assassin debug, its type is still an Assassin only.
+        String assId = TestUtils.getEntitiesStream(res, "assassin").findFirst().get().getId();
+
+        //move once pick up treasure
+        res = dmc.tick(Direction.RIGHT); // at 2.
+        assertEquals(new Position(10, 1), getAssPos(res));
+        assertEquals(1, TestUtils.getInventory(res, "treasure").size());
+
+        //move to have 2 treasure. Need  to have treasure leftover after bribe so that AssIsAllied() works.
+        res = dmc.tick(Direction.RIGHT); // at 3.
+        assertEquals(new Position(9, 1), getAssPos(res));
+        assertEquals(2, TestUtils.getInventory(res, "treasure").size());
+
+        //Try bribing.
+        res = assertDoesNotThrow(() -> dmc.interact(assId)); //player still at 3. M at 5 because move closer.
+        assertEquals(new Position(8, 1), getAssPos(res));
+        assertEquals(1, TestUtils.getInventory(res, "treasure").size());
+        assertFalse(isAssassinAllied(res)); //under seed 100, fails bribe once.
+
+        // collect anothe treasure
+        res = dmc.tick(Direction.RIGHT); // at 4 after.
+        getAssPos(res);
+        assertEquals(new Position(7, 1), getAssPos(res));
+        assertEquals(2, TestUtils.getInventory(res, "treasure").size());
+
+        res = assertDoesNotThrow(() -> dmc.interact(assId)); //player still at 4. Under seed 100, should ally.
+        assertEquals(new Position(6, 1), getAssPos(res));
+        assertEquals(1, TestUtils.getInventory(res, "treasure").size());
+        assertTrue(isAssassinAllied(res));
+
+    }
+
     private Position getMercPos(DungeonResponse res) {
         return TestUtils.getEntities(res, "mercenary").get(0).getPosition();
+    }
+    private Position getAssPos(DungeonResponse res) {
+        return TestUtils.getEntities(res, "assassin").get(0).getPosition();
+    }
+    private boolean isAssassinAllied(DungeonResponse res) {
+        // if the assassin can still be interacted with (given you have enough treasure)
+        // then it is not allied.
+        return !TestUtils.getEntities(res, "assassin").get(0).isInteractable();
+
     }
 }

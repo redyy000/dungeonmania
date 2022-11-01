@@ -1,6 +1,10 @@
 {
   "ally_attack": 3,
   "ally_defence": 3,
+  "assassin_attack": 1,
+  "assassin_bribe_amount": 1,
+  "assassin_bribe_fail_rate": 0.5,
+  "assassin_health": 10,
   "bomb_radius": 1,
   "bow_durability": 2,
   "bribe_amount": 1,
