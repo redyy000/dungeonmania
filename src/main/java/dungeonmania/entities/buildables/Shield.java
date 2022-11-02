@@ -1,6 +1,8 @@
 package dungeonmania.entities.buildables;
 
 
+import org.json.JSONObject;
+
 import dungeonmania.Game;
 import dungeonmania.battles.BattleStatistics;
 
@@ -12,6 +14,12 @@ public class Shield extends Buildable {
         super(null);
         this.durability = durability;
         this.defence = defence;
+    }
+
+    public Shield(JSONObject j) {
+        super(null);
+        this.durability = j.getInt("durability");
+        this.defence = j.getDouble("defence");
     }
 
     @Override
@@ -37,5 +45,11 @@ public class Shield extends Buildable {
         return durability;
     }
 
-
+    @Override
+    public JSONObject getJSON() {
+        JSONObject j = super.getJSON();
+        j.put("durability", this.durability);
+        j.put("defence", this.defence);
+        return j;
+    }
 }

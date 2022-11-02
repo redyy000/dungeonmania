@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.json.JSONObject;
+
 import dungeonmania.entities.Entity;
 import dungeonmania.entities.Player;
 import dungeonmania.entities.Switch;
@@ -29,6 +31,12 @@ public class Bomb extends Collectable implements InventoryItem {
         super(position);
         state = State.SPAWNED;
         this.radius = radius;
+    }
+
+    public Bomb(JSONObject j) {
+        super(new Position(j.getInt("x"), j.getInt("y")));
+        this.state = j.getEnum(State.class, "state"); //hope this works.
+        this.radius = j.getInt("radius");
     }
 
     public void subscribe(Switch s) {
@@ -94,5 +102,15 @@ public class Bomb extends Collectable implements InventoryItem {
 
     public State getState() {
         return state;
+    }
+
+    @Override
+    public JSONObject getJSON() {
+        JSONObject j = super.getJSON();
+        j.put("state", this.state); //puts state in as an object. Hopefully okay..
+        j.put("radius", this.radius);
+        // TODO
+        //j.put("subs", this.subs);
+        return j;
     }
 }

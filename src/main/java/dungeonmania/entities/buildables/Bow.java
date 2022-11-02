@@ -1,5 +1,7 @@
 package dungeonmania.entities.buildables;
 
+import org.json.JSONObject;
+
 import dungeonmania.Game;
 import dungeonmania.battles.BattleStatistics;
 
@@ -10,6 +12,11 @@ public class Bow extends Buildable  {
     public Bow(int durability) {
         super(null);
         this.durability = durability;
+    }
+
+    public Bow(JSONObject j) {
+        super(null);
+        this.durability = j.getInt("durability");
     }
 
     @Override
@@ -33,5 +40,12 @@ public class Bow extends Buildable  {
     @Override
     public int getDurability() {
         return durability;
+    }
+
+    @Override
+    public JSONObject getJSON() {
+        JSONObject j = super.getJSON();
+        j.put("durability", this.durability);
+        return j;
     }
 }

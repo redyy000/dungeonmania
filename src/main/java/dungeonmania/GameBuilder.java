@@ -7,6 +7,7 @@ import org.json.JSONObject;
 import dungeonmania.entities.Entity;
 import dungeonmania.entities.EntityFactory;
 import dungeonmania.entities.Player;
+import dungeonmania.entities.SavedEntityFactory;
 import dungeonmania.goals.Goal;
 import dungeonmania.goals.GoalFactory;
 import dungeonmania.map.GameMap;
@@ -74,7 +75,7 @@ public class GameBuilder {
         }
 
         Game game = new Game(dungeonName);
-        EntityFactory factory = new EntityFactory(config);
+        SavedEntityFactory factory = new SavedEntityFactory(config); //create entities considering they're saved.
         game.setEntityFactory(factory);
         buildMap(game);
         buildGoals(game);

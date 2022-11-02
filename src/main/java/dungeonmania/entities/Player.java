@@ -4,6 +4,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
+import org.json.JSONObject;
+
 import dungeonmania.Game;
 import dungeonmania.battles.BattleStatistics;
 import dungeonmania.battles.Battleable;
@@ -40,6 +42,19 @@ public class Player extends Entity implements Battleable {
                 BattleStatistics.DEFAULT_PLAYER_DAMAGE_REDUCER);
         inventory = new Inventory();
         state = new PlayerState(this, false, false);
+    }
+
+    public Player(JSONObject j) {
+        super(new Position(j));
+        this.battleStatistics = new BattleStatistics(j.getJSONObject("battleStatistics"));
+
+        Inventory newInv = new Inventory();
+        JSONObject invJson = j.getJSONObject("inventory");
+        newInv.populateUsingJson(invJson);
+        this.inventory = newInv;
+        this.state = new PlayerState(this, j.getJSONObject("state"));
+        //TODO
+        //Then put back in the three potions variables too.
     }
 
     public boolean hasWeapon() {
@@ -189,5 +204,19 @@ public class Player extends Entity implements Battleable {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public JSONObject getJSON() {
+        //add BS, Inventory ...
+        return super.getJSON()
+                    .put("battleStatistics", this.battleStatistics.getJSON())
+                    .put("inventory", this.inventory.getJSON())
+                    .put("state", this.state.getJSON())
+                    .put("queue", this.queue)
+                    .put("inEffective", this.inEffective)
+                    .put("nextTrigger", this.nextTrigger); //THree things need udpatnig.
+
+
     }
 }

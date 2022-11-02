@@ -1,5 +1,7 @@
 package dungeonmania.entities.collectables;
 
+import org.json.JSONObject;
+
 import dungeonmania.entities.Entity;
 import dungeonmania.entities.inventory.InventoryItem;
 import dungeonmania.map.GameMap;
@@ -13,6 +15,11 @@ public class Key extends Collectable implements InventoryItem {
         this.number = number;
     }
 
+    public Key(JSONObject j) {
+        super(j);
+        this.number = j.getInt("number");
+    }
+
     @Override
     public boolean canMoveOnto(GameMap map, Entity entity) {
         return true;
@@ -21,4 +28,10 @@ public class Key extends Collectable implements InventoryItem {
         return number;
     }
 
+    @Override
+    public JSONObject getJSON() {
+        JSONObject j = super.getJSON();
+        j.put("number", this.number);
+        return j;
+    }
 }
