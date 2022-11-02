@@ -63,10 +63,10 @@ public class GameBuilder {
         return game;
     }
 
-    // Expects that saved Config and Dungeon are correctly written.
-    public Game buildGame(JSONObject savedConfig, JSONObject savedDungeon) {
-        this.config = savedConfig;
-        this.dungeon = savedDungeon;
+    // Load saved file build-game.
+    public Game buildGame(JSONObject savedJson) {
+        this.config = savedJson.getJSONObject("config");
+        this.dungeon = savedJson.getJSONObject("dungeon");
         this.configName = null; // set the names to null. Hopefully should not rely on them if loading from save.
         this.dungeonName = null;
         if (dungeon == null && config == null) {

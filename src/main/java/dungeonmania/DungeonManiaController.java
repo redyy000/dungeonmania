@@ -147,19 +147,16 @@ public class DungeonManiaController {
     public DungeonResponse loadGame(String name) throws IllegalArgumentException {
         // List<String> saveNames = FileLoader.listFileNamesInResourceDirectory("saves");
 
-        JSONObject saveJson;
+        JSONObject savedJson;
         try {
-            saveJson = loadSave(name);
+            savedJson = loadSave(name);
         } catch (IOException e1) {
             throw new IllegalArgumentException("No such game with name " + name + " to load.");
         }
 
-
-        JSONObject config = saveJson.getJSONObject("config");
-        JSONObject dungeon = saveJson.getJSONObject("dungeon");
         try {
             GameBuilder builder = new GameBuilder();
-            game = builder.buildGame(config, dungeon);
+            game = builder.buildGame(savedJson);
             return ResponseBuilder.getDungeonResponse(game);
         } catch (JSONException e) {
             return null;

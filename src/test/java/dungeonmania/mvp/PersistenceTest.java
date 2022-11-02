@@ -60,7 +60,7 @@ public class PersistenceTest {
         // move player to right, changing the game.
         res = dmc.tick(Direction.RIGHT);
 
-        Position posAtSave = TestUtils.getPlayerPos(res); //save game
+        Position posAtSave = TestUtils.getPlayerPos(res); //should be x=2, y =1 at save.
         assertNotEquals(posAtSave, posAtStart);
         res = assertDoesNotThrow(() -> dmc.saveGame("testSavePos"));
         // Wait for a bit to let the thing write.
@@ -76,5 +76,9 @@ public class PersistenceTest {
 
         //assert player is at the position when saved.
         assertEquals(posAtSave, TestUtils.getPlayerPos(res));
+
+        // assert movement is still correct
+        res = dmc.tick(Direction.DOWN);
+        assertEquals(new Position(2, 2), TestUtils.getPlayerPos(res));
     }
 }
