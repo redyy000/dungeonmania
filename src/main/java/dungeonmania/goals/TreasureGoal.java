@@ -1,5 +1,7 @@
 package dungeonmania.goals;
 
+import org.json.JSONObject;
+
 import dungeonmania.Game;
 import dungeonmania.entities.collectables.Treasure;
 
@@ -20,5 +22,12 @@ public class TreasureGoal implements Goal {
         if (this.achieved(game)) return "";
 
         return ":treasure";
+    }
+
+    @Override
+    public JSONObject getJson() {
+        JSONObject j = new JSONObject();
+        j.put("goal", "treasure");
+        return j;
     }
 }

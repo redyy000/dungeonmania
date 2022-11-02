@@ -36,9 +36,39 @@ public class GameBuilder {
         return this;
     }
 
+    public GameBuilder setConfig(JSONObject config) {
+        this.config = config;
+        return this;
+    }
+
+    public GameBuilder setDungeon(JSONObject dungeon) {
+        this.dungeon = dungeon;
+        return this;
+    }
+
     public Game buildGame() {
         loadConfig();
         loadDungeon();
+        if (dungeon == null && config == null) {
+            return null; // something went wrong
+        }
+
+        Game game = new Game(dungeonName);
+        EntityFactory factory = new EntityFactory(config);
+        game.setEntityFactory(factory);
+        buildMap(game);
+        buildGoals(game);
+        game.init();
+
+        return game;
+    }
+
+    // Load saved file build-game.
+    public Game buildGame(JSONObject savedJson) {
+        this.config = savedJson.getJSONObject("config");
+        this.dungeon = savedJson.getJSONObject("dungeon");
+        this.configName = null; // set the names to null. Hopefully should not rely on them if loading from save.
+        this.dungeonName = null;
         if (dungeon == null && config == null) {
             return null; // something went wrong
         }
