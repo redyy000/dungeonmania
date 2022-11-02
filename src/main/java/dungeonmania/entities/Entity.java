@@ -2,9 +2,12 @@ package dungeonmania.entities;
 
 import dungeonmania.map.GameMap;
 import dungeonmania.util.Direction;
+import dungeonmania.util.NameConverter;
 import dungeonmania.util.Position;
 
 import java.util.UUID;
+
+import org.json.JSONObject;
 
 public abstract class Entity {
     public static final int FLOOR_LAYER = 0;
@@ -89,5 +92,13 @@ public abstract class Entity {
 
     public Direction getFacing() {
         return this.facing;
+    }
+
+    public JSONObject getJSON() {
+        JSONObject j = new JSONObject();
+        j.put("type", NameConverter.toSnakeCase(this.getClass().getSimpleName())); //use the string version.
+        j.put("x", this.position.getX());
+        j.put("y", this.position.getY());
+        return j;
     }
 }
