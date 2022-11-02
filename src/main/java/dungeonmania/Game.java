@@ -10,7 +10,6 @@ import dungeonmania.entities.EntityFactory;
 import dungeonmania.entities.Interactable;
 import dungeonmania.entities.Player;
 import dungeonmania.entities.collectables.Bomb;
-import dungeonmania.entities.collectables.Treasure;
 import dungeonmania.entities.collectables.potions.Potion;
 import dungeonmania.entities.enemies.Enemy;
 import dungeonmania.entities.enemies.ZombieToastSpawner;
@@ -26,7 +25,6 @@ public class Game {
     private GameMap map;
     private Player player;
     private BattleFacade battleFacade;
-    private int initialTreasureCount;
     private EntityFactory entityFactory;
     private boolean isInTick = false;
     private int killedEnemies = 0;
@@ -52,7 +50,6 @@ public class Game {
         this.tickCount = 0;
         player = map.getPlayer();
         register(() -> player.onTick(tickCount), PLAYER_MOVEMENT, "potionQueue");
-        initialTreasureCount = map.getEntities(Treasure.class).size();
     }
 
     public Game tick(Direction movementDirection) {
@@ -221,13 +218,16 @@ public class Game {
         this.battleFacade = battleFacade;
     }
 
-    public int getInitialTreasureCount() {
-        return initialTreasureCount;
+    public int getNCollectedTreasure() {
+        return this.nCollectedTreasure;
     }
     public int getKilledEnemies() {
         return this.killedEnemies;
     }
     public int numSpawners() {
         return this.map.getEntities(ZombieToastSpawner.class).size();
+    }
+    public void increaseNCollectedTreasure() {
+        this.nCollectedTreasure = this.nCollectedTreasure + 1;
     }
 }

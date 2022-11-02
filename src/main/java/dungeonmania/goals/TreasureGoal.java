@@ -3,7 +3,6 @@ package dungeonmania.goals;
 import org.json.JSONObject;
 
 import dungeonmania.Game;
-import dungeonmania.entities.collectables.Treasure;
 
 public class TreasureGoal implements Goal {
     private int target;
@@ -15,7 +14,7 @@ public class TreasureGoal implements Goal {
     public boolean achieved(Game game) {
         if (game.getPlayer() == null) return false;
 
-        return game.getInitialTreasureCount() - game.getMap().getEntities(Treasure.class).size() >= target;
+        return game.getNCollectedTreasure() >= target;
 
     }
     public String toString(Game game) {
