@@ -27,43 +27,6 @@ public class PersistenceTest {
     }
 
     @Test
-    @DisplayName("Test save player inventory")
-    public void saveInventory() {
-        DungeonManiaController dmc;
-        dmc = new DungeonManiaController();
-        DungeonResponse res = dmc.newGame("d_persistenceTest_InvSave", "c_basicGoalsTest_treasure");
-
-        // move player to right
-        res = dmc.tick(Direction.RIGHT);
-        // collect treasure
-        res = dmc.tick(Direction.RIGHT);
-        assertEquals(1, TestUtils.getInventory(res, "treasure").size());
-
-        // collect sword
-        res = dmc.tick(Direction.RIGHT);
-        assertEquals(1, TestUtils.getInventory(res, "sword").size());
-
-        // collect key
-        res = dmc.tick(Direction.RIGHT);
-        assertEquals(1, TestUtils.getInventory(res, "key").size());
-
-        res = assertDoesNotThrow(() -> dmc.saveGame("testInvSave"));
-        // Wait for a bit to let the thing write.
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        //load
-        res = assertDoesNotThrow(() -> dmc.loadGame("testInvSave"));
-        assertEquals(new Position(5, 1), TestUtils.getPlayerPos(res));
-        assertEquals(1, TestUtils.getInventory(res, "treasure").size());
-        assertEquals(1, TestUtils.getInventory(res, "sword").size());
-        assertEquals(1, TestUtils.getInventory(res, "key").size());
-    }
-
-    @Test
     @DisplayName("Test saving then loading file without error (no checking of valid data)")
     public void loadOK() {
         DungeonManiaController dmc;
@@ -149,6 +112,51 @@ public class PersistenceTest {
 
         // move player to exit        // assert goal met
         res = dmc.tick(Direction.RIGHT);
+        assertEquals("", TestUtils.getGoals(res));
+    }
+
+    @Test
+    @DisplayName("Test save player inventory")
+    public void saveInventory() {
+        DungeonManiaController dmc;
+        dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_persistenceTest_InvSave", "c_basicGoalsTest_treasure");
+
+        // move player to right
+        res = dmc.tick(Direction.RIGHT);
+        // collect treasure
+        res = dmc.tick(Direction.RIGHT);
+        assertEquals(1, TestUtils.getInventory(res, "treasure").size());
+
+        // collect sword
+        res = dmc.tick(Direction.RIGHT);
+        assertEquals(1, TestUtils.getInventory(res, "sword").size());
+
+        // collect key
+        res = dmc.tick(Direction.RIGHT);
+        assertEquals(1, TestUtils.getInventory(res, "key").size());
+
+        res = assertDoesNotThrow(() -> dmc.saveGame("testInvSave"));
+        // Wait for a bit to let the thing write.
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        //load. Check player position, inventory correct, goal intact.
+        res = assertDoesNotThrow(() -> dmc.loadGame("testInvSave"));
+        assertEquals(new Position(5, 1), TestUtils.getPlayerPos(res));
+        assertEquals(1, TestUtils.getInventory(res, "treasure").size());
+        assertEquals(1, TestUtils.getInventory(res, "sword").size());
+        assertEquals(1, TestUtils.getInventory(res, "key").size());
+        assertTrue(TestUtils.getGoals(res).contains(":treasure"));
+
+
+        // collect 2 more treasure, finish goal.
+        dmc.tick(Direction.RIGHT);
+        res = dmc.tick(Direction.RIGHT);
+        assertEquals(3, TestUtils.getInventory(res, "treasure").size());
         assertEquals("", TestUtils.getGoals(res));
     }
 }

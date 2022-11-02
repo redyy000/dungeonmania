@@ -145,6 +145,8 @@ public class DungeonManiaController {
      * /game/load
      */
     public DungeonResponse loadGame(String name) throws IllegalArgumentException {
+
+        //broken
         // List<String> saveNames = FileLoader.listFileNamesInResourceDirectory("saves");
 
         JSONObject savedJson;
@@ -155,8 +157,7 @@ public class DungeonManiaController {
         }
 
         try {
-            GameBuilder builder = new GameBuilder();
-            game = builder.buildGame(savedJson);
+            //Game loadGame = new Game(JSONObject savedJson);
             return ResponseBuilder.getDungeonResponse(game);
         } catch (JSONException e) {
             return null;

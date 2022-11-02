@@ -99,6 +99,8 @@ public abstract class Entity {
         j.put("type", NameConverter.toSnakeCase(this.getClass().getSimpleName())); //use the string version.
         j.put("x", this.position.getX());
         j.put("y", this.position.getY());
+        //TODO
+        // Every field should be here. position will have to be revamped.
         return j;
     }
 }

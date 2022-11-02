@@ -21,6 +21,10 @@
             "type" : "treasure",
             "x" : 6,
             "y" : 1
+        }, {
+            "type" : "treasure",
+            "x" : 7,
+            "y" : 1
         }
     ],
     "goal-condition": {"goal": "treasure"}

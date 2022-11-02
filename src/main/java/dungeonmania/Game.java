@@ -30,6 +30,7 @@ public class Game {
     private EntityFactory entityFactory;
     private boolean isInTick = false;
     private int killedEnemies = 0;
+    private int nCollectedTreasure = 0;
     public static final int PLAYER_MOVEMENT = 0;
     public static final int PLAYER_MOVEMENT_CALLBACK = 1;
     public static final int AI_MOVEMENT = 2;
