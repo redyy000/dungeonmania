@@ -45,7 +45,7 @@ public class Player extends Entity implements Battleable {
     }
 
     public Player(JSONObject j) {
-        super(new Position(j));
+        super(new Position(j.getJSONObject("position")));
         this.battleStatistics = new BattleStatistics(j.getJSONObject("battleStatistics"));
 
         Inventory newInv = new Inventory();

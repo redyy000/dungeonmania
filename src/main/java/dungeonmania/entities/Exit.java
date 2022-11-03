@@ -11,8 +11,8 @@ public class Exit extends Entity {
     }
 
     public Exit(JSONObject j) {
-        // create Position with JSON. If for soemreason not right layer, set it.
-        super((new Position(j)).asLayer(Entity.ITEM_LAYER));
+        // create Position with JSON. Expected to be itemLayer already.
+        super((new Position(j.getJSONObject("position"))));
     }
 
     @Override

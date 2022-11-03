@@ -73,7 +73,7 @@ public class PersistenceTest {
         res = dmc.tick(Direction.RIGHT);
         res = dmc.tick(Direction.RIGHT);
 
-        //assert player is at the position as when they saved.
+        //assert player is at the position as when they saved after loading.
         res = dmc.loadGame("testSavePos");
         assertEquals(posAtSave, TestUtils.getPlayerPos(res));
 

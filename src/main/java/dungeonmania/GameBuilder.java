@@ -62,20 +62,22 @@ public class GameBuilder {
 
     // Load saved file build-game.
     public Game buildGame(JSONObject savedJson) {
-        this.config = savedJson.getJSONObject("config");
-        this.dungeon = savedJson.getJSONObject("dungeon");
-        this.configName = null; // set the names to null. Hopefully should not rely on them if loading from save.
-        this.dungeonName = null;
-        if (dungeon == null && config == null) {
-            return null; // something went wrong
-        }
-
-        Game game = new Game(dungeonName);
+        /* KEys:
+         * config,  goal-condition, game, gameMap.
+         * this.config should remain null. Collect the config from the save file instead.
+         */
+        JSONObject savedConfig = savedJson.getJSONObject("config");
+        Game game = new Game(savedJson.getJSONObject("game"));
+        game.setEntityFactory(new EntityFactory(savedConfig));
         // SavedEntityFactory factory = new SavedEntityFactory(config); //create entities considering they're saved.
         // game.setEntityFactory(factory);
-        buildMap(game);
-        buildGoals(game);
-        game.init();
+        GameMap map = new GameMap(game, savedJson.getJSONArray("gameMap"));
+        game.setMap(map);
+        if (!savedJson.isNull("goal-condition")) {
+            Goal goal = GoalFactory.createGoal(savedJson.getJSONObject("goal-condition"), savedConfig);
+            game.setGoals(goal);
+        }
+        game.initSavedGame();
 
         return game;
     }

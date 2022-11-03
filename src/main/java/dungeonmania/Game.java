@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.PriorityQueue;
 import java.util.UUID;
 
+import org.json.JSONObject;
+
 import dungeonmania.battles.BattleFacade;
 import dungeonmania.entities.Entity;
 import dungeonmania.entities.EntityFactory;
@@ -44,10 +46,29 @@ public class Game {
         this.battleFacade = new BattleFacade();
     }
 
+    public Game(JSONObject j) {
+        this.id = j.getString("id");
+        this.name = j.getString("name");
+        // goals set by gameBuilder.
+        // map set by gameBuilder
+        // player set by initSavedGame()
+        this.battleFacade = new BattleFacade(); //TODO
+        // entityFactory set by gameBuilder
+        this.isInTick = j.getBoolean("isInTick");
+        this.killedEnemies = j.getInt("killedEnemies");
+        this.nCollectedTreasure = j.getInt("nCollectedTreasure");
+        this.tickCount = j.getInt("tickCount");
+    }
+
     public void init() {
         this.id = UUID.randomUUID().toString();
         // map.init();
         this.tickCount = 0;
+        player = map.getPlayer();
+        register(() -> player.onTick(tickCount), PLAYER_MOVEMENT, "potionQueue");
+    }
+
+    public void initSavedGame() { //shold remove this. TODO
         player = map.getPlayer();
         register(() -> player.onTick(tickCount), PLAYER_MOVEMENT, "potionQueue");
     }
@@ -229,5 +250,23 @@ public class Game {
     }
     public void increaseNCollectedTreasure() {
         this.nCollectedTreasure = this.nCollectedTreasure + 1;
+    }
+
+    public JSONObject getJSON() {
+        JSONObject j = new JSONObject();
+        j.put("id", this.id);
+        j.put("name", this.name);
+        // j.put("goals", this.goals.getJSON());
+        // j.put("map", this.map.getJSON());
+        // j.put("player", this.player.getJSON()); //don't know if should do this.
+        // private BattleFacade battleFacade;
+        // private EntityFactory entityFactory;
+        j.put("isInTick", this.isInTick);
+        j.put("killedEnemies", this.killedEnemies);
+        j.put("nCollectedTreasure", this.nCollectedTreasure);
+        j.put("tickCount", this.tickCount);
+        // private PriorityQueue<ComparableCallback> sub = new PriorityQueue<>();
+        // private PriorityQueue<ComparableCallback> addingSub = new PriorityQueue<>();
+        return j;
     }
 }

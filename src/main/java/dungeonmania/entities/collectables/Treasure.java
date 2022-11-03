@@ -1,5 +1,6 @@
 package dungeonmania.entities.collectables;
 
+
 import org.json.JSONObject;
 
 import dungeonmania.entities.Entity;

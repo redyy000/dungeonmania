@@ -36,7 +36,7 @@ public class GraphNode {
 
         List<Entity> entities = new ArrayList<>();
         JSONArray entitiesJson = j.getJSONArray("entities");
-        for (int i = 0; i < j.length(); i++) {
+        for (int i = 0; i < entitiesJson.length(); i++) {
             JSONObject entityJson = entitiesJson.getJSONObject(i);
             Entity entity = SavedEntityFactory.createEntity(entityJson);
             entities.add(entity);

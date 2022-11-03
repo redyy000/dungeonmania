@@ -4,9 +4,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -116,17 +114,15 @@ public class DungeonManiaController {
         JSONObject newgameJson = new JSONObject();
         newgameJson.put("config", this.configJson);
 
-        // save all entities positions to JSON. Do not use a debug Mercenary when testing saves :).
-        JSONObject currentDungeon = new JSONObject();
-        List<JSONObject> entityJsons = game.getMap().getEntities().stream()
-                                    .map(e -> e.getJSON()) //type and position.
-                                    .collect(Collectors.toList());
-        JSONArray entityJsonArray = new JSONArray(entityJsons);
-        currentDungeon.put("entities", entityJsonArray);
-        currentDungeon.put("goal-condition", game.getGoals().getJson());
-
-        newgameJson.put("dungeon", currentDungeon);
-
+        // // save all entities positions to JSON. Do not use a debug Mercenary when testing saves :).
+        // JSONObject currentDungeon = new JSONObject();
+        // List<JSONObject> entityJsons = game.getMap().getEntities().stream()
+        //                             .map(e -> e.getJSON()) //type and position.
+        //                             .collect(Collectors.toList());
+        // JSONArray entityJsonArray = new JSONArray(entityJsons);
+        newgameJson.put("goal-condition", game.getGoals().getJSON());
+        newgameJson.put("game", this.game.getJSON());
+        newgameJson.put("gameMap", this.game.getMap().getJSON());
 
         FileWriter file;
         try {
@@ -145,10 +141,6 @@ public class DungeonManiaController {
      * /game/load
      */
     public DungeonResponse loadGame(String name) throws IllegalArgumentException {
-
-        //broken
-        // List<String> saveNames = FileLoader.listFileNamesInResourceDirectory("saves");
-
         JSONObject savedJson;
         try {
             savedJson = loadSave(name);
@@ -157,11 +149,12 @@ public class DungeonManiaController {
         }
 
         try {
-            //Game loadGame = new Game(JSONObject savedJson);
-            return ResponseBuilder.getDungeonResponse(game);
+            GameBuilder builder = new GameBuilder();
+            game = builder.buildGame(savedJson);
         } catch (JSONException e) {
-            return null;
+            throw new IllegalArgumentException("Savefile " + name + "is broken. " + e.getMessage());
         }
+        return ResponseBuilder.getDungeonResponse(game);
     }
 
     // Returns JSONObject of save file/ save file. Throw if dne
