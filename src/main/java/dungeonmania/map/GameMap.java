@@ -30,6 +30,24 @@ public class GameMap {
      * Initialise the game map
      * 1. pair up portals
      */
+    public GameMap() {
+        return; //shouldn't be used.
+    }
+    public GameMap(Game game, JSONObject dungeon) {
+        this.game = game;
+        dungeon.getJSONArray("entities").forEach(e -> {
+            JSONObject jsonEntity = (JSONObject) e;
+            GraphNode newNode = GraphNodeFactory.createEntity(jsonEntity, game.getEntityFactory());
+            Entity entity = newNode.getEntities().get(0);
+
+            if (newNode != null)
+                addNode(newNode);
+
+            if (entity instanceof Player)
+                setPlayer((Player) entity);
+        });
+        init(); // added by me
+    }
 
     public void init() {
         initPairPortals();

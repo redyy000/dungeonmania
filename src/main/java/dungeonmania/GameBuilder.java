@@ -4,15 +4,11 @@ import java.io.IOException;
 
 import org.json.JSONObject;
 
-import dungeonmania.entities.Entity;
 import dungeonmania.entities.EntityFactory;
-import dungeonmania.entities.Player;
-import dungeonmania.entities.SavedEntityFactory;
 import dungeonmania.goals.Goal;
 import dungeonmania.goals.GoalFactory;
 import dungeonmania.map.GameMap;
-import dungeonmania.map.GraphNode;
-import dungeonmania.map.GraphNodeFactory;
+
 import dungeonmania.util.FileLoader;
 
 /**
@@ -75,8 +71,8 @@ public class GameBuilder {
         }
 
         Game game = new Game(dungeonName);
-        SavedEntityFactory factory = new SavedEntityFactory(config); //create entities considering they're saved.
-        game.setEntityFactory(factory);
+        // SavedEntityFactory factory = new SavedEntityFactory(config); //create entities considering they're saved.
+        // game.setEntityFactory(factory);
         buildMap(game);
         buildGoals(game);
         game.init();
@@ -104,20 +100,7 @@ public class GameBuilder {
     }
 
     private void buildMap(Game game) {
-        GameMap map = new GameMap();
-        map.setGame(game);
-
-        dungeon.getJSONArray("entities").forEach(e -> {
-            JSONObject jsonEntity = (JSONObject) e;
-            GraphNode newNode = GraphNodeFactory.createEntity(jsonEntity, game.getEntityFactory());
-            Entity entity = newNode.getEntities().get(0);
-
-            if (newNode != null)
-                map.addNode(newNode);
-
-            if (entity instanceof Player)
-                map.setPlayer((Player) entity);
-        });
+        GameMap map = new GameMap(game, this.dungeon);
         game.setMap(map);
     }
 

@@ -40,13 +40,13 @@ public class Game {
 
     public Game(String dungeonName) {
         this.name = dungeonName;
-        this.map = new GameMap();
+        // this.map = new GameMap(); //uesless, gameMap set by builder.
         this.battleFacade = new BattleFacade();
     }
 
     public void init() {
         this.id = UUID.randomUUID().toString();
-        map.init();
+        // map.init();
         this.tickCount = 0;
         player = map.getPlayer();
         register(() -> player.onTick(tickCount), PLAYER_MOVEMENT, "potionQueue");
