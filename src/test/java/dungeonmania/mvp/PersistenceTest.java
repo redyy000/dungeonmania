@@ -334,7 +334,6 @@ public class PersistenceTest {
         }
         res = assertDoesNotThrow(() -> dmc.loadGame("testPotionQueue"));
 
-
         // meet spider, but not battle occurs (invisibility has duration 1)
         res = dmc.tick(Direction.DOWN);
         assertEquals(1, TestUtils.getEntities(res, "spider").size());
