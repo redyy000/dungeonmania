@@ -24,7 +24,11 @@ public class TreasureGoal implements Goal {
     }
 
     @Override
+<<<<<<< src/main/java/dungeonmania/goals/TreasureGoal.java
     public JSONObject getJSON() {
+=======
+    public JSONObject getJson() {
+>>>>>>> src/main/java/dungeonmania/goals/TreasureGoal.java
         JSONObject j = new JSONObject();
         j.put("goal", "treasure");
         return j;

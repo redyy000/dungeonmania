@@ -79,4 +79,12 @@ public abstract class Entity {
         j.put("id", this.entityId);
         return j;
     }
+
+    public JSONObject getJSON() {
+        JSONObject j = new JSONObject();
+        j.put("type", NameConverter.toSnakeCase(this.getClass().getSimpleName())); //use the string version.
+        j.put("x", this.position.getX());
+        j.put("y", this.position.getY());
+        return j;
+    }
 }
