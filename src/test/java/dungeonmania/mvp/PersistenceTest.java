@@ -159,4 +159,104 @@ public class PersistenceTest {
         assertEquals(3, TestUtils.getInventory(res, "treasure").size());
         assertEquals("", TestUtils.getGoals(res));
     }
+
+    @Test
+    @DisplayName("Test saving then loading file with many different entities")
+    public void loadEntities() {
+        DungeonManiaController dmc;
+        dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_persistenceTest_entities", "c_basicGoalsTest_exit");
+        //Save it
+        res = assertDoesNotThrow(() -> dmc.saveGame("testLoad"));
+        // Wait for a bit to let the thing write.
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        //load see if it building works.
+        res = assertDoesNotThrow(() -> dmc.loadGame("testLoad"));
+    }
+
+    @Test
+    @DisplayName("Test achievin boulders goal for five switches. Save before finish. then finish.")
+    public void fiveSwitches()  {
+        DungeonManiaController dmc;
+        dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_basicGoalsTest_fiveSwitches", "c_basicGoalsTest_fiveSwitches");
+
+        // assert goal not met
+        assertTrue(TestUtils.getGoals(res).contains(":boulders"));
+
+        // move first four boulders onto switch
+        res = dmc.tick(Direction.DOWN);
+        res = dmc.tick(Direction.UP);
+        res = dmc.tick(Direction.RIGHT);
+        res = dmc.tick(Direction.DOWN);
+        res = dmc.tick(Direction.UP);
+        res = dmc.tick(Direction.RIGHT);
+        res = dmc.tick(Direction.DOWN);
+        res = dmc.tick(Direction.UP);
+        res = dmc.tick(Direction.RIGHT);
+        res = dmc.tick(Direction.DOWN);
+        res = dmc.tick(Direction.UP);
+        res = dmc.tick(Direction.RIGHT);
+
+        // assert goal not met
+        assertTrue(TestUtils.getGoals(res).contains(":boulders"));
+
+
+        //save and load
+        res = assertDoesNotThrow(() -> dmc.saveGame("test5switch"));
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        res = assertDoesNotThrow(() -> dmc.loadGame("test5switch"));
+
+        // move last boulder onto switch
+        res = dmc.tick(Direction.DOWN);
+        // assert goal met
+        assertEquals("", TestUtils.getGoals(res));
+    }
+
+    @Test
+    @DisplayName("Test killing 3 enemy, 1 zts goal. Save with sword, not finished. Load, finish game.")
+    public void enemieswithZTS() {
+        DungeonManiaController dmc;
+        dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_enemiesGoalTest_zts", "_c_enemiesGoalTest");
+        String spawnerId = TestUtils.getEntities(res, "zombie_toast_spawner").get(0).getId();
+
+        // move player down 3 times kill all. No done.
+        res = dmc.tick(Direction.DOWN);
+        assertEquals(2, TestUtils.getEntities(res, "mercenary").size());
+        res = dmc.tick(Direction.DOWN);
+        assertEquals(1, TestUtils.getEntities(res, "mercenary").size());
+        res = dmc.tick(Direction.DOWN);
+        assertEquals(0, TestUtils.getEntities(res, "mercenary").size());
+        assertTrue(TestUtils.getGoals(res).contains(":enemies"));
+
+        //right, get sword.
+        res = dmc.tick(Direction.RIGHT);
+        assertEquals(1, TestUtils.getInventory(res, "sword").size());
+
+        //save and load
+        res = assertDoesNotThrow(() -> dmc.saveGame("testEnemiesGoal"));
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        res = assertDoesNotThrow(() -> dmc.loadGame("testEnemiesGoal"));
+
+        // break spawner
+        res = assertDoesNotThrow(() -> dmc.interact(spawnerId));
+        assertEquals(0, TestUtils.countType(res, "zombie_toast_spawner"));
+
+        // goal done.
+        assertEquals("", TestUtils.getGoals(res));
+    }
 }
