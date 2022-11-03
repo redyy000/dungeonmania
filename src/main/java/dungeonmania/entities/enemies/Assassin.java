@@ -2,6 +2,8 @@ package dungeonmania.entities.enemies;
 
 import java.util.Random;
 
+import org.json.JSONObject;
+
 import dungeonmania.Game;
 import dungeonmania.entities.Entity;
 import dungeonmania.entities.Interactable;
@@ -33,6 +35,10 @@ public class Assassin extends Enemy implements Interactable {
         this.bribeRadius = bribeRadius;
         this.failBribeProb = failBribeProb;
         this.rng = new Random();
+    }
+    public Assassin(JSONObject j) {
+        super(j);
+        //TODO. DebugAssassin should like search for seed in setting the json.
     }
 
     // Assassin for debugging bribe odds.

@@ -60,10 +60,19 @@ public class Player extends Entity implements Battleable {
         this.inventory = newInv;
         this.state = new PlayerState(this, j.getJSONObject("state"));
         this.previousPosition = new Position(j.getJSONObject("previousPosition"));
-        this.previousDistinctPosition = new Position(j.getJSONObject("previousDistinctPosition"));
-        this.facing = j.getEnum(Direction.class, "facing");
         //TODO
         //Then put back in the three potions variables too.
+
+        // Optionals:
+        this.previousDistinctPosition = null;
+        if (j.has("previousDistinctPosition")) {
+            this.previousDistinctPosition = new Position(j.getJSONObject("previousDistinctPosition"));
+        }
+        this.facing = null;
+        if (j.has("facing")) {
+            this.facing = j.getEnum(Direction.class, "facing");
+        }
+
     }
 
     public boolean hasWeapon() {
@@ -218,16 +227,22 @@ public class Player extends Entity implements Battleable {
     @Override
     public JSONObject getJSON() {
         //add BS, Inventory ...
-        return super.getJSON()
+
+        JSONObject j = super.getJSON()
                     .put("battleStatistics", this.battleStatistics.getJSON())
                     .put("inventory", this.inventory.getJSON())
                     .put("state", this.state.getJSON())
                     .put("queue", this.queue)
                     .put("inEffective", this.inEffective)
                     .put("nextTrigger", this.nextTrigger)
-                    .put("previousPosition", this.previousPosition.getJSON())
-                    .put("previousDistinctPosition", this.previousDistinctPosition.getJSON())
-                    .put("facing", this.facing); //THree things need udpatnig.
+                    .put("previousPosition", this.previousPosition.getJSON());
+                     //THree things need udpatnig.
+
+        if (this.previousDistinctPosition != null) {
+            j.put("previousDistinctPosition", this.previousDistinctPosition.getJSON());
+        }
+        if (this.facing != null) j.put("facing", this.facing);
+        return j;
     }
 
     @Override

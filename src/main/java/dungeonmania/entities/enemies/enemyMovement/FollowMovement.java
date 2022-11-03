@@ -7,7 +7,7 @@ import dungeonmania.entities.Player;
 import dungeonmania.map.GameMap;
 import dungeonmania.util.Position;
 
-public class FollowMovement implements EnemyMovement {
+public class FollowMovement extends EnemyMovement {
 
     @Override
     public void move(Game game, Entity entity) {

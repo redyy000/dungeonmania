@@ -9,7 +9,7 @@ import dungeonmania.entities.Entity;
 import dungeonmania.map.GameMap;
 import dungeonmania.util.Position;
 
-public class RandomMovement implements EnemyMovement {
+public class RandomMovement extends EnemyMovement {
 
     @Override
     public void move(Game game, Entity entity) {

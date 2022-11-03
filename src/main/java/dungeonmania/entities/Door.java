@@ -2,6 +2,8 @@ package dungeonmania.entities;
 
 import dungeonmania.map.GameMap;
 
+import org.json.JSONObject;
+
 import dungeonmania.entities.collectables.Key;
 import dungeonmania.entities.enemies.Spider;
 import dungeonmania.entities.inventory.Inventory;
@@ -14,6 +16,12 @@ public class Door extends Entity {
     public Door(Position position, int number) {
         super(position.asLayer(Entity.DOOR_LAYER));
         this.number = number;
+    }
+
+    public Door(JSONObject j) {
+        super(j);
+        this.open = j.getBoolean("open");
+        this.number = j.getInt("number");
     }
 
     @Override
@@ -52,5 +60,12 @@ public class Door extends Entity {
 
     public void open() {
         open = true;
+    }
+
+    public JSONObject getJSON() {
+        JSONObject j = super.getJSON();
+        j.put("open", this.open);
+        j.put("number", this.number);
+        return j;
     }
 }

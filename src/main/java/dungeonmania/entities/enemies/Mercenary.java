@@ -1,5 +1,7 @@
 package dungeonmania.entities.enemies;
 
+import org.json.JSONObject;
+
 import dungeonmania.Game;
 import dungeonmania.entities.Entity;
 import dungeonmania.entities.Interactable;
@@ -26,6 +28,13 @@ public class Mercenary extends Enemy implements Interactable {
         super(position, health, attack);
         this.bribeAmount = bribeAmount;
         this.bribeRadius = bribeRadius;
+    }
+    public Mercenary(JSONObject j) {
+        super(j);
+        this.bribeAmount = j.getInt("bribeAmount");
+        this.bribeRadius = j.getInt("bribeRadius");
+        this.allied = j.getBoolean("allied");
+        this.movementStrategy = EnemyMovement.getFromString(j.getString("movementStrategy"));
     }
 
     public boolean isAllied() {
@@ -76,5 +85,14 @@ public class Mercenary extends Enemy implements Interactable {
     @Override
     public boolean isInteractable(Player player) {
         return !allied && canBeBribed(player);
+    }
+
+    public JSONObject getJSON() {
+        JSONObject j = super.getJSON();
+        j.put("bribeAmount", this.bribeAmount);
+        j.put("bribeRadius", this.bribeRadius);
+        j.put("allied", this.allied);
+        j.put("movementStrategy", this.movementStrategy.getName());
+        return j;
     }
 }
