@@ -4,18 +4,17 @@ import org.json.JSONObject;
 
 import dungeonmania.entities.collectables.Treasure;
 
-public class SavedEntityFactory extends EntityFactory {
+public class SavedEntityFactory {
     // Unloads saved entities. Note that the JSON objects of saved entities are
     // different from their appearance in a d_dungeon.java file. (they have more fields).
-    public SavedEntityFactory(JSONObject config) {
-        super(config);
-    }
 
-    public Entity createEntity(JSONObject jsonEntity) {
+    //Shouldn't be instantiated.
+
+    public static Entity createEntity(JSONObject jsonEntity) {
         return constructEntity(jsonEntity);
     }
 
-    private Entity constructEntity(JSONObject jsonEntity) {
+    private static Entity constructEntity(JSONObject jsonEntity) {
         switch (jsonEntity.getString("type")) {
         case "player":
             return buildPlayer(jsonEntity);
@@ -28,10 +27,10 @@ public class SavedEntityFactory extends EntityFactory {
         }
     }
 
-    private Player buildPlayer(JSONObject jsonEntity) {
+    private static Player buildPlayer(JSONObject jsonEntity) {
         return new Player(jsonEntity);
     }
-    private Treasure buildTreasure(JSONObject jsonEntity) {
+    private static Treasure buildTreasure(JSONObject jsonEntity) {
         return new Treasure(jsonEntity);
     }
 }

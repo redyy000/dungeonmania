@@ -7,6 +7,8 @@ import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.stream.Collectors;
 
+import org.json.JSONObject;
+
 import dungeonmania.Game;
 import dungeonmania.entities.Entity;
 import dungeonmania.entities.Player;
@@ -28,6 +30,7 @@ public class GameMap {
      * Initialise the game map
      * 1. pair up portals
      */
+
     public void init() {
         initPairPortals();
         initRegisterMovables();

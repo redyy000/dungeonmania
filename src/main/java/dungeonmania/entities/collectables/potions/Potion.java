@@ -20,7 +20,7 @@ public abstract class Potion extends Collectable implements InventoryItem, Battl
     }
 
     public Potion(JSONObject j) {
-        super(new Position(j.getInt("x"), j.getInt("y")));
+        super(new Position(j));
         this.duration = j.getInt("duration");
     }
 

@@ -34,7 +34,7 @@ public class Bomb extends Collectable implements InventoryItem {
     }
 
     public Bomb(JSONObject j) {
-        super(new Position(j.getInt("x"), j.getInt("y")));
+        super(new Position(j));
         this.state = j.getEnum(State.class, "state"); //hope this works.
         this.radius = j.getInt("radius");
     }

@@ -139,4 +139,12 @@ public final class Position {
         adjacentPositions.add(new Position(x - 1, y));
         return adjacentPositions;
     }
+
+    public JSONObject getJSON() {
+        JSONObject j = new JSONObject();
+        j.put("x", this.x);
+        j.put("y", this.y);
+        j.put("layer", this.layer);
+        return j;
+    }
 }
