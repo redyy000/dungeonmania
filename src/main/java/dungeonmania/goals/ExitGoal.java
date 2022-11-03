@@ -34,11 +34,7 @@ public class ExitGoal implements Goal {
     }
 
     @Override
-<<<<<<< src/main/java/dungeonmania/goals/ExitGoal.java
     public JSONObject getJSON() {
-=======
-    public JSONObject getJson() {
->>>>>>> src/main/java/dungeonmania/goals/ExitGoal.java
         JSONObject j = new JSONObject();
         j.put("goal", "exit");
         return j;

@@ -29,11 +29,7 @@ public class EnemiesGoal implements Goal {
     }
 
     @Override
-<<<<<<< src/main/java/dungeonmania/goals/EnemiesGoal.java
     public JSONObject getJSON() {
-=======
-    public JSONObject getJson() {
->>>>>>> src/main/java/dungeonmania/goals/EnemiesGoal.java
         JSONObject j = new JSONObject();
         j.put("goal", "enemies");
         return j;

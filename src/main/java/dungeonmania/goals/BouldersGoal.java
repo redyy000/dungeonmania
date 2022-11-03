@@ -21,11 +21,7 @@ public class BouldersGoal implements Goal {
     }
 
     @Override
-<<<<<<< src/main/java/dungeonmania/goals/BouldersGoal.java
     public JSONObject getJSON() {
-=======
-    public JSONObject getJson() {
->>>>>>> src/main/java/dungeonmania/goals/BouldersGoal.java
         JSONObject j = new JSONObject();
         j.put("goal", "boulders");
         return j;
