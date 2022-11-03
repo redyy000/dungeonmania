@@ -2,6 +2,8 @@ package dungeonmania;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,6 +15,7 @@ import dungeonmania.response.models.DungeonResponse;
 import dungeonmania.response.models.ResponseBuilder;
 import dungeonmania.util.Direction;
 import dungeonmania.util.FileLoader;
+
 
 public class DungeonManiaController {
     private Game game = null;
@@ -111,6 +114,7 @@ public class DungeonManiaController {
      * /game/save
      */
     public DungeonResponse saveGame(String name) throws IllegalArgumentException {
+        System.out.println("Saving");
         JSONObject newgameJson = new JSONObject();
         newgameJson.put("config", this.configJson);
 
@@ -126,7 +130,7 @@ public class DungeonManiaController {
 
         FileWriter file;
         try {
-            file = new FileWriter(String.format("src/main/resources/saves/%s.json", name));
+            file = new FileWriter(String.format("build/resources/main/saves/%s.json", name));
             file.write(newgameJson.toString());
             file.close();
 
@@ -159,11 +163,14 @@ public class DungeonManiaController {
 
     // Returns JSONObject of save file/ save file. Throw if dne
     private JSONObject loadSave(String saveName) throws IOException {
-        String saveFileName = String.format("/saves/%s.json", saveName);
-        JSONObject saveFile;
+        String savePath = String.format("build/resources/main/saves/%s.json", saveName);
 
-        saveFile = new JSONObject(FileLoader.loadResourceFile(saveFileName)); //throws
-        return saveFile;
+        JSONObject savedJson = null;
+        String content = new String(Files.readAllBytes(Paths.get(savePath)));
+
+        // String savedString = new String(FileLoader.class.getResourceAsStream(savePath).readAllBytes()); //throws
+        savedJson = new JSONObject(content);
+        return savedJson;
     }
     /**
      * /games/all
