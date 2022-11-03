@@ -28,10 +28,17 @@ public class OrGoal implements Goal {
     }
 
     @Override
+<<<<<<< src/main/java/dungeonmania/goals/OrGoal.java
     public JSONObject getJSON() {
         JSONArray subgoalsJ = new JSONArray();
         subgoalsJ.put(this.goal1.getJSON());
         subgoalsJ.put(this.goal2.getJSON());
+=======
+    public JSONObject getJson() {
+        JSONArray subgoalsJ = new JSONArray();
+        subgoalsJ.put(this.goal1.getJson());
+        subgoalsJ.put(this.goal2.getJson());
+>>>>>>> src/main/java/dungeonmania/goals/OrGoal.java
 
         JSONObject j = new JSONObject();
         j.put("goal", "OR");
