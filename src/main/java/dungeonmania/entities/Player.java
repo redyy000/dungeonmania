@@ -234,9 +234,10 @@ public class Player extends Entity implements Battleable {
     @Override
     public JSONObject getJSON() {
         JSONArray queueJ = new JSONArray();
-        while (queueJ.length() > 0) {
-            queueJ.put(this.queue.remove().getJSON());
+        for (Potion p: this.queue) {
+            queueJ.put(p.getJSON());
         }
+
 
         JSONObject j = super.getJSON();
         j.put("battleStatistics", this.battleStatistics.getJSON())
