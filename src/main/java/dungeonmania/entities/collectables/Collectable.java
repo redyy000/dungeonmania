@@ -13,7 +13,7 @@ public abstract class Collectable extends Entity {
         super(position);
     }
     public Collectable(JSONObject j) {
-        super(new Position(j.getJSONObject("position")));
+        super(j);
     }
     @Override
     public void onOverlap(GameMap map, Entity entity) {

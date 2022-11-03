@@ -1,5 +1,6 @@
 package dungeonmania;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -9,6 +10,7 @@ import java.util.List;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
 
 import dungeonmania.exceptions.InvalidActionException;
 import dungeonmania.response.models.DungeonResponse;
@@ -176,7 +178,17 @@ public class DungeonManiaController {
      * /games/all
      */
     public List<String> allGames() {
-        return new ArrayList<>();
+        System.out.println("allgames");
+        File folder = new File("build/resources/main/saves");
+        File[] listOfFiles = folder.listFiles();
+        List<String> names = new ArrayList<>();
+        for (int i = 0; i < listOfFiles.length; i++) {
+            if (listOfFiles[i].isFile()) {
+                names.add(listOfFiles[i].getName().replace(".json", ""));
+            }
+        }
+        System.out.println(names);
+        return names;
     }
 
     /**

@@ -30,6 +30,9 @@ public class Player extends Entity implements Battleable {
     private Potion inEffective = null;
     private int nextTrigger = 0;
 
+    private Position previousPosition;
+    private Position previousDistinctPosition;
+    private Direction facing;
     private PlayerState state;
 
     public Player(Position position, double health, double attack) {
@@ -42,6 +45,9 @@ public class Player extends Entity implements Battleable {
                 BattleStatistics.DEFAULT_PLAYER_DAMAGE_REDUCER);
         inventory = new Inventory();
         state = new PlayerState(this, false, false);
+        this.previousPosition = position;
+        this.previousDistinctPosition = null;
+        this.facing = null;
     }
 
     public Player(JSONObject j) {
@@ -53,6 +59,9 @@ public class Player extends Entity implements Battleable {
         newInv.populateUsingJson(invJson);
         this.inventory = newInv;
         this.state = new PlayerState(this, j.getJSONObject("state"));
+        this.previousPosition = new Position(j.getJSONObject("previousPosition"));
+        this.previousDistinctPosition = new Position(j.getJSONObject("previousDistinctPosition"));
+        this.facing = j.getEnum(Direction.class, "facing");
         //TODO
         //Then put back in the three potions variables too.
     }
@@ -215,8 +224,34 @@ public class Player extends Entity implements Battleable {
                     .put("state", this.state.getJSON())
                     .put("queue", this.queue)
                     .put("inEffective", this.inEffective)
-                    .put("nextTrigger", this.nextTrigger); //THree things need udpatnig.
+                    .put("nextTrigger", this.nextTrigger)
+                    .put("previousPosition", this.previousPosition.getJSON())
+                    .put("previousDistinctPosition", this.previousDistinctPosition.getJSON())
+                    .put("facing", this.facing); //THree things need udpatnig.
+    }
 
+    @Override
+    public void setPosition(Position position) {
+        previousPosition = this.getPosition();
+        super.setPosition(position);
+        if (!previousPosition.equals(this.getPosition())) {
+            previousDistinctPosition = previousPosition;
+        }
+    }
 
+    public void setFacing(Direction facing) {
+        this.facing = facing;
+    }
+
+    public Direction getFacing() {
+        return this.facing;
+    }
+
+    public Position getPreviousPosition() {
+        return previousPosition;
+    }
+
+    public Position getPreviousDistinctPosition() {
+        return previousDistinctPosition;
     }
 }

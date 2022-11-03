@@ -35,6 +35,7 @@ public class Assassin extends Enemy implements Interactable {
         this.rng = new Random();
     }
 
+    // Assassin for debugging bribe odds.
     public Assassin(Position position, double health, double attack,
     int bribeAmount, int bribeRadius, double failBribeProb, int seed) {
         super(position, health, attack);

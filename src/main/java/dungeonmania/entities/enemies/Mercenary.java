@@ -20,6 +20,7 @@ public class Mercenary extends Enemy implements Interactable {
     private int bribeAmount = Mercenary.DEFAULT_BRIBE_AMOUNT;
     private int bribeRadius = Mercenary.DEFAULT_BRIBE_RADIUS;
     private boolean allied = false;
+    private EnemyMovement movementStrategy = new HostileMovement();
 
     public Mercenary(Position position, double health, double attack, int bribeAmount, int bribeRadius) {
         super(position, health, attack);
@@ -64,13 +65,12 @@ public class Mercenary extends Enemy implements Interactable {
 
     @Override
     public void move(Game game) {
-        EnemyMovement moveStrategy;
-        if (allied && game.getPlayer().isCardinallyAdjacentToOrEqual(this.getPosition())) {
-            moveStrategy = new FollowMovement();
-        } else {
-            moveStrategy = new HostileMovement();
+        // if allied, next to and not yet attached, do attach.
+        if (allied && game.getPlayer().isCardinallyAdjacentToOrEqual(this.getPosition())
+            && !(this.movementStrategy instanceof FollowMovement)) {
+            movementStrategy = new FollowMovement();
         }
-        moveStrategy.move(game, this);
+        this.movementStrategy.move(game, this);
     }
 
     @Override

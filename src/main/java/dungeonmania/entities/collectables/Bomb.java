@@ -109,8 +109,7 @@ public class Bomb extends Collectable implements InventoryItem {
         JSONObject j = super.getJSON();
         j.put("state", this.state); //puts state in as an object. Hopefully okay..
         j.put("radius", this.radius);
-        // TODO
-        //j.put("subs", this.subs);
+        // subs should be initialised when the game starts, in some init() function.
         return j;
     }
 }

@@ -1,5 +1,7 @@
 package dungeonmania.entities;
 
+import org.json.JSONObject;
+
 import dungeonmania.entities.enemies.Spider;
 import dungeonmania.map.GameMap;
 import dungeonmania.util.Direction;
@@ -10,18 +12,21 @@ public class Boulder extends Entity {
     public Boulder(Position position) {
         super(position.asLayer(Entity.CHARACTER_LAYER));
     }
+    public Boulder(JSONObject j) {
+        super(j);
+    }
 
     @Override
     public boolean canMoveOnto(GameMap map, Entity entity) {
         if (entity instanceof Spider) return false;
-        if (entity instanceof Player && canPush(map, entity.getFacing())) return true;
+        if (entity instanceof Player && canPush(map, ((Player) entity).getFacing())) return true;
         return false;
     }
 
     @Override
     public void onOverlap(GameMap map, Entity entity) {
         if (entity instanceof Player) {
-            map.moveTo(this, entity.getFacing());
+            map.moveTo(this, ((Player) entity).getFacing());
         }
     }
 
