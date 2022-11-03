@@ -14,6 +14,7 @@ import dungeonmania.entities.collectables.potions.InvincibilityPotion;
 import dungeonmania.entities.collectables.potions.InvisibilityPotion;
 import dungeonmania.entities.enemies.Assassin;
 import dungeonmania.entities.enemies.Mercenary;
+import dungeonmania.entities.enemies.Spider;
 import dungeonmania.entities.enemies.ZombieToast;
 import dungeonmania.entities.enemies.ZombieToastSpawner;
 
@@ -37,6 +38,8 @@ public class SavedEntityFactory {
             return new ZombieToast(jsonEntity);
         case "zombie_toast_spawner":
             return new ZombieToastSpawner(jsonEntity);
+        case "spider":
+            return new Spider(jsonEntity);
         case "mercenary":
             return new Mercenary(jsonEntity);
         case "assassin":

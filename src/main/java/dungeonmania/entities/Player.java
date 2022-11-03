@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import dungeonmania.Game;
@@ -51,27 +52,33 @@ public class Player extends Entity implements Battleable {
     }
 
     public Player(JSONObject j) {
-        super(new Position(j.getJSONObject("position")));
+        super(j);
         this.battleStatistics = new BattleStatistics(j.getJSONObject("battleStatistics"));
 
         Inventory newInv = new Inventory();
         JSONObject invJson = j.getJSONObject("inventory");
         newInv.populateUsingJson(invJson);
         this.inventory = newInv;
-        this.state = new PlayerState(this, j.getJSONObject("state"));
+        JSONArray queueJ = j.getJSONArray("queue");
+        for (int i = 0; i < queueJ.length(); i++) {
+            this.queue.add((Potion) SavedEntityFactory.createEntity(queueJ.getJSONObject(i)));
+        }
+        this.nextTrigger = j.getInt("nextTrigger");
         this.previousPosition = new Position(j.getJSONObject("previousPosition"));
-        //TODO
-        //Then put back in the three potions variables too.
+        this.state = new PlayerState(this, j.getJSONObject("state"));
 
         // Optionals:
         this.previousDistinctPosition = null;
-        if (j.has("previousDistinctPosition")) {
-            this.previousDistinctPosition = new Position(j.getJSONObject("previousDistinctPosition"));
-        }
         this.facing = null;
-        if (j.has("facing")) {
+        this.inEffective = null;
+
+        if (j.has("previousDistinctPosition"))
+            this.previousDistinctPosition = new Position(j.getJSONObject("previousDistinctPosition"));
+        if (j.has("facing"))
             this.facing = j.getEnum(Direction.class, "facing");
-        }
+        if (j.has("inEffective"))
+            this.inEffective = (Potion) SavedEntityFactory.createEntity((j.getJSONObject("inEffective")));
+            //TODO If have time, this potion creation looks wrong
 
     }
 
@@ -226,22 +233,23 @@ public class Player extends Entity implements Battleable {
 
     @Override
     public JSONObject getJSON() {
-        //add BS, Inventory ...
-
-        JSONObject j = super.getJSON()
-                    .put("battleStatistics", this.battleStatistics.getJSON())
-                    .put("inventory", this.inventory.getJSON())
-                    .put("state", this.state.getJSON())
-                    .put("queue", this.queue)
-                    .put("inEffective", this.inEffective)
-                    .put("nextTrigger", this.nextTrigger)
-                    .put("previousPosition", this.previousPosition.getJSON());
-                     //THree things need udpatnig.
-
-        if (this.previousDistinctPosition != null) {
-            j.put("previousDistinctPosition", this.previousDistinctPosition.getJSON());
+        JSONArray queueJ = new JSONArray();
+        while (queueJ.length() > 0) {
+            queueJ.put(this.queue.remove().getJSON());
         }
+
+        JSONObject j = super.getJSON();
+        j.put("battleStatistics", this.battleStatistics.getJSON())
+            .put("inventory", this.inventory.getJSON())
+            .put("state", this.state.getJSON())
+            .put("nextTrigger", this.nextTrigger)
+            .put("previousPosition", this.previousPosition.getJSON())
+            .put("queue", queueJ); // careful of queue into array.
+        if (this.previousDistinctPosition != null)
+            j.put("previousDistinctPosition", this.previousDistinctPosition.getJSON());
         if (this.facing != null) j.put("facing", this.facing);
+        if (this.inEffective != null) j.put("inEffective", this.inEffective.getJSON());
+
         return j;
     }
 

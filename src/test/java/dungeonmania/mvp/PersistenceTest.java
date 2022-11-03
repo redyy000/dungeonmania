@@ -6,6 +6,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import dungeonmania.DungeonManiaController;
+import dungeonmania.exceptions.InvalidActionException;
 import dungeonmania.response.models.DungeonResponse;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
@@ -25,6 +26,33 @@ public class PersistenceTest {
 
         res = assertDoesNotThrow(() -> dmc.saveGame("testSave"));
     }
+
+    @Test
+    @DisplayName("Test saving a loaded file")
+    public void saveLoadTwice() {
+        DungeonManiaController dmc;
+        dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_persistenceTest_entities", "c_basicGoalsTest_exit");
+
+        // save then load.
+        res = assertDoesNotThrow(() -> dmc.saveGame("testSaveTwice"));
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        res = assertDoesNotThrow(() -> dmc.loadGame("testSaveTwice"));
+
+        // save then load.
+        res = assertDoesNotThrow(() -> dmc.saveGame("testSaveTwice"));
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        res = assertDoesNotThrow(() -> dmc.loadGame("testSaveTwice"));
+    }
+
 
     @Test
     @DisplayName("Test saving then loading file without error (no checking of valid data)")
@@ -258,5 +286,65 @@ public class PersistenceTest {
 
         // goal done.
         assertEquals("", TestUtils.getGoals(res));
+    }
+
+    @Test
+    @DisplayName(
+        "Test when the effects of a 2nd potion are 'queued'. Persistence."
+    )
+    public void potionQueuing() throws InvalidActionException {
+        //  Wall   P_1/2/3    P_4   P_5/6/7/S_9/P_9     S_2     S_3
+        //                          S_8/P_8             S_1     S_4
+        //                          S_7                 S_6     S_5
+        DungeonManiaController dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_potionsTest_potionQueuing", "c_potionsTest_potionQueuing");
+
+        assertEquals(1, TestUtils.getEntities(res, "invincibility_potion").size());
+        assertEquals(1, TestUtils.getEntities(res, "invisibility_potion").size());
+        assertEquals(1, TestUtils.getEntities(res, "spider").size());
+
+        // buffer
+        res = dmc.tick(Direction.LEFT);
+        res = dmc.tick(Direction.LEFT);
+
+        // pick up invincibility potion
+        res = dmc.tick(Direction.RIGHT);
+        assertEquals(0, TestUtils.getEntities(res, "invincibility_potion").size());
+        assertEquals(1, TestUtils.getInventory(res, "invincibility_potion").size());
+
+        // pick up invisibility potion
+        res = dmc.tick(Direction.RIGHT);
+        assertEquals(0, TestUtils.getEntities(res, "invisibility_potion").size());
+        assertEquals(1, TestUtils.getInventory(res, "invisibility_potion").size());
+
+        // consume invisibility potion (invisibility has duration 3)
+        res = dmc.tick(TestUtils.getFirstItemId(res, "invisibility_potion"));
+        assertEquals(0, TestUtils.getEntities(res, "invisibility_potion").size());
+
+        // consume invincibility potion (invisibility has duration 2)
+        res = dmc.tick(TestUtils.getFirstItemId(res, "invincibility_potion"));
+        assertEquals(0, TestUtils.getInventory(res, "invincibility_potion").size());
+
+        //save and load
+        res = assertDoesNotThrow(() -> dmc.saveGame("testPotionQueue"));
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        res = assertDoesNotThrow(() -> dmc.loadGame("testPotionQueue"));
+
+
+        // meet spider, but not battle occurs (invisibility has duration 1)
+        res = dmc.tick(Direction.DOWN);
+        assertEquals(1, TestUtils.getEntities(res, "spider").size());
+        assertEquals(0, res.getBattles().size());
+
+        // meet spider again, battle does occur but won immediately
+        // (invisibility has duration 0, invincibility in effect)
+        res = dmc.tick(Direction.UP);
+        assertEquals(0, TestUtils.getEntities(res, "spider").size());
+        assertEquals(1, res.getBattles().size());
+        assertEquals(1, res.getBattles().get(0).getRounds().size());
     }
 }

@@ -63,4 +63,11 @@ public abstract class Enemy extends Entity implements Battleable {
     public double getHealth() {
         return getBattleStatistics().getHealth();
     }
+
+    @Override
+    public JSONObject getJSON() {
+        JSONObject j = super.getJSON();
+        j.put("battleStatistics", this.battleStatistics.getJSON());
+        return j;
+    }
 }

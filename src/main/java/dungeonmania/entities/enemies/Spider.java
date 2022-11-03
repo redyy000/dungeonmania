@@ -104,7 +104,7 @@ public class Spider extends Enemy {
     }
 
     public JSONObject getJSON() {
-        JSONObject j = new JSONObject();
+        JSONObject j = super.getJSON();
 
         JSONArray movementsJsons = new JSONArray();
         this.movementTrajectory.stream()
