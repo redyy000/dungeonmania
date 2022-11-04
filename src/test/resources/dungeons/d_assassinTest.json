@@ -20,7 +20,8 @@
         "type" : "assassin_debug",
         "x" : 11,
         "y" : 1,
-        "seed": 100
+        "seed": 100,
+        "bribe_prob": -1
       }, {
         "type": "exit",
         "x": 5,
