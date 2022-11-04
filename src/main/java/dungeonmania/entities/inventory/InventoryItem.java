@@ -1,5 +1,6 @@
 package dungeonmania.entities.inventory;
 
+
 /**
  * A marker interface for InventoryItem
  */

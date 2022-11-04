@@ -21,7 +21,7 @@ public class BouldersGoal implements Goal {
     }
 
     @Override
-    public JSONObject getJson() {
+    public JSONObject getJSON() {
         JSONObject j = new JSONObject();
         j.put("goal", "boulders");
         return j;

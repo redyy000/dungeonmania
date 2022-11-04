@@ -1,7 +1,6 @@
 package dungeonmania.entities;
 
 import dungeonmania.map.GameMap;
-import dungeonmania.util.Direction;
 import dungeonmania.util.NameConverter;
 import dungeonmania.util.Position;
 
@@ -16,17 +15,15 @@ public abstract class Entity {
     public static final int CHARACTER_LAYER = 3;
 
     private Position position;
-    private Position previousPosition;
-    private Position previousDistinctPosition;
-    private Direction facing;
     private String entityId;
 
     public Entity(Position position) {
         this.position = position;
-        this.previousPosition = position;
-        this.previousDistinctPosition = null;
         this.entityId = UUID.randomUUID().toString();
-        this.facing = null;
+    }
+    public Entity(JSONObject j) {
+        this.position = new Position(j.getJSONObject("position"));
+        this.entityId = j.getString("id");
     }
 
     public boolean canMoveOnto(GameMap map, Entity entity) {
@@ -34,14 +31,14 @@ public abstract class Entity {
     }
 
     // use setPosition
-    @Deprecated(forRemoval = true)
-    public void translate(Direction direction) {
-        previousPosition = this.position;
-        this.position = Position.translateBy(this.position, direction);
-        if (!previousPosition.equals(this.position)) {
-            previousDistinctPosition = previousPosition;
-        }
-    }
+    // @Deprecated(forRemoval = true)
+    // public void translate(Direction direction) {
+    //     previousPosition = this.position;
+    //     this.position = Position.translateBy(this.position, direction);
+    //     if (!previousPosition.equals(this.position)) {
+    //         previousDistinctPosition = previousPosition;
+    //     }
+    // }
 
     // use setPosition
     @Deprecated(forRemoval = true)
@@ -66,39 +63,20 @@ public abstract class Entity {
         return position;
     }
 
-    public Position getPreviousPosition() {
-        return previousPosition;
-    }
-
-    public Position getPreviousDistinctPosition() {
-        return previousDistinctPosition;
-    }
-
     public String getId() {
         return entityId;
     }
 
     public void setPosition(Position position) {
-        previousPosition = this.position;
         this.position = position;
-        if (!previousPosition.equals(this.position)) {
-            previousDistinctPosition = previousPosition;
-        }
     }
 
-    public void setFacing(Direction facing) {
-        this.facing = facing;
-    }
-
-    public Direction getFacing() {
-        return this.facing;
-    }
 
     public JSONObject getJSON() {
         JSONObject j = new JSONObject();
         j.put("type", NameConverter.toSnakeCase(this.getClass().getSimpleName())); //use the string version.
-        j.put("x", this.position.getX());
-        j.put("y", this.position.getY());
+        j.put("position", this.position.getJSON());
+        j.put("id", this.entityId);
         return j;
     }
 }

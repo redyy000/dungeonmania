@@ -1,5 +1,7 @@
 package dungeonmania.entities.enemies;
 
+import org.json.JSONObject;
+
 import dungeonmania.Game;
 import dungeonmania.entities.Entity;
 import dungeonmania.entities.Interactable;
@@ -20,11 +22,19 @@ public class Mercenary extends Enemy implements Interactable {
     private int bribeAmount = Mercenary.DEFAULT_BRIBE_AMOUNT;
     private int bribeRadius = Mercenary.DEFAULT_BRIBE_RADIUS;
     private boolean allied = false;
+    private EnemyMovement movementStrategy = new HostileMovement();
 
     public Mercenary(Position position, double health, double attack, int bribeAmount, int bribeRadius) {
         super(position, health, attack);
         this.bribeAmount = bribeAmount;
         this.bribeRadius = bribeRadius;
+    }
+    public Mercenary(JSONObject j) {
+        super(j);
+        this.bribeAmount = j.getInt("bribeAmount");
+        this.bribeRadius = j.getInt("bribeRadius");
+        this.allied = j.getBoolean("allied");
+        this.movementStrategy = EnemyMovement.getFromString(j.getString("movementStrategy"));
     }
 
     public boolean isAllied() {
@@ -64,17 +74,25 @@ public class Mercenary extends Enemy implements Interactable {
 
     @Override
     public void move(Game game) {
-        EnemyMovement moveStrategy;
-        if (allied && game.getPlayer().isCardinallyAdjacentToOrEqual(this.getPosition())) {
-            moveStrategy = new FollowMovement();
-        } else {
-            moveStrategy = new HostileMovement();
+        // if allied, next to and not yet attached, do attach.
+        if (allied && game.getPlayer().isCardinallyAdjacentToOrEqual(this.getPosition())
+            && !(this.movementStrategy instanceof FollowMovement)) {
+            movementStrategy = new FollowMovement();
         }
-        moveStrategy.move(game, this);
+        this.movementStrategy.move(game, this);
     }
 
     @Override
     public boolean isInteractable(Player player) {
         return !allied && canBeBribed(player);
+    }
+
+    public JSONObject getJSON() {
+        JSONObject j = super.getJSON();
+        j.put("bribeAmount", this.bribeAmount);
+        j.put("bribeRadius", this.bribeRadius);
+        j.put("allied", this.allied);
+        j.put("movementStrategy", this.movementStrategy.getName());
+        return j;
     }
 }

@@ -1,20 +1,23 @@
 package dungeonmania;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 
 import dungeonmania.exceptions.InvalidActionException;
 import dungeonmania.response.models.DungeonResponse;
 import dungeonmania.response.models.ResponseBuilder;
 import dungeonmania.util.Direction;
 import dungeonmania.util.FileLoader;
+
 
 public class DungeonManiaController {
     private Game game = null;
@@ -113,24 +116,23 @@ public class DungeonManiaController {
      * /game/save
      */
     public DungeonResponse saveGame(String name) throws IllegalArgumentException {
+        System.out.println("Saving");
         JSONObject newgameJson = new JSONObject();
         newgameJson.put("config", this.configJson);
 
-        // save all entities positions to JSON. Do not use a debug Mercenary when testing saves :).
-        JSONObject currentDungeon = new JSONObject();
-        List<JSONObject> entityJsons = game.getMap().getEntities().stream()
-                                    .map(e -> e.getJSON())
-                                    .collect(Collectors.toList());
-        JSONArray entityJsonArray = new JSONArray(entityJsons);
-        currentDungeon.put("entities", entityJsonArray);
-        currentDungeon.put("goal-condition", game.getGoals().getJson());
-
-        newgameJson.put("dungeon", currentDungeon);
-
+        // // save all entities positions to JSON. Do not use a debug Mercenary when testing saves :).
+        // JSONObject currentDungeon = new JSONObject();
+        // List<JSONObject> entityJsons = game.getMap().getEntities().stream()
+        //                             .map(e -> e.getJSON()) //type and position.
+        //                             .collect(Collectors.toList());
+        // JSONArray entityJsonArray = new JSONArray(entityJsons);
+        newgameJson.put("goal-condition", game.getGoals().getJSON());
+        newgameJson.put("game", this.game.getJSON());
+        newgameJson.put("gameMap", this.game.getMap().getJSON());
 
         FileWriter file;
         try {
-            file = new FileWriter(String.format("src/main/resources/saves/%s.json", name));
+            file = new FileWriter(String.format("build/resources/main/saves/%s.json", name));
             file.write(newgameJson.toString());
             file.close();
 
@@ -145,8 +147,6 @@ public class DungeonManiaController {
      * /game/load
      */
     public DungeonResponse loadGame(String name) throws IllegalArgumentException {
-        // List<String> saveNames = FileLoader.listFileNamesInResourceDirectory("saves");
-
         JSONObject savedJson;
         try {
             savedJson = loadSave(name);
@@ -157,25 +157,38 @@ public class DungeonManiaController {
         try {
             GameBuilder builder = new GameBuilder();
             game = builder.buildGame(savedJson);
-            return ResponseBuilder.getDungeonResponse(game);
         } catch (JSONException e) {
-            return null;
+            throw new IllegalArgumentException("Savefile " + name + "is broken. " + e.getMessage());
         }
+        return ResponseBuilder.getDungeonResponse(game);
     }
 
     // Returns JSONObject of save file/ save file. Throw if dne
     private JSONObject loadSave(String saveName) throws IOException {
-        String saveFileName = String.format("/saves/%s.json", saveName);
-        JSONObject saveFile;
+        String savePath = String.format("build/resources/main/saves/%s.json", saveName);
 
-        saveFile = new JSONObject(FileLoader.loadResourceFile(saveFileName)); //throws
-        return saveFile;
+        JSONObject savedJson = null;
+        String content = new String(Files.readAllBytes(Paths.get(savePath)));
+
+        // String savedString = new String(FileLoader.class.getResourceAsStream(savePath).readAllBytes()); //throws
+        savedJson = new JSONObject(content);
+        return savedJson;
     }
     /**
      * /games/all
      */
     public List<String> allGames() {
-        return new ArrayList<>();
+        System.out.println("allgames");
+        File folder = new File("build/resources/main/saves");
+        File[] listOfFiles = folder.listFiles();
+        List<String> names = new ArrayList<>();
+        for (int i = 0; i < listOfFiles.length; i++) {
+            if (listOfFiles[i].isFile()) {
+                names.add(listOfFiles[i].getName().replace(".json", ""));
+            }
+        }
+        System.out.println(names);
+        return names;
     }
 
     /**

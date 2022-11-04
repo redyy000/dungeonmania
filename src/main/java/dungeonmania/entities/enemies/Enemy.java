@@ -1,5 +1,7 @@
 package dungeonmania.entities.enemies;
 
+import org.json.JSONObject;
+
 import dungeonmania.Game;
 import dungeonmania.battles.BattleStatistics;
 import dungeonmania.battles.Battleable;
@@ -19,6 +21,11 @@ public abstract class Enemy extends Entity implements Battleable {
                 0,
                 BattleStatistics.DEFAULT_DAMAGE_MAGNIFIER,
                 BattleStatistics.DEFAULT_ENEMY_DAMAGE_REDUCER);
+    }
+
+    public Enemy(JSONObject j) {
+        super(j);
+        this.battleStatistics = new BattleStatistics(j.getJSONObject("battleStatistics"));
     }
 
     @Override
@@ -55,5 +62,12 @@ public abstract class Enemy extends Entity implements Battleable {
     @Override
     public double getHealth() {
         return getBattleStatistics().getHealth();
+    }
+
+    @Override
+    public JSONObject getJSON() {
+        JSONObject j = super.getJSON();
+        j.put("battleStatistics", this.battleStatistics.getJSON());
+        return j;
     }
 }

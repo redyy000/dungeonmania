@@ -4,6 +4,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import dungeonmania.Game;
 import dungeonmania.battles.BattleStatistics;
 import dungeonmania.battles.Battleable;
@@ -28,6 +31,9 @@ public class Player extends Entity implements Battleable {
     private Potion inEffective = null;
     private int nextTrigger = 0;
 
+    private Position previousPosition;
+    private Position previousDistinctPosition;
+    private Direction facing;
     private PlayerState state;
 
     public Player(Position position, double health, double attack) {
@@ -40,6 +46,40 @@ public class Player extends Entity implements Battleable {
                 BattleStatistics.DEFAULT_PLAYER_DAMAGE_REDUCER);
         inventory = new Inventory();
         state = new PlayerState(this, false, false);
+        this.previousPosition = position;
+        this.previousDistinctPosition = null;
+        this.facing = null;
+    }
+
+    public Player(JSONObject j) {
+        super(j);
+        this.battleStatistics = new BattleStatistics(j.getJSONObject("battleStatistics"));
+
+        Inventory newInv = new Inventory();
+        JSONObject invJson = j.getJSONObject("inventory");
+        newInv.populateUsingJson(invJson);
+        this.inventory = newInv;
+        JSONArray queueJ = j.getJSONArray("queue");
+        for (int i = 0; i < queueJ.length(); i++) {
+            this.queue.add((Potion) SavedEntityFactory.createEntity(queueJ.getJSONObject(i)));
+        }
+        this.nextTrigger = j.getInt("nextTrigger");
+        this.previousPosition = new Position(j.getJSONObject("previousPosition"));
+        this.state = new PlayerState(this, j.getJSONObject("state"));
+
+        // Optionals:
+        this.previousDistinctPosition = null;
+        this.facing = null;
+        this.inEffective = null;
+
+        if (j.has("previousDistinctPosition"))
+            this.previousDistinctPosition = new Position(j.getJSONObject("previousDistinctPosition"));
+        if (j.has("facing"))
+            this.facing = j.getEnum(Direction.class, "facing");
+        if (j.has("inEffective"))
+            this.inEffective = (Potion) SavedEntityFactory.createEntity((j.getJSONObject("inEffective")));
+            //TODO If have time, this potion creation looks wrong
+
     }
 
     public boolean hasWeapon() {
@@ -189,5 +229,53 @@ public class Player extends Entity implements Battleable {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public JSONObject getJSON() {
+        JSONArray queueJ = new JSONArray();
+        for (Potion p: this.queue) {
+            queueJ.put(p.getJSON());
+        }
+
+
+        JSONObject j = super.getJSON();
+        j.put("battleStatistics", this.battleStatistics.getJSON())
+            .put("inventory", this.inventory.getJSON())
+            .put("state", this.state.getJSON())
+            .put("nextTrigger", this.nextTrigger)
+            .put("previousPosition", this.previousPosition.getJSON())
+            .put("queue", queueJ); // careful of queue into array.
+        if (this.previousDistinctPosition != null)
+            j.put("previousDistinctPosition", this.previousDistinctPosition.getJSON());
+        if (this.facing != null) j.put("facing", this.facing);
+        if (this.inEffective != null) j.put("inEffective", this.inEffective.getJSON());
+
+        return j;
+    }
+
+    @Override
+    public void setPosition(Position position) {
+        previousPosition = this.getPosition();
+        super.setPosition(position);
+        if (!previousPosition.equals(this.getPosition())) {
+            previousDistinctPosition = previousPosition;
+        }
+    }
+
+    public void setFacing(Direction facing) {
+        this.facing = facing;
+    }
+
+    public Direction getFacing() {
+        return this.facing;
+    }
+
+    public Position getPreviousPosition() {
+        return previousPosition;
+    }
+
+    public Position getPreviousDistinctPosition() {
+        return previousDistinctPosition;
     }
 }

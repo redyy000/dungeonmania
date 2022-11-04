@@ -1,5 +1,7 @@
 package dungeonmania.entities.enemies;
 
+import org.json.JSONObject;
+
 import dungeonmania.Game;
 import dungeonmania.entities.Entity;
 import dungeonmania.entities.Interactable;
@@ -12,6 +14,10 @@ public class ZombieToastSpawner extends Entity implements Interactable {
 
     public ZombieToastSpawner(Position position, int spawnInterval) {
         super(position);
+    }
+
+    public ZombieToastSpawner(JSONObject j) {
+        super(j);
     }
 
     public void spawn(Game game) {

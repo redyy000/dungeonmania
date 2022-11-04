@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import org.json.JSONObject;
+
 public final class Position {
     public static final int FLOOR_LAYER = 0;
     public static final int ITEM_LAYER = 1;
@@ -24,6 +26,16 @@ public final class Position {
         this.x = x;
         this.y = y;
         this.layer = 0;
+    }
+
+    public Position(JSONObject j) {
+        this.x = j.getInt("x");
+        this.y = j.getInt("y");
+        if (j.has("layer")) {
+            this.layer = j.getInt("layer");
+        } else {
+            this.layer = 0;
+        }
     }
 
     @Override
@@ -126,5 +138,13 @@ public final class Position {
         adjacentPositions.add(new Position(x, y + 1));
         adjacentPositions.add(new Position(x - 1, y));
         return adjacentPositions;
+    }
+
+    public JSONObject getJSON() {
+        JSONObject j = new JSONObject();
+        j.put("x", this.x);
+        j.put("y", this.y);
+        j.put("layer", this.layer);
+        return j;
     }
 }

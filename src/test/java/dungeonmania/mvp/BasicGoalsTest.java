@@ -162,7 +162,7 @@ public class BasicGoalsTest {
 
     @Test
     @Tag("13-6")
-    @DisplayName("Test killing 1 enemy, 1 zts goal")
+    @DisplayName("Test killing 3 enemy, 1 zts goal")
     public void enemieswithZTS() {
         DungeonManiaController dmc;
         dmc = new DungeonManiaController();

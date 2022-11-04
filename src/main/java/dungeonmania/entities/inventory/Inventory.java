@@ -4,16 +4,22 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import dungeonmania.entities.BattleItem;
 import dungeonmania.entities.Entity;
 import dungeonmania.entities.EntityFactory;
 import dungeonmania.entities.Player;
 import dungeonmania.entities.buildables.Bow;
 import dungeonmania.entities.collectables.Arrow;
+import dungeonmania.entities.collectables.Bomb;
 import dungeonmania.entities.collectables.Key;
 import dungeonmania.entities.collectables.Sword;
 import dungeonmania.entities.collectables.Treasure;
 import dungeonmania.entities.collectables.Wood;
+import dungeonmania.entities.collectables.potions.InvincibilityPotion;
+import dungeonmania.entities.collectables.potions.InvisibilityPotion;
 
 public class Inventory {
     private List<InventoryItem> items = new ArrayList<>();
@@ -21,6 +27,39 @@ public class Inventory {
     public boolean add(InventoryItem item) {
         items.add(item);
         return true;
+    }
+
+    public void populateUsingJson(JSONObject invJson) {
+        JSONArray itemsJsons = invJson.getJSONArray("items");
+        for (int i = 0; i < itemsJsons.length(); i++) {
+            JSONObject itemJson = itemsJsons.getJSONObject(i);
+            InventoryItem itemInstance = constructItem(itemJson);
+            add(itemInstance);
+        }
+    }
+
+    private InventoryItem constructItem(JSONObject itemJson) {
+        String type = itemJson.getString("type");
+        switch (type) {
+        case "treasure":
+            return new Treasure(itemJson);
+        case "wood":
+            return new Wood(itemJson);
+        case "arrow":
+            return new Arrow(itemJson);
+        case "bomb":
+            return new Bomb(itemJson);
+        case "invisibility_potion":
+            return new InvisibilityPotion(itemJson);
+        case "invincibility_potion":
+            return new InvincibilityPotion(itemJson);
+        case "sword":
+            return new Sword(itemJson);
+        case "key":
+            return new Key(itemJson);
+        default:
+            return null;
+        }
     }
 
     public void remove(InventoryItem item) {
@@ -113,4 +152,14 @@ public class Inventory {
         return weapon;
     }
 
+    public JSONObject getJSON() {
+        List<JSONObject> itemsJsons = getEntities().stream()
+                    .map(e -> e.getJSON())
+                    .collect(Collectors.toList());
+        JSONArray itemsJsonArray = new JSONArray(itemsJsons);
+
+        JSONObject j = new JSONObject();
+        j.put("items", itemsJsonArray);
+        return j;
+    }
 }

@@ -1,6 +1,8 @@
 package dungeonmania.entities.enemies;
 
 
+import org.json.JSONObject;
+
 import dungeonmania.Game;
 import dungeonmania.entities.enemies.enemyMovement.EnemyMovement;
 import dungeonmania.entities.enemies.enemyMovement.RandomMovement;
@@ -16,9 +18,20 @@ public class ZombieToast extends Enemy {
         super(position, health, attack);
     }
 
+    public ZombieToast(JSONObject j) {
+        super(j);
+        this.moveStrategy = EnemyMovement.getFromString(j.getString("movementStrategy"));
+    }
+
     @Override
     public void move(Game game) {
         this.moveStrategy.move(game, this);
     }
 
+    @Override
+    public JSONObject getJSON() {
+        JSONObject j = super.getJSON();
+        j.put("movementStrategy", this.moveStrategy.getName());
+        return j;
+    }
 }

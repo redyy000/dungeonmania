@@ -27,7 +27,7 @@ public class EntityFactory {
     }
 
     public Entity createEntity(JSONObject jsonEntity) {
-        return constructEntity(jsonEntity, config);
+        return constructEntity(jsonEntity);
     }
 
     public void spawnSpider(Game game) {
@@ -133,7 +133,7 @@ public class EntityFactory {
         return new Shield(shieldDurability, shieldDefence);
     }
 
-    private Entity constructEntity(JSONObject jsonEntity, JSONObject config) {
+    private Entity constructEntity(JSONObject jsonEntity) {
         Position pos = new Position(jsonEntity.getInt("x"), jsonEntity.getInt("y"));
 
         switch (jsonEntity.getString("type")) {

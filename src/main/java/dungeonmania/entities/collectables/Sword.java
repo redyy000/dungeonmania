@@ -1,5 +1,7 @@
 package dungeonmania.entities.collectables;
 
+import org.json.JSONObject;
+
 import dungeonmania.Game;
 import dungeonmania.battles.BattleStatistics;
 import dungeonmania.entities.BattleItem;
@@ -24,6 +26,11 @@ public class Sword extends Collectable implements InventoryItem, BattleItem {
         this.durability = durability;
     }
 
+    public Sword(JSONObject j) {
+        super(j);
+        this.attack = j.getDouble("attack");
+        this.durability = j.getInt("durability");
+    }
     @Override
     public boolean canMoveOnto(GameMap map, Entity entity) {
         return true;
@@ -50,5 +57,13 @@ public class Sword extends Collectable implements InventoryItem, BattleItem {
     @Override
     public int getDurability() {
         return durability;
+    }
+
+    @Override
+    public JSONObject getJSON() {
+        JSONObject j = super.getJSON();
+        j.put("attack", this.attack);
+        j.put("durability", this.durability);
+        return j;
     }
 }
