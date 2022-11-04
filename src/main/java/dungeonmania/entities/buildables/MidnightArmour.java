@@ -12,12 +12,12 @@ public class MidnightArmour extends Buildable implements BattleItem {
     private double defence;
 
     public MidnightArmour(double attack, double defence) {
-        super(null);
+        super();
         this.attack = attack;
         this.defence = defence;
     }
     public MidnightArmour(JSONObject j) {
-        super(null);
+        super(j);
         this.attack = j.getInt("attack");
         this.defence = j.getDouble("defence");
     }
