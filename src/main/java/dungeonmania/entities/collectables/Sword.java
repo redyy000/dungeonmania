@@ -54,11 +54,6 @@ public class Sword extends Collectable implements BattleItem {
     }
 
     @Override
-    public int getDurability() {
-        return durability;
-    }
-
-    @Override
     public JSONObject getJSON() {
         JSONObject j = super.getJSON();
         j.put("attack", this.attack);
