@@ -7,9 +7,6 @@ import org.json.JSONObject;
 import dungeonmania.Game;
 import dungeonmania.entities.Player;
 import dungeonmania.entities.collectables.Treasure;
-import dungeonmania.entities.enemies.enemyMovement.EnemyMovement;
-import dungeonmania.entities.enemies.enemyMovement.FollowMovement;
-import dungeonmania.entities.enemies.enemyMovement.HostileMovement;
 import dungeonmania.util.Position;
 
 public class Assassin extends Mercenary {
@@ -68,23 +65,13 @@ public class Assassin extends Mercenary {
 
     @Override
     public void interact(Player player, Game game) {
-        setAllied(bribe(player));
-    }
-
-    @Override
-    public void move(Game game) {
-        EnemyMovement moveStrategy;
-        if (this.isAllied() && game.getPlayer().isCardinallyAdjacentToOrEqual(this.getPosition())) {
-            moveStrategy = new FollowMovement();
-        } else {
-            moveStrategy = new HostileMovement();
+        if (canBeBribed(player)) {
+            setAllied(bribe(player));
+        } else if (player.hasSceptre()) {
+            setAllied(true);
+            setControlled(true);
+            setTickUntilUnmindcontrolled(3);
         }
-        moveStrategy.move(game, this);
-    }
-
-    @Override
-    public boolean isInteractable(Player player) {
-        return !this.isAllied() && this.canBeBribed(player);
     }
 
     @Override
