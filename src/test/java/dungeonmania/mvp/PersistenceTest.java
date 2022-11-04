@@ -37,7 +37,7 @@ public class PersistenceTest {
         // save then load.
         res = assertDoesNotThrow(() -> dmc.saveGame("testSaveTwice"));
         try {
-            Thread.sleep(2000);
+            Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -46,7 +46,7 @@ public class PersistenceTest {
         // save then load.
         res = assertDoesNotThrow(() -> dmc.saveGame("testSaveTwice"));
         try {
-            Thread.sleep(2000);
+            Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -68,7 +68,7 @@ public class PersistenceTest {
         res = assertDoesNotThrow(() -> dmc.saveGame("testLoad"));
         // Wait for a bit to let the thing write.
         try {
-            Thread.sleep(2000);
+            Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -93,7 +93,7 @@ public class PersistenceTest {
         res = assertDoesNotThrow(() -> dmc.saveGame("testSavePos"));
         // Wait for a bit to let the thing write.
         try {
-            Thread.sleep(2000);
+            Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -127,7 +127,7 @@ public class PersistenceTest {
         Position posAtSave = TestUtils.getPlayerPos(res); //should be x=2, y =1 at save.
         res = assertDoesNotThrow(() -> dmc.saveGame("testExit"));
         try {        // Wait for a bit to let the thing write.
-            Thread.sleep(2000);
+            Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -167,7 +167,7 @@ public class PersistenceTest {
         res = assertDoesNotThrow(() -> dmc.saveGame("testInvSave"));
         // Wait for a bit to let the thing write.
         try {
-            Thread.sleep(2000);
+            Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -198,7 +198,7 @@ public class PersistenceTest {
         res = assertDoesNotThrow(() -> dmc.saveGame("testLoad"));
         // Wait for a bit to let the thing write.
         try {
-            Thread.sleep(2000);
+            Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -238,7 +238,7 @@ public class PersistenceTest {
         //save and load
         res = assertDoesNotThrow(() -> dmc.saveGame("test5switch"));
         try {
-            Thread.sleep(2000);
+            Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -274,7 +274,7 @@ public class PersistenceTest {
         //save and load
         res = assertDoesNotThrow(() -> dmc.saveGame("testEnemiesGoal"));
         try {
-            Thread.sleep(2000);
+            Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -328,7 +328,7 @@ public class PersistenceTest {
         //save and load
         res = assertDoesNotThrow(() -> dmc.saveGame("testPotionQueue"));
         try {
-            Thread.sleep(2000);
+            Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -356,7 +356,7 @@ public class PersistenceTest {
         //save and load
         res = assertDoesNotThrow(() -> dmc.saveGame("testPortalsChain"));
         try {
-            Thread.sleep(2000);
+            Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -388,7 +388,7 @@ public class PersistenceTest {
         //save and load
         res = assertDoesNotThrow(() -> dmc.saveGame("test2Keys"));
         try {
-            Thread.sleep(2000);
+            Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -433,7 +433,7 @@ public class PersistenceTest {
         //save and load
         res = assertDoesNotThrow(() -> dmc.saveGame("testDoorOpen"));
         try {
-            Thread.sleep(2000);
+            Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -469,7 +469,7 @@ public class PersistenceTest {
         //save and load
         res = assertDoesNotThrow(() -> dmc.saveGame("testPickUpKey2"));
         try {
-            Thread.sleep(2000);
+            Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -508,7 +508,7 @@ public class PersistenceTest {
         //save and load
         res = assertDoesNotThrow(() -> dmc.saveGame("4goals"));
         try {
-            Thread.sleep(2000);
+            Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -547,7 +547,7 @@ public class PersistenceTest {
         //save and load
         res = assertDoesNotThrow(() -> dmc.saveGame("shield"));
         try {
-            Thread.sleep(2000);
+            Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -565,7 +565,7 @@ public class PersistenceTest {
         //save and load
         res = assertDoesNotThrow(() -> dmc.saveGame("shield"));
         try {
-            Thread.sleep(2000);
+            Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -608,7 +608,7 @@ public class PersistenceTest {
         //save and load
         res = assertDoesNotThrow(() -> dmc.saveGame("Bow"));
         try {
-            Thread.sleep(2000);
+            Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
