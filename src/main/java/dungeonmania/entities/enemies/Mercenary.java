@@ -52,7 +52,7 @@ public class Mercenary extends Enemy implements Interactable {
      * @param player
      * @return
      */
-    private boolean canBeBribed(Player player) {
+    protected boolean canBeBribed(Player player) {
         return bribeRadius >= 0 && player.countEntityOfType(Treasure.class) >= bribeAmount;
     }
 
@@ -63,7 +63,6 @@ public class Mercenary extends Enemy implements Interactable {
         for (int i = 0; i < bribeAmount; i++) {
             player.use(Treasure.class);
         }
-
     }
 
     @Override
@@ -94,5 +93,12 @@ public class Mercenary extends Enemy implements Interactable {
         j.put("allied", this.allied);
         j.put("movementStrategy", this.movementStrategy.getName());
         return j;
+    }
+
+    protected int getBribeAmount() {
+        return this.bribeAmount;
+    }
+    protected void setAllied(boolean b) {
+        this.allied = b;
     }
 }
