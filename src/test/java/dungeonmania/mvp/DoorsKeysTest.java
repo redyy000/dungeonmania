@@ -161,4 +161,34 @@ public class DoorsKeysTest {
         res = dmc.tick(Direction.LEFT);
         assertNotEquals(pos, TestUtils.getEntities(res, "player").get(0).getPosition());
     }
+
+    @Test
+    @Tag("4-8")
+    @DisplayName("Test doors remain open and the player can move through the door without a sun stone")
+    public void doorRemainsOpenSunStone() {
+        DungeonManiaController dmc;
+        dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_DoorsKeysTest_useSunStoneWalkThroughOpenDoor",
+                                "c_DoorsKeysTest_doorRemainsOpen");
+
+        // pick up stone
+        res = dmc.tick(Direction.RIGHT);
+        assertEquals(1, TestUtils.getInventory(res, "sun_stone").size());
+
+        // open door
+        res = dmc.tick(Direction.RIGHT);
+
+        // player still has stone and can move freely through door
+        assertEquals(1, TestUtils.getInventory(res, "sun_stone").size());
+
+        Position pos = TestUtils.getEntities(res, "player").get(0).getPosition();
+        res = dmc.tick(Direction.RIGHT);
+        assertNotEquals(pos, TestUtils.getEntities(res, "player").get(0).getPosition());
+        pos = TestUtils.getEntities(res, "player").get(0).getPosition();
+        res = dmc.tick(Direction.LEFT);
+        assertNotEquals(pos, TestUtils.getEntities(res, "player").get(0).getPosition());
+        pos = TestUtils.getEntities(res, "player").get(0).getPosition();
+        res = dmc.tick(Direction.LEFT);
+        assertNotEquals(pos, TestUtils.getEntities(res, "player").get(0).getPosition());
+    }
 }

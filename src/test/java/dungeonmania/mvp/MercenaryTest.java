@@ -274,6 +274,33 @@ public class MercenaryTest {
 
     }
 
+    @Test
+    @DisplayName("Testing a merc cannot be bribed with sun stone")
+    public void noBribeSunStone() {
+        //                                  Wall    Wall    Wall
+        // P1       P2/Treasure      .      M2      M1      Wall
+        //                                  Wall    Wall    Wall
+        DungeonManiaController dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_mercenaryTest_sunstoneBribe", "c_mercenaryTest_allyBattle");
+
+        String mercId = TestUtils.getEntitiesStream(res, "mercenary").findFirst().get().getId();
+
+        // pick up treasure
+        res = dmc.tick(Direction.RIGHT);
+        assertEquals(1, TestUtils.getInventory(res, "sun_stone").size());
+
+        // achieve bribe
+        assertThrows(InvalidActionException.class, () ->
+                dmc.interact(mercId)
+        );
+        assertEquals(1, TestUtils.getInventory(res, "sun_stone").size());
+
+        // walk into mercenary, a battle does not occur
+        res = dmc.tick(Direction.RIGHT);
+        res = dmc.tick(Direction.RIGHT);
+        assertEquals(1, res.getBattles().size());
+    }
+
     private Position getMercPos(DungeonResponse res) {
         return TestUtils.getEntities(res, "mercenary").get(0).getPosition();
     }

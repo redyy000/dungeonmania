@@ -1,5 +1,6 @@
 package dungeonmania.map;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import dungeonmania.entities.EntityFactory;
@@ -32,9 +33,10 @@ public class GraphNodeFactory {
         case "spider":
         case "door":
         case "key":
+        case "sun_stone":
             return new GraphNode(factory.createEntity(jsonEntity));
         default:
-            return null;
+            throw new JSONException("Graph Node Factory can't make " + jsonEntity.getString("type"));
         }
     }
 }
