@@ -1,12 +1,16 @@
 package dungeonmania.entities.buildables;
 
+import org.json.JSONObject;
+
 import dungeonmania.entities.Entity;
 import dungeonmania.entities.inventory.InventoryItem;
-import dungeonmania.util.Position;
 
 public abstract class Buildable extends Entity implements InventoryItem {
 
-    public Buildable(Position p) {
-        super(p);
+    public Buildable() {
+        super();
+    }
+    public Buildable(JSONObject j) {
+        super(j);
     }
 }

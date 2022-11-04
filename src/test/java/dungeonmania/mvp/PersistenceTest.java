@@ -561,6 +561,7 @@ public class PersistenceTest {
         // Materials used in construction disappear from inventory
         assertEquals(0, TestUtils.getInventory(res, "wood").size());
         assertEquals(0, TestUtils.getInventory(res, "treasure").size());
+        String id = TestUtils.getFirstItemId(res, "shield");
 
         //save and load
         res = assertDoesNotThrow(() -> dmc.saveGame("shield"));
@@ -572,6 +573,7 @@ public class PersistenceTest {
         res = assertDoesNotThrow(() -> dmc.loadGame("shield"));
 
         assertEquals(1, TestUtils.getInventory(res, "shield").size());
+        assertEquals(id, TestUtils.getFirstItemId(res, "shield"));
         assertEquals(0, TestUtils.getInventory(res, "wood").size());
         assertEquals(0, TestUtils.getInventory(res, "treasure").size());
     }
@@ -604,6 +606,7 @@ public class PersistenceTest {
         // Materials used in construction disappear from inventory
         assertEquals(0, TestUtils.getInventory(res, "wood").size());
         assertEquals(0, TestUtils.getInventory(res, "arrow").size());
+        String id = TestUtils.getFirstItemId(res, "bow");
 
         //save and load
         res = assertDoesNotThrow(() -> dmc.saveGame("Bow"));
@@ -613,6 +616,7 @@ public class PersistenceTest {
             e.printStackTrace();
         }
         res = assertDoesNotThrow(() -> dmc.loadGame("Bow"));
+        assertEquals(id, TestUtils.getFirstItemId(res, "bow"));
         assertEquals(1, TestUtils.getInventory(res, "bow").size());
         assertEquals(0, TestUtils.getInventory(res, "wood").size());
         assertEquals(0, TestUtils.getInventory(res, "arrow").size());

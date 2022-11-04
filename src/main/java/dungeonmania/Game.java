@@ -119,11 +119,11 @@ public class Game {
     }
 
     public Game build(String buildable) throws InvalidActionException {
-        List<String> buildables = player.getBuildables();
+        List<String> buildables = player.getBuildables(this.map);
         if (!buildables.contains(buildable)) {
             throw new InvalidActionException(String.format("%s cannot be built", buildable));
         }
-        registerOnce(() -> player.build(buildable, entityFactory), PLAYER_MOVEMENT, "playerBuildsItem");
+        registerOnce(() -> player.build(buildable, entityFactory, this.map), PLAYER_MOVEMENT, "playerBuildsItem");
         tick();
         return this;
     }

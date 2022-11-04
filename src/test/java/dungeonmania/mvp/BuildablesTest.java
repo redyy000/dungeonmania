@@ -382,4 +382,48 @@ public class BuildablesTest {
         assertEquals(0, TestUtils.getInventory(res, "wood").size());
         assertEquals(1, TestUtils.getInventory(res, "sun_stone").size());
     }
+
+    @Test
+    @DisplayName("Test just building a midnight armour")
+    public void buildMidArmour() {
+        DungeonManiaController dmc;
+        dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame(
+            "d_midnightArmourBuild", "c_generateTest");
+        res = dmc.tick(Direction.RIGHT);
+        res = dmc.tick(Direction.RIGHT);
+        assertEquals(1, TestUtils.getInventory(res, "sword").size());
+        assertEquals(1, TestUtils.getInventory(res, "sun_stone").size());
+
+        // Build Sceptre
+        assertEquals(0, TestUtils.getInventory(res, "midnight_armour").size());
+        res = assertDoesNotThrow(() -> dmc.build("midnight_armour"));
+        assertEquals(1, TestUtils.getInventory(res, "midnight_armour").size());
+
+        // Materials used in construction disappear from inventory
+        assertEquals(0, TestUtils.getInventory(res, "sword").size());
+        assertEquals(0, TestUtils.getInventory(res, "sun_stone").size());
+    }
+
+    @Test
+    @DisplayName("Test can't build a midnight armour bc zombvie")
+    public void buildMidArmourZombieStop() {
+        DungeonManiaController dmc;
+        dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame(
+            "d_midnightArmourBuildZombie", "c_generateTest");
+        res = dmc.tick(Direction.RIGHT);
+        res = dmc.tick(Direction.RIGHT);
+        assertEquals(1, TestUtils.getInventory(res, "sword").size());
+        assertEquals(1, TestUtils.getInventory(res, "sun_stone").size());
+
+        assertThrows(InvalidActionException.class, () ->
+                dmc.build("midnight_armour"));
+
+        assertEquals(0, TestUtils.getInventory(res, "midnight_armour").size());
+
+        // Materials used in construction don't disappear from inventory
+        assertEquals(1, TestUtils.getInventory(res, "sword").size());
+        assertEquals(1, TestUtils.getInventory(res, "sun_stone").size());
+    }
 }
