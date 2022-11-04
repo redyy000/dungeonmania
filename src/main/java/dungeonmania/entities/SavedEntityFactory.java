@@ -72,6 +72,8 @@ public class SavedEntityFactory {
             return new InvisibilityPotion(jsonEntity);
         case "invincibility_potion":
             return new InvincibilityPotion(jsonEntity);
+        case "portal":
+            return new Portal(jsonEntity);
         default:
             throw new JSONException(jsonEntity.getString("type") + " can't be made from save");
         }

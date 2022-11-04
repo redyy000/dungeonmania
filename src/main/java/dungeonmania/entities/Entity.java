@@ -58,7 +58,9 @@ public abstract class Entity {
     public JSONObject getJSON() {
         JSONObject j = new JSONObject();
         j.put("type", NameConverter.toSnakeCase(this.getClass().getSimpleName())); //use the string version.
-        j.put("position", this.position.getJSON());
+        if (this.position != null) {
+            j.put("position", this.position.getJSON());
+        }
         j.put("id", this.entityId);
         return j;
     }
