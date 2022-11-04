@@ -46,6 +46,8 @@ public class Inventory {
         switch (type) {
         case "treasure":
             return new Treasure(itemJson);
+        case "sun_stone":
+            return new SunStone(itemJson);
         case "wood":
             return new Wood(itemJson);
         case "arrow":
@@ -79,12 +81,13 @@ public class Inventory {
         int arrows = count(Arrow.class);
         int treasure = count(Treasure.class);
         int keys = count(Key.class);
+        int sunStones = count(SunStone.class);
         List<String> result = new ArrayList<>();
 
         if (wood >= 1 && arrows >= 3) {
             result.add("bow");
         }
-        if (wood >= 2 && (treasure >= 1 || keys >= 1)) {
+        if (wood >= 2 && (treasure >= 1 || keys >= 1 || sunStones >= 1)) {
             result.add("shield");
         }
         return result;
@@ -95,13 +98,8 @@ public class Inventory {
         List<Wood> wood = getEntities(Wood.class);
         List<Arrow> arrows = getEntities(Arrow.class);
         List<Treasure> treasure = getEntities(Treasure.class); //only the coin types.
-        List<SunStone> sunStones = new ArrayList<>();
-        for (Treasure t: treasure) {
-            if (t instanceof SunStone) {
-                sunStones.add((SunStone) t);
-                treasure.remove(t);
-            }
-        }
+        List<SunStone> sunStones = getEntities(SunStone.class);
+
         List<Key> keys = getEntities(Key.class);
 
         if (wood.size() >= 1 && arrows.size() >= 3 && !forceShield) {

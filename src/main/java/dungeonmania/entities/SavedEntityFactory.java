@@ -7,6 +7,7 @@ import org.json.JSONObject;
 import dungeonmania.entities.collectables.Arrow;
 import dungeonmania.entities.collectables.Bomb;
 import dungeonmania.entities.collectables.Key;
+import dungeonmania.entities.collectables.SunStone;
 import dungeonmania.entities.collectables.Sword;
 import dungeonmania.entities.collectables.Treasure;
 import dungeonmania.entities.collectables.Wood;
@@ -56,6 +57,8 @@ public class SavedEntityFactory {
             return new Exit(jsonEntity);
         case "treasure":
             return new Treasure(jsonEntity);
+        case "sun_stone":
+            return new SunStone(jsonEntity);
         case "wood":
             return new Wood(jsonEntity);
         case "arrow":

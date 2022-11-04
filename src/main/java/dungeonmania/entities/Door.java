@@ -30,7 +30,7 @@ public class Door extends Entity {
         if (open || entity instanceof Spider) {
             return true;
         }
-        return (entity instanceof Player && hasKey((Player) entity));
+        return (entity instanceof Player && (hasKey((Player) entity) || hasSunStone((Player) entity)));
     }
 
     @Override
@@ -58,6 +58,13 @@ public class Door extends Entity {
         Key key = inventory.getFirst(Key.class);
 
         return (key != null && key.getnumber() == number);
+    }
+
+    private boolean hasSunStone(Player player) {
+        Inventory inventory = player.getInventory();
+        SunStone sunStone = inventory.getFirst(SunStone.class);
+
+        return (sunStone != null);
     }
 
     public boolean isOpen() {

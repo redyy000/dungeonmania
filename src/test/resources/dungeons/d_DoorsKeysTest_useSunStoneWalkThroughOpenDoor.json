@@ -6,7 +6,7 @@
             "y" : 1
         }, {
             "type" : "sun_stone",
-            "x" : 0,
+            "x" : 2,
             "y" : 1
         },{
             "type" : "door",

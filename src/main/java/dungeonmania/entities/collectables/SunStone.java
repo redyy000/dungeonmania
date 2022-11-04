@@ -4,7 +4,8 @@ import org.json.JSONObject;
 
 import dungeonmania.util.Position;
 
-public class SunStone extends Treasure {
+// no methods or attributes that make it special.
+public class SunStone extends AnyTreasure {
 
     public SunStone(Position position) {
         super(position);
@@ -13,5 +14,4 @@ public class SunStone extends Treasure {
     public SunStone(JSONObject j) {
         super(j);
     }
-
 }
