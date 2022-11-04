@@ -346,7 +346,7 @@ public class MercenaryTest {
         assertTrue(isAssassinAllied(res));
 
     }
-    
+
     private Position getMercPos(DungeonResponse res) {
         return TestUtils.getEntities(res, "mercenary").get(0).getPosition();
     }
