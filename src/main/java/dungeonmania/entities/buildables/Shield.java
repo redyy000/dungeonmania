@@ -5,9 +5,8 @@ import org.json.JSONObject;
 
 import dungeonmania.Game;
 import dungeonmania.battles.BattleStatistics;
-import dungeonmania.entities.BattleItem;
 
-public class Shield extends Buildable implements BattleItem {
+public class Shield extends Buildable {
     private int durability;
     private double defence;
 

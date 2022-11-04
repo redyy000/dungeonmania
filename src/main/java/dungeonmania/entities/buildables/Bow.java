@@ -4,9 +4,8 @@ import org.json.JSONObject;
 
 import dungeonmania.Game;
 import dungeonmania.battles.BattleStatistics;
-import dungeonmania.entities.BattleItem;
 
-public class Bow extends Buildable implements BattleItem {
+public class Bow extends Buildable  {
 
     private int durability;
 
