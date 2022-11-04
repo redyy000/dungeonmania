@@ -2,6 +2,7 @@ package dungeonmania.entities;
 
 import dungeonmania.Game;
 import dungeonmania.entities.buildables.Bow;
+import dungeonmania.entities.buildables.Sceptre;
 import dungeonmania.entities.buildables.Shield;
 import dungeonmania.entities.collectables.*;
 import dungeonmania.entities.enemies.*;
@@ -132,6 +133,10 @@ public class EntityFactory {
         return new Shield(shieldDurability, shieldDefence);
     }
 
+    public Sceptre buildSceptre() {
+        return new Sceptre();
+    }
+
     private Entity constructEntity(JSONObject jsonEntity) {
         Position pos = new Position(jsonEntity.getInt("x"), jsonEntity.getInt("y"));
 
@@ -189,6 +194,8 @@ public class EntityFactory {
             return new Door(pos, jsonEntity.getInt("key"));
         case "key":
             return new Key(pos, jsonEntity.getInt("key"));
+        case "sceptre":
+            return buildSceptre();
         default:
             return null;
         }

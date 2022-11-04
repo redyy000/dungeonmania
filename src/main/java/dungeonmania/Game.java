@@ -14,6 +14,7 @@ import dungeonmania.entities.Player;
 import dungeonmania.entities.collectables.Bomb;
 import dungeonmania.entities.collectables.potions.Potion;
 import dungeonmania.entities.enemies.Enemy;
+import dungeonmania.entities.enemies.Mercenary;
 import dungeonmania.entities.enemies.ZombieToastSpawner;
 import dungeonmania.exceptions.InvalidActionException;
 import dungeonmania.goals.Goal;
@@ -66,6 +67,10 @@ public class Game {
         this.tickCount = 0;
         player = map.getPlayer();
         register(() -> player.onTick(tickCount), PLAYER_MOVEMENT, "potionQueue");
+        List<Mercenary> mercs = map.getEntities(Mercenary.class);
+        for (Mercenary m : mercs) {
+            register(() -> m.onTick(tickCount), AI_MOVEMENT, "mindControlTimer" + m.getId());
+        }
     }
 
     public void initSavedGame() {
