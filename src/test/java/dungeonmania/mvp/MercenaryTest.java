@@ -301,6 +301,43 @@ public class MercenaryTest {
         assertEquals(1, res.getBattles().size());
     }
 
+    @Test
+    @DisplayName("mind control sceptre")
+    public void mindControl() {
+        //                                         Wall     Wall     Wall    Wall    Wall
+        // P1       P2/mat      P3/mat    P4,5/mat           M5       M4       M3       M2     M1
+        //                                         Wall     Wall     Wall    Wall    Wall
+        DungeonManiaController dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_mercenaryTest_bribeAmount", "c_mercenaryTest_bribeAmount");
+
+        String mercId = TestUtils.getEntitiesStream(res, "mercenary").findFirst().get().getId();
+
+        // pick up three sceptre matrials
+        res = dmc.tick(Direction.RIGHT);
+        res = dmc.tick(Direction.RIGHT);
+        res = dmc.tick(Direction.RIGHT);
+        res = assertDoesNotThrow(() -> dmc.build("sceptre"));
+        assertEquals(1, TestUtils.getInventory(res, "sceptre").size());
+        // 4 ticks have occured, moving the merc from 10 to 6.
+        assertEquals(new Position(6, 1), getMercPos(res)); //shouldnt stick yet.
+
+        // achieve mind control.
+        assertEquals(0, TestUtils.getInventory(res, "treasure").size());
+        res = assertDoesNotThrow(() -> dmc.interact(mercId));
+
+        // should not have battled after mingling for 3 ticks.
+        res = dmc.tick(Direction.RIGHT);
+        assertEquals(0, res.getBattles().size());
+        res = dmc.tick(Direction.RIGHT);
+        assertEquals(0, res.getBattles().size());
+        res = dmc.tick(Direction.LEFT);
+        assertEquals(0, res.getBattles().size());
+        // mind control after 3 ticks is over. Hostile. Should Battle:
+        res = dmc.tick(Direction.RIGHT);
+        assertEquals(1, res.getBattles().size());
+
+    }
+
     private Position getMercPos(DungeonResponse res) {
         return TestUtils.getEntities(res, "mercenary").get(0).getPosition();
     }
