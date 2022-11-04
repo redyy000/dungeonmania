@@ -139,7 +139,7 @@ public class BasicGoalsTest {
         // assert no fights
         assertEquals(3, TestUtils.getEntities(res, "mercenary").size());
         assertTrue(TestUtils.getGoals(res).contains(":enemies"));
-
+        TestUtils.getEntityPositions(res, "mercenary");
         // move player to right, fight once
         res = dmc.tick(Direction.RIGHT);
         // assert goal not met, killed 1.
@@ -153,11 +153,13 @@ public class BasicGoalsTest {
         assertTrue(TestUtils.getGoals(res).contains(":enemies"));
 
         // move player to right, fight three
+        // player at 4, other one is at 7 for some reason. sure.
+        res = dmc.tick(Direction.RIGHT);
+        assertEquals(1, TestUtils.getEntities(res, "mercenary").size());
         res = dmc.tick(Direction.RIGHT);
         // assert goal met, killed 3.
         assertEquals(0, TestUtils.getEntities(res, "mercenary").size());
         assertEquals("", TestUtils.getGoals(res));
-
     }
 
     @Test

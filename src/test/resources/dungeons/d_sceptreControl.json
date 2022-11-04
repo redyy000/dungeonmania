@@ -5,16 +5,21 @@
         "x" : 1,
         "y" : 1
       },{
-        "type" : "mercenary",
-        "x" : 4,
+        "type" : "wood",
+        "x" : 2,
         "y" : 1
       },{
-        "type" : "mercenary",
-        "x" : 6,
+        "type" : "key",
+        "x" : 3,
+        "y" : 1,
+        "key": 1
+      },{
+        "type" : "sun_stone",
+        "x" : 4,
         "y" : 1
       }, {
         "type" : "mercenary",
-        "x" : 8,
+        "x" : 10,
         "y" : 1
       }, {
         "type": "exit",
@@ -60,11 +65,7 @@
         "type": "wall",
         "x": 9,
         "y": 2
-      }, {
-        "type": "wall",
-        "x": 9,
-        "y": 1
       }
     ],
-    "goal-condition": {"goal": "enemies"}
+    "goal-condition": {"goal": "exit"}
   }
