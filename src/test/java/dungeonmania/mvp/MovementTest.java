@@ -95,4 +95,36 @@ public class MovementTest {
         assertTrue(TestUtils.entityResponsesEqual(expectedPlayer, actualPlayer));
     }
 
+    @Test
+    @DisplayName("Test the player moves correctly through swamp tiles")
+    public void testMovementRightThroughSwamp() {
+        DungeonManiaController dmc = new DungeonManiaController();
+        DungeonResponse initDungonRes = dmc.newGame(
+            "d_movementTest_swampTileBasicMovement", "c_movementTest_testMovementRight");
+        EntityResponse initPlayer = TestUtils.getPlayer(initDungonRes).get();
+
+        // create the expected result
+        EntityResponse expectedPlayer = new EntityResponse(initPlayer.getId(),
+        initPlayer.getType(), new Position(3, 1), false);
+
+        // move player right (tick 1)
+        DungeonResponse actualDungonRes = dmc.tick(Direction.RIGHT);
+        EntityResponse actualPlayer = TestUtils.getPlayer(actualDungonRes).get();
+
+        // move player right (tick 2)
+        actualDungonRes = dmc.tick(Direction.RIGHT);
+        actualPlayer = TestUtils.getPlayer(actualDungonRes).get();
+
+        // move player right (tick 3)
+        actualDungonRes = dmc.tick(Direction.RIGHT);
+        actualPlayer = TestUtils.getPlayer(actualDungonRes).get();
+
+        // move player right (tick 4)
+        actualDungonRes = dmc.tick(Direction.RIGHT);
+        actualPlayer = TestUtils.getPlayer(actualDungonRes).get();
+
+        // assert after movement
+        assertTrue(TestUtils.entityResponsesEqual(expectedPlayer, actualPlayer));
+    }
+
 }
