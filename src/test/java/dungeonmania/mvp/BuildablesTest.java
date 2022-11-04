@@ -139,6 +139,36 @@ public class BuildablesTest {
     }
 
     @Test
+    @DisplayName("Test building a shield with sun stone")
+    public void buildShieldWithSunStone() {
+        DungeonManiaController dmc;
+        dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame(
+            "d_BuildableTest_BuildShieldWithSunStone", "c_BuildablesTest_BuildShieldWithTreasure");
+        assertEquals(0, TestUtils.getInventory(res, "wood").size());
+        assertEquals(0, TestUtils.getInventory(res, "sun_stone").size());
+
+        // Pick up Wood x2
+        res = dmc.tick(Direction.RIGHT);
+        res = dmc.tick(Direction.RIGHT);
+        assertEquals(2, TestUtils.getInventory(res, "wood").size());
+
+        // Pick up Treasure
+        res = dmc.tick(Direction.RIGHT);
+        assertEquals(1, TestUtils.getInventory(res, "sun_stone").size());
+
+        // Build Shield
+        assertEquals(0, TestUtils.getInventory(res, "shield").size());
+        res = assertDoesNotThrow(() -> dmc.build("shield"));
+        assertEquals(1, TestUtils.getInventory(res, "shield").size());
+
+        // Materials used in construction may disappear from inventory
+        assertEquals(0, TestUtils.getInventory(res, "wood").size());
+        assertEquals(1, TestUtils.getInventory(res, "sun_stone").size());
+    }
+
+
+    @Test
     @Tag("5-6")
     @DisplayName(
         "Test responsse buildables parameter is a list of buildables that the player can currently build"

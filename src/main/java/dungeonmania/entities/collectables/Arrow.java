@@ -3,11 +3,10 @@ package dungeonmania.entities.collectables;
 import org.json.JSONObject;
 
 import dungeonmania.entities.Entity;
-import dungeonmania.entities.inventory.InventoryItem;
 import dungeonmania.map.GameMap;
 import dungeonmania.util.Position;
 
-public class Arrow extends Collectable implements InventoryItem {
+public class Arrow extends Collectable {
     public Arrow(Position position) {
         super(position);
     }

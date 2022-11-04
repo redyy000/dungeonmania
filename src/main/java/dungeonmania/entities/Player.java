@@ -98,6 +98,7 @@ public class Player extends Entity implements Battleable {
     }
 
     public boolean build(String entity, EntityFactory factory) {
+        // TODO. Chceckbuildcirtersia is very wrong: Remove shouldn't be used, should give a string.
         InventoryItem item = inventory.checkBuildCriteria(this, true, entity.equals("shield"), factory);
         if (item == null) return false;
         return inventory.add(item);

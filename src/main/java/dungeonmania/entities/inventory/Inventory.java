@@ -12,16 +12,16 @@ import dungeonmania.entities.BattleItem;
 import dungeonmania.entities.Entity;
 import dungeonmania.entities.EntityFactory;
 import dungeonmania.entities.Player;
+import dungeonmania.entities.SavedEntityFactory;
 import dungeonmania.entities.buildables.Bow;
 import dungeonmania.entities.buildables.Shield;
 import dungeonmania.entities.collectables.Arrow;
-import dungeonmania.entities.collectables.Bomb;
 import dungeonmania.entities.collectables.Key;
+import dungeonmania.entities.collectables.SunStone;
 import dungeonmania.entities.collectables.Sword;
 import dungeonmania.entities.collectables.Treasure;
 import dungeonmania.entities.collectables.Wood;
-import dungeonmania.entities.collectables.potions.InvincibilityPotion;
-import dungeonmania.entities.collectables.potions.InvisibilityPotion;
+
 
 public class Inventory {
     private List<InventoryItem> items = new ArrayList<>();
@@ -44,25 +44,19 @@ public class Inventory {
         String type = itemJson.getString("type");
         switch (type) {
         case "treasure":
-            return new Treasure(itemJson);
+        case "sun_stone":
         case "wood":
-            return new Wood(itemJson);
         case "arrow":
-            return new Arrow(itemJson);
         case "bomb":
-            return new Bomb(itemJson);
         case "invisibility_potion":
-            return new InvisibilityPotion(itemJson);
         case "invincibility_potion":
-            return new InvincibilityPotion(itemJson);
         case "sword":
-            return new Sword(itemJson);
+        case "key":
+            return (InventoryItem) SavedEntityFactory.createEntity(itemJson);
         case "shield":
             return new Shield(itemJson);
         case "bow":
             return new Bow(itemJson);
-        case "key":
-            return new Key(itemJson);
         default:
             throw new JSONException("can't create into inventory: " + type);
         }
@@ -78,12 +72,13 @@ public class Inventory {
         int arrows = count(Arrow.class);
         int treasure = count(Treasure.class);
         int keys = count(Key.class);
+        int sunStones = count(SunStone.class);
         List<String> result = new ArrayList<>();
 
         if (wood >= 1 && arrows >= 3) {
             result.add("bow");
         }
-        if (wood >= 2 && (treasure >= 1 || keys >= 1)) {
+        if (wood >= 2 && (treasure >= 1 || keys >= 1 || sunStones >= 1)) {
             result.add("shield");
         }
         return result;
@@ -93,7 +88,9 @@ public class Inventory {
 
         List<Wood> wood = getEntities(Wood.class);
         List<Arrow> arrows = getEntities(Arrow.class);
-        List<Treasure> treasure = getEntities(Treasure.class);
+        List<Treasure> treasure = getEntities(Treasure.class); //only the coin types.
+        List<SunStone> sunStones = getEntities(SunStone.class);
+
         List<Key> keys = getEntities(Key.class);
 
         if (wood.size() >= 1 && arrows.size() >= 3 && !forceShield) {
@@ -105,11 +102,14 @@ public class Inventory {
             }
             return factory.buildBow();
 
-        } else if (wood.size() >= 2 && (treasure.size() >= 1 || keys.size() >= 1)) {
+        } else if (wood.size() >= 2
+                && (treasure.size() >= 1 || keys.size() >= 1 || sunStones.size() >= 1)) {
             if (remove) {
                 items.remove(wood.get(0));
                 items.remove(wood.get(1));
-                if (treasure.size() >= 1) {
+                if (sunStones.size() >= 1) {
+                    return factory.buildShield(); //build without removing.
+                } else if (treasure.size() >= 1) {
                     items.remove(treasure.get(0));
                 } else {
                     items.remove(keys.get(0));
