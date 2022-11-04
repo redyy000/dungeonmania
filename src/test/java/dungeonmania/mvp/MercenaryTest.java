@@ -376,6 +376,51 @@ public class MercenaryTest {
         assertEquals(1, res.getBattles().size());
     }
 
+    @Test
+    @DisplayName("Testing movement of a bribed assassin")
+    public void assassinBribeSuccessMovement() {
+        //                                  Wall    Wall   Wall    Wall    Wall    Wall
+        // P1       P2      P3      P4      M4      M3      M2      M1      .      Wall
+        //                                  Wall    Wall   Wall    Wall    Wall    Wall
+        DungeonManiaController dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_assassinTest", "c_mercenaryTest_assassinMovement");
+        // note that despite making it as an assassin debug, its type is still an Assassin only.
+        String assId = TestUtils.getEntitiesStream(res, "assassin").findFirst().get().getId();
+
+        //move once pick up treasure
+        res = dmc.tick(Direction.RIGHT); // at 2.
+        assertEquals(new Position(10, 1), getAssPos(res));
+        assertEquals(1, TestUtils.getInventory(res, "treasure").size());
+
+        //Try bribing. (Bribe is guaranteed in config)
+        res = assertDoesNotThrow(() -> dmc.interact(assId));
+        assertEquals(new Position(9, 1), getAssPos(res));
+        assertEquals(0, TestUtils.getInventory(res, "treasure").size());
+        assertTrue(isAssassinAllied(res));
+
+        // Player moves left, assassin should follow left
+        res = dmc.tick(Direction.LEFT); // at 1 after.
+        assertEquals(new Position(8, 1), getAssPos(res));
+        assertEquals(0, TestUtils.getInventory(res, "treasure").size());
+
+        // Player moves left, assassin should follow left
+        res = dmc.tick(Direction.LEFT); // at 0 after.
+        assertEquals(new Position(7, 1), getAssPos(res));
+        assertEquals(0, TestUtils.getInventory(res, "treasure").size());
+
+        // Player moves left, assassin should follow left
+        res = dmc.tick(Direction.LEFT); // at -1 after.
+        assertEquals(new Position(6, 1), getAssPos(res));
+        assertEquals(0, TestUtils.getInventory(res, "treasure").size());
+
+        // Player moves left, assassin should follow left
+        res = dmc.tick(Direction.LEFT); // at -2 after.
+        assertEquals(new Position(5, 1), getAssPos(res));
+        assertEquals(0, TestUtils.getInventory(res, "treasure").size());
+        assertTrue(isAssassinAllied(res));
+
+    }
+
     private Position getMercPos(DungeonResponse res) {
         return TestUtils.getEntities(res, "mercenary").get(0).getPosition();
     }
