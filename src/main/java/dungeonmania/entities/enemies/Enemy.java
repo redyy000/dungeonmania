@@ -7,7 +7,6 @@ import dungeonmania.battles.BattleStatistics;
 import dungeonmania.battles.Battleable;
 import dungeonmania.entities.Entity;
 import dungeonmania.entities.Player;
-import dungeonmania.entities.SwampTile;
 import dungeonmania.map.GameMap;
 import dungeonmania.util.Position;
 
@@ -46,10 +45,6 @@ public abstract class Enemy extends Entity implements Battleable {
             Player player = (Player) entity;
             map.getGame().battle(player, this);
         }
-        if (entity instanceof SwampTile) {
-            SwampTile swamp = (SwampTile) entity;
-            swamp.subscribeEntity(this);
-        }
     }
 
     @Override
@@ -79,5 +74,9 @@ public abstract class Enemy extends Entity implements Battleable {
 
     public void setSlowed(boolean slowed) {
         this.slowed = slowed;
+    }
+
+    public boolean isSlowed() {
+        return this.slowed;
     }
 }

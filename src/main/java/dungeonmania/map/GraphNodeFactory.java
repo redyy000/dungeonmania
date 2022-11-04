@@ -34,6 +34,7 @@ public class GraphNodeFactory {
         case "door":
         case "key":
         case "sun_stone":
+        case "swamp_tile":
             return new GraphNode(factory.createEntity(jsonEntity));
         default:
             throw new JSONException("Graph Node Factory can't make " + jsonEntity.getString("type"));

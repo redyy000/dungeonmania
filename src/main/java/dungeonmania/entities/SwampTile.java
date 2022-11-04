@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import dungeonmania.entities.enemies.Enemy;
+import dungeonmania.map.GameMap;
 import dungeonmania.util.Position;
 
 // uses entity often, but for now only know behaviour for Enemy.
@@ -42,6 +43,18 @@ public class SwampTile extends Entity {
         }
         for (Entity e: entitiesToFree) {
             this.ticksLeftForEntities.remove(e);
+        }
+    }
+
+    @Override
+    public boolean canMoveOnto(GameMap map, Entity entity) {
+        return true;
+    }
+
+    @Override
+    public void onOverlap(GameMap map, Entity entity) {
+        if (entity instanceof Enemy) {
+            this.subscribeEntity(entity);
         }
     }
 }
