@@ -4,10 +4,11 @@ import org.json.JSONObject;
 
 import dungeonmania.entities.Entity;
 import dungeonmania.entities.Player;
+import dungeonmania.entities.inventory.InventoryItem;
 import dungeonmania.map.GameMap;
 import dungeonmania.util.Position;
 
-public abstract class Collectable extends Entity {
+public abstract class Collectable extends Entity implements InventoryItem {
 
     public Collectable(Position position) {
         super(position);
