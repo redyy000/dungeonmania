@@ -12,14 +12,14 @@ public abstract class EnemyMovement {
     // factory
     public static EnemyMovement getFromString(String type) {
         switch (type) {
-        case "followMovement":
+        case "follow_movement":
             return new FollowMovement();
-        case "hostileMovement":
+        case "hostile_movement":
             return new HostileMovement();
-        case "randomMovement":
+        case "random_movement":
             return new RandomMovement();
         default:
-            throw new JSONException("no such enemy movement");
+            throw new JSONException("no such enemy movement " + type);
         }
     }
     public String getName() {
