@@ -5,11 +5,10 @@ import org.json.JSONObject;
 
 import dungeonmania.entities.Entity;
 import dungeonmania.entities.Player;
-import dungeonmania.entities.inventory.InventoryItem;
 import dungeonmania.map.GameMap;
 import dungeonmania.util.Position;
 
-public class Treasure extends Collectable implements InventoryItem {
+public class Treasure extends BribeMaterial {
     public Treasure(Position position) {
         super(position);
     }

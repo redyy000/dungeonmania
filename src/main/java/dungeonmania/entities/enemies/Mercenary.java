@@ -6,6 +6,7 @@ import dungeonmania.Game;
 import dungeonmania.entities.Entity;
 import dungeonmania.entities.Interactable;
 import dungeonmania.entities.Player;
+import dungeonmania.entities.collectables.BribeMaterial;
 import dungeonmania.entities.collectables.Treasure;
 import dungeonmania.entities.enemies.enemyMovement.EnemyMovement;
 import dungeonmania.entities.enemies.enemyMovement.FollowMovement;
@@ -53,7 +54,7 @@ public class Mercenary extends Enemy implements Interactable {
      * @return
      */
     protected boolean canBeBribed(Player player) {
-        return bribeRadius >= 0 && player.countEntityOfType(Treasure.class) >= bribeAmount;
+        return bribeRadius >= 0 && player.countEntityOfType(BribeMaterial.class) >= bribeAmount;
     }
 
     /**

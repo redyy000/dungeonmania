@@ -17,6 +17,7 @@ import dungeonmania.entities.buildables.Shield;
 import dungeonmania.entities.collectables.Arrow;
 import dungeonmania.entities.collectables.Bomb;
 import dungeonmania.entities.collectables.Key;
+import dungeonmania.entities.collectables.SunStone;
 import dungeonmania.entities.collectables.Sword;
 import dungeonmania.entities.collectables.Treasure;
 import dungeonmania.entities.collectables.Wood;
@@ -93,7 +94,14 @@ public class Inventory {
 
         List<Wood> wood = getEntities(Wood.class);
         List<Arrow> arrows = getEntities(Arrow.class);
-        List<Treasure> treasure = getEntities(Treasure.class);
+        List<Treasure> treasure = getEntities(Treasure.class); //only the coin types.
+        List<SunStone> sunStones = new ArrayList<>();
+        for (Treasure t: treasure) {
+            if (t instanceof SunStone) {
+                sunStones.add((SunStone) t);
+                treasure.remove(t);
+            }
+        }
         List<Key> keys = getEntities(Key.class);
 
         if (wood.size() >= 1 && arrows.size() >= 3 && !forceShield) {
@@ -105,11 +113,14 @@ public class Inventory {
             }
             return factory.buildBow();
 
-        } else if (wood.size() >= 2 && (treasure.size() >= 1 || keys.size() >= 1)) {
+        } else if (wood.size() >= 2
+                && (treasure.size() >= 1 || keys.size() >= 1 || sunStones.size() >= 1)) {
             if (remove) {
                 items.remove(wood.get(0));
                 items.remove(wood.get(1));
-                if (treasure.size() >= 1) {
+                if (sunStones.size() >= 1) {
+                    return factory.buildShield(); //build without removing.
+                } else if (treasure.size() >= 1) {
                     items.remove(treasure.get(0));
                 } else {
                     items.remove(keys.get(0));
