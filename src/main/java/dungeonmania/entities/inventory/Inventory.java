@@ -19,6 +19,7 @@ import dungeonmania.entities.buildables.Sceptre;
 import dungeonmania.entities.buildables.Shield;
 
 import dungeonmania.entities.collectables.Sword;
+import dungeonmania.map.GameMap;
 
 
 
@@ -66,14 +67,14 @@ public class Inventory {
         items.remove(item);
     }
 
-    public List<String> getBuildables() {
+    public List<String> getBuildables(GameMap map) {
         BuildableFactory bf = new BuildableFactory(this.items);
-        return bf.getBuildables();
+        return bf.getBuildables(map);
     }
 
-    public InventoryItem tryBuildItem(Player p, boolean remove, String itemType, EntityFactory factory) {
+    public InventoryItem tryBuildItem(Player p, boolean remove, String itemType, EntityFactory factory, GameMap map) {
         BuildableFactory bf = new BuildableFactory(this.items);
-        InventoryItem newItem = bf.tryBuildItem(remove, itemType, factory); //expect these inventory items to go away.
+        InventoryItem newItem = bf.tryBuildItem(remove, itemType, factory, map); //expect these inventory items to go away.
         return newItem;
     }
 

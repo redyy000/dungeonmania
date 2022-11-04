@@ -9,9 +9,12 @@ import dungeonmania.entities.EntityFactory;
 import dungeonmania.entities.collectables.Arrow;
 import dungeonmania.entities.collectables.Key;
 import dungeonmania.entities.collectables.SunStone;
+import dungeonmania.entities.collectables.Sword;
 import dungeonmania.entities.collectables.Treasure;
 import dungeonmania.entities.collectables.Wood;
+import dungeonmania.entities.enemies.ZombieToast;
 import dungeonmania.entities.inventory.InventoryItem;
+import dungeonmania.map.GameMap;
 
 public class BuildableFactory {
     // Note that when we remove from here, we remove from the real inventory.
@@ -21,12 +24,15 @@ public class BuildableFactory {
         this.items = l;
     }
 
-    public List<String> getBuildables() {
+    public List<String> getBuildables(GameMap map) {
+        boolean noZombies = !mapHasZombies(map);
         int wood = count(Wood.class);
         int arrows = count(Arrow.class);
         int treasure = count(Treasure.class);
         int keys = count(Key.class);
         int sunStones = count(SunStone.class);
+        int swords = count(Sword.class);
+
         List<String> result = new ArrayList<>();
 
         if (wood >= 1 && arrows >= 3) {
@@ -38,19 +44,23 @@ public class BuildableFactory {
         if (((wood >= 1 || arrows >= 2) && (sunStones >= 2))
          || ((wood >= 1 || arrows >= 2) && (sunStones == 1) && (treasure >= 1 || keys >= 1))) {
             result.add("sceptre");
-         }
+        }
+        if (swords >= 1 && sunStones >= 1 && noZombies) {
+            result.add("midnight_armour");
+        }
         return result;
     }
 
-    public InventoryItem tryBuildItem(boolean remove, String itemType, EntityFactory factory) {
-        List<String> buildableNames = getBuildables();
+    public InventoryItem tryBuildItem(boolean remove, String itemType, EntityFactory factory, GameMap map) {
+        List<String> buildableNames = getBuildables(map);
         if (buildableNames.contains("bow") && itemType.equals("bow")) {
             return buildBow(remove, factory);
-
         } else if (buildableNames.contains("shield") && itemType.equals("shield")) {
             return buildShield(remove, factory);
         } else if (buildableNames.contains("sceptre") && itemType.equals("sceptre")) {
             return buildSceptre(remove, factory);
+        } else if (buildableNames.contains("midnight_armour") && itemType.equals("midnight_armour")) {
+            return buildMidnightArmour(remove, factory);
         }
         return null;
     }
@@ -132,6 +142,14 @@ public class BuildableFactory {
         }
     }
 
+    private MidnightArmour buildMidnightArmour(boolean remove, EntityFactory factory) {
+        if (remove) {
+            items.remove(getFirst(Sword.class));
+            items.remove(getFirst(SunStone.class));
+        }
+        return factory.buildMidnightArmour();
+    }
+
     private <T extends InventoryItem> int count(Class<T> itemType) {
         int count = 0;
         for (InventoryItem item : items)
@@ -147,5 +165,9 @@ public class BuildableFactory {
 
     private <T extends InventoryItem> boolean has(Class<T> itemType) {
         return getFirst(itemType) != null;
+    }
+
+    private boolean mapHasZombies(GameMap map) {
+        return map.getEntities(ZombieToast.class).size() > 0;
     }
 }

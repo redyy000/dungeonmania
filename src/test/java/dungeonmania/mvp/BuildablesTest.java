@@ -411,7 +411,7 @@ public class BuildablesTest {
         DungeonManiaController dmc;
         dmc = new DungeonManiaController();
         DungeonResponse res = dmc.newGame(
-            "d_midnightArmourBuild", "c_generateTest");
+            "d_midnightArmourBuildZombie", "c_generateTest");
         res = dmc.tick(Direction.RIGHT);
         res = dmc.tick(Direction.RIGHT);
         assertEquals(1, TestUtils.getInventory(res, "sword").size());
