@@ -37,7 +37,7 @@ public class PersistenceTest {
         // save then load.
         res = assertDoesNotThrow(() -> dmc.saveGame("testSaveTwice"));
         try {
-            Thread.sleep(2000);
+            Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -46,7 +46,7 @@ public class PersistenceTest {
         // save then load.
         res = assertDoesNotThrow(() -> dmc.saveGame("testSaveTwice"));
         try {
-            Thread.sleep(2000);
+            Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -68,7 +68,7 @@ public class PersistenceTest {
         res = assertDoesNotThrow(() -> dmc.saveGame("testLoad"));
         // Wait for a bit to let the thing write.
         try {
-            Thread.sleep(2000);
+            Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -93,7 +93,7 @@ public class PersistenceTest {
         res = assertDoesNotThrow(() -> dmc.saveGame("testSavePos"));
         // Wait for a bit to let the thing write.
         try {
-            Thread.sleep(2000);
+            Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -127,7 +127,7 @@ public class PersistenceTest {
         Position posAtSave = TestUtils.getPlayerPos(res); //should be x=2, y =1 at save.
         res = assertDoesNotThrow(() -> dmc.saveGame("testExit"));
         try {        // Wait for a bit to let the thing write.
-            Thread.sleep(2000);
+            Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -167,7 +167,7 @@ public class PersistenceTest {
         res = assertDoesNotThrow(() -> dmc.saveGame("testInvSave"));
         // Wait for a bit to let the thing write.
         try {
-            Thread.sleep(2000);
+            Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -198,7 +198,7 @@ public class PersistenceTest {
         res = assertDoesNotThrow(() -> dmc.saveGame("testLoad"));
         // Wait for a bit to let the thing write.
         try {
-            Thread.sleep(2000);
+            Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -238,7 +238,7 @@ public class PersistenceTest {
         //save and load
         res = assertDoesNotThrow(() -> dmc.saveGame("test5switch"));
         try {
-            Thread.sleep(2000);
+            Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -274,7 +274,7 @@ public class PersistenceTest {
         //save and load
         res = assertDoesNotThrow(() -> dmc.saveGame("testEnemiesGoal"));
         try {
-            Thread.sleep(2000);
+            Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -328,7 +328,7 @@ public class PersistenceTest {
         //save and load
         res = assertDoesNotThrow(() -> dmc.saveGame("testPotionQueue"));
         try {
-            Thread.sleep(2000);
+            Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -345,5 +345,276 @@ public class PersistenceTest {
         assertEquals(0, TestUtils.getEntities(res, "spider").size());
         assertEquals(1, res.getBattles().size());
         assertEquals(1, res.getBattles().get(0).getRounds().size());
+    }
+
+    @Test
+    @DisplayName("Persistence test chain teleporting between multiple portals")
+    public void testMultiplePortalsChain() {
+        DungeonManiaController dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame(
+            "d_PortalsTest_testMultiplePortalsChain", "c_PortalsTest_testMultiplePortalsChain");
+        //save and load
+        res = assertDoesNotThrow(() -> dmc.saveGame("testPortalsChain"));
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        res = assertDoesNotThrow(() -> dmc.loadGame("testPortalsChain"));
+
+        Position bluePortalPos = new Position(1, 1);
+        Position greyPortalPos = new Position(5, 1);
+        Position greenPortalPos = new Position(1, 5);
+        Position yellowPortalPos = new Position(5, 5);
+
+        // Move into the red portal
+        res = dmc.tick(Direction.RIGHT);
+        Position playerPos = TestUtils.getPlayer(res).get().getPosition();
+
+        // Player should end up at one of the outside portals
+        assertTrue(TestUtils.getManhattanDistance(playerPos, bluePortalPos) == 1
+                || TestUtils.getManhattanDistance(playerPos, greyPortalPos) == 1
+                || TestUtils.getManhattanDistance(playerPos, greenPortalPos) == 1
+                || TestUtils.getManhattanDistance(playerPos, yellowPortalPos) == 1);
+    }
+
+    @Test
+    @DisplayName("Persistence Doors Test player cannot pickup two keys at the same time")
+    public void cannotPickupTwoKeys() {
+        DungeonManiaController dmc;
+        dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_DoorsKeysTest_cannotPickupTwoKeys", "c_DoorsKeysTest_cannotPickupTwoKeys");
+
+        //save and load
+        res = assertDoesNotThrow(() -> dmc.saveGame("test2Keys"));
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        res = assertDoesNotThrow(() -> dmc.loadGame("test2Keys"));
+
+        assertEquals(2, TestUtils.getEntities(res, "key").size());
+
+        // pick up key_1
+        res = dmc.tick(Direction.RIGHT);
+        assertEquals(1, TestUtils.getInventory(res, "key").size());
+        assertEquals(1, TestUtils.getEntities(res, "key").size());
+
+
+        // pick up key_2
+        res = dmc.tick(Direction.RIGHT);
+        assertEquals(2, TestUtils.getInventory(res, "key").size());
+        assertEquals(0, TestUtils.getEntities(res, "key").size());
+    }
+
+    @Test
+    @DisplayName("Persistence Test doors remain open and the player can move through the door without a key")
+    public void doorRemainsOpen() {
+        DungeonManiaController dmc;
+        dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_DoorsKeysTest_doorRemainsOpen", "c_DoorsKeysTest_doorRemainsOpen");
+
+        // pick up key
+        res = dmc.tick(Direction.RIGHT);
+
+        // open door
+        res = dmc.tick(Direction.RIGHT);
+
+        // player no longer has a key but can move freely through door
+        assertEquals(0, TestUtils.getInventory(res, "key").size());
+
+        Position pos = TestUtils.getEntities(res, "player").get(0).getPosition();
+        res = dmc.tick(Direction.RIGHT);
+        assertNotEquals(pos, TestUtils.getEntities(res, "player").get(0).getPosition());
+        pos = TestUtils.getEntities(res, "player").get(0).getPosition();
+
+
+        //save and load
+        res = assertDoesNotThrow(() -> dmc.saveGame("testDoorOpen"));
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        res = assertDoesNotThrow(() -> dmc.loadGame("testDoorOpen"));
+
+        res = dmc.tick(Direction.LEFT);
+        assertNotEquals(pos, TestUtils.getEntities(res, "player").get(0).getPosition());
+        pos = TestUtils.getEntities(res, "player").get(0).getPosition();
+        res = dmc.tick(Direction.LEFT);
+        assertNotEquals(pos, TestUtils.getEntities(res, "player").get(0).getPosition());
+    }
+
+    @Test
+    @DisplayName("Perssitence Test player can pick up a second key after using the first")
+    public void canPickupSecondKeyAfterFirstUse() {
+        DungeonManiaController dmc;
+        dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame(
+            "d_DoorsKeysTest_canPickupSecondKeyAfterFirstUse", "c_DoorsKeysTest_canPickupSecondKeyAfterFirstUse");
+
+        assertEquals(2, TestUtils.getEntities(res, "key").size());
+
+        // pick up key_1
+        res = dmc.tick(Direction.RIGHT);
+        assertEquals(1, TestUtils.getInventory(res, "key").size());
+        assertEquals(1, TestUtils.getEntities(res, "key").size());
+
+        // walk through door_1
+        res = dmc.tick(Direction.RIGHT);
+        assertEquals(0, TestUtils.getInventory(res, "key").size());
+        assertEquals(1, TestUtils.getEntities(res, "key").size());
+
+        //save and load
+        res = assertDoesNotThrow(() -> dmc.saveGame("testPickUpKey2"));
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        res = assertDoesNotThrow(() -> dmc.loadGame("testPickUpKey2"));
+
+        // pick up key_2
+        res = dmc.tick(Direction.RIGHT);
+        assertEquals(1, TestUtils.getInventory(res, "key").size());
+        assertEquals(0, TestUtils.getEntities(res, "key").size());
+    }
+
+    @Test
+    @DisplayName("Persistnece Testing a map with 4 conjunction goal")
+    public void andAll() {
+        DungeonManiaController dmc;
+        dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_complexGoalsTest_andAll", "c_complexGoalsTest_andAll");
+
+        System.out.println(TestUtils.getGoals(res));
+        assertTrue(TestUtils.getGoals(res).contains(":exit"));
+        assertTrue(TestUtils.getGoals(res).contains(":treasure"));
+        assertTrue(TestUtils.getGoals(res).contains(":boulders"));
+
+        // kill spider
+        res = dmc.tick(Direction.RIGHT);
+        assertTrue(TestUtils.getGoals(res).contains(":exit"));
+        assertTrue(TestUtils.getGoals(res).contains(":treasure"));
+        assertTrue(TestUtils.getGoals(res).contains(":boulders"));
+
+        // move boulder onto switch
+        res = dmc.tick(Direction.RIGHT);
+        assertTrue(TestUtils.getGoals(res).contains(":exit"));
+        assertTrue(TestUtils.getGoals(res).contains(":treasure"));
+        assertFalse(TestUtils.getGoals(res).contains(":boulders"));
+
+        //save and load
+        res = assertDoesNotThrow(() -> dmc.saveGame("4goals"));
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        res = assertDoesNotThrow(() -> dmc.loadGame("4goals"));
+
+        // pickup treasure
+        res = dmc.tick(Direction.DOWN);
+        assertTrue(TestUtils.getGoals(res).contains(":exit"));
+        assertFalse(TestUtils.getGoals(res).contains(":treasure"));
+        assertFalse(TestUtils.getGoals(res).contains(":boulders"));
+
+        // move to exit
+        res = dmc.tick(Direction.DOWN);
+        assertEquals("", TestUtils.getGoals(res));
+    }
+
+    @Test
+    @DisplayName("Test building a shield with treasure")
+    public void buildShieldWithTreasure() {
+        DungeonManiaController dmc;
+        dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame(
+            "d_BuildablesTest_BuildShieldWithTreasure", "c_BuildablesTest_BuildShieldWithTreasure");
+        assertEquals(0, TestUtils.getInventory(res, "wood").size());
+        assertEquals(0, TestUtils.getInventory(res, "treasure").size());
+
+        // Pick up Wood x2
+        res = dmc.tick(Direction.RIGHT);
+        res = dmc.tick(Direction.RIGHT);
+        assertEquals(2, TestUtils.getInventory(res, "wood").size());
+
+        // Pick up Treasure
+        res = dmc.tick(Direction.RIGHT);
+        assertEquals(1, TestUtils.getInventory(res, "treasure").size());
+
+        //save and load
+        res = assertDoesNotThrow(() -> dmc.saveGame("shield"));
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        res = assertDoesNotThrow(() -> dmc.loadGame("shield"));
+
+        // Build Shield
+        assertEquals(0, TestUtils.getInventory(res, "shield").size());
+        res = assertDoesNotThrow(() -> dmc.build("shield"));
+        assertEquals(1, TestUtils.getInventory(res, "shield").size());
+
+        // Materials used in construction disappear from inventory
+        assertEquals(0, TestUtils.getInventory(res, "wood").size());
+        assertEquals(0, TestUtils.getInventory(res, "treasure").size());
+
+        //save and load
+        res = assertDoesNotThrow(() -> dmc.saveGame("shield"));
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        res = assertDoesNotThrow(() -> dmc.loadGame("shield"));
+
+        assertEquals(1, TestUtils.getInventory(res, "shield").size());
+        assertEquals(0, TestUtils.getInventory(res, "wood").size());
+        assertEquals(0, TestUtils.getInventory(res, "treasure").size());
+    }
+
+    @Test
+    @DisplayName("Pesistence Test building a bow")
+    public void buildBow() {
+        DungeonManiaController dmc;
+        dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_BuildablesTest_BuildBow", "c_BuildablesTest_BuildBow");
+
+        assertEquals(0, TestUtils.getInventory(res, "wood").size());
+        assertEquals(0, TestUtils.getInventory(res, "arrow").size());
+
+        // Pick up Wood
+        res = dmc.tick(Direction.RIGHT);
+        assertEquals(1, TestUtils.getInventory(res, "wood").size());
+
+        // Pick up Arrow x3
+        res = dmc.tick(Direction.RIGHT);
+        res = dmc.tick(Direction.RIGHT);
+        res = dmc.tick(Direction.RIGHT);
+        assertEquals(3, TestUtils.getInventory(res, "arrow").size());
+
+        // Build Bow
+        assertEquals(0, TestUtils.getInventory(res, "bow").size());
+        res = assertDoesNotThrow(() -> dmc.build("bow"));
+        assertEquals(1, TestUtils.getInventory(res, "bow").size());
+
+        // Materials used in construction disappear from inventory
+        assertEquals(0, TestUtils.getInventory(res, "wood").size());
+        assertEquals(0, TestUtils.getInventory(res, "arrow").size());
+
+        //save and load
+        res = assertDoesNotThrow(() -> dmc.saveGame("Bow"));
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        res = assertDoesNotThrow(() -> dmc.loadGame("Bow"));
+        assertEquals(1, TestUtils.getInventory(res, "bow").size());
+        assertEquals(0, TestUtils.getInventory(res, "wood").size());
+        assertEquals(0, TestUtils.getInventory(res, "arrow").size());
     }
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import dungeonmania.entities.BattleItem;
@@ -12,6 +13,7 @@ import dungeonmania.entities.Entity;
 import dungeonmania.entities.EntityFactory;
 import dungeonmania.entities.Player;
 import dungeonmania.entities.buildables.Bow;
+import dungeonmania.entities.buildables.Shield;
 import dungeonmania.entities.collectables.Arrow;
 import dungeonmania.entities.collectables.Bomb;
 import dungeonmania.entities.collectables.Key;
@@ -55,10 +57,14 @@ public class Inventory {
             return new InvincibilityPotion(itemJson);
         case "sword":
             return new Sword(itemJson);
+        case "shield":
+            return new Shield(itemJson);
+        case "bow":
+            return new Bow(itemJson);
         case "key":
             return new Key(itemJson);
         default:
-            return null;
+            throw new JSONException("can't create into inventory: " + type);
         }
     }
 
