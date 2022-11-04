@@ -196,6 +196,10 @@ public class EntityFactory {
             return new Key(pos, jsonEntity.getInt("key"));
         case "sceptre":
             return buildSceptre();
+        case "midnight_armour":
+            double swordAttack = config.optDouble("sword_attack", Sword.DEFAULT_ATTACK);
+            int swordDurability = config.optInt("sword_durability", Sword.DEFAULT_DURABILITY);
+            return
         default:
             return null;
         }

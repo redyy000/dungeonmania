@@ -41,10 +41,6 @@ public class Shield extends Buildable implements BattleItem {
             1));
     }
 
-    @Override
-    public int getDurability() {
-        return durability;
-    }
 
     @Override
     public JSONObject getJSON() {

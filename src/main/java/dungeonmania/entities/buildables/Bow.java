@@ -16,7 +16,7 @@ public class Bow extends Buildable implements BattleItem {
     }
 
     public Bow(JSONObject j) {
-        super(null);
+        super(null); //TODO don't know if this is right.
         this.durability = j.getInt("durability");
     }
 
@@ -36,11 +36,6 @@ public class Bow extends Buildable implements BattleItem {
             0,
             2,
             1));
-    }
-
-    @Override
-    public int getDurability() {
-        return durability;
     }
 
     @Override

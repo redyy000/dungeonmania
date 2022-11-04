@@ -56,6 +56,7 @@ public class Inventory {
             return new Shield(itemJson);
         case "bow":
             return new Bow(itemJson);
+        //TODO sceptre
         default:
             throw new JSONException("can't create into inventory: " + type);
         }
