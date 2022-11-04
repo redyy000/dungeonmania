@@ -85,6 +85,9 @@ public class Player extends Entity implements Battleable {
         return inventory.hasWeapon();
     }
 
+    public boolean hasSceptre() {
+        return inventory.hasSceptre();
+    }
     public BattleItem getWeapon() {
         return inventory.getWeapon();
     }
@@ -93,13 +96,12 @@ public class Player extends Entity implements Battleable {
         getWeapon().use(game);
     }
 
-    public List<String> getBuildables() {
-        return inventory.getBuildables();
+    public List<String> getBuildables(GameMap map) {
+        return inventory.getBuildables(map);
     }
 
-    public boolean build(String entity, EntityFactory factory) {
-        // TODO. Chceckbuildcirtersia is very wrong: Remove shouldn't be used, should give a string.
-        InventoryItem item = inventory.checkBuildCriteria(this, true, entity.equals("shield"), factory);
+    public boolean build(String entity, EntityFactory factory, GameMap map) {
+        InventoryItem item = inventory.tryBuildItem(this, true, entity, factory, map);
         if (item == null) return false;
         return inventory.add(item);
     }

@@ -4,18 +4,19 @@ import org.json.JSONObject;
 
 import dungeonmania.Game;
 import dungeonmania.battles.BattleStatistics;
+import dungeonmania.entities.BattleItem;
 
-public class Bow extends Buildable  {
+public class Bow extends Buildable implements BattleItem {
 
     private int durability;
 
     public Bow(int durability) {
-        super(null);
+        super();
         this.durability = durability;
     }
 
     public Bow(JSONObject j) {
-        super(null);
+        super(j); //TODO don't know if this is right.
         this.durability = j.getInt("durability");
     }
 
@@ -35,11 +36,6 @@ public class Bow extends Buildable  {
             0,
             2,
             1));
-    }
-
-    @Override
-    public int getDurability() {
-        return durability;
     }
 
     @Override

@@ -16,13 +16,20 @@ public abstract class Entity {
 
     private Position position;
     private String entityId;
+    public Entity() {
+        this.position = null; //for buildables probrbaly.
+        this.entityId = UUID.randomUUID().toString();
+    }
 
     public Entity(Position position) {
         this.position = position;
         this.entityId = UUID.randomUUID().toString();
     }
     public Entity(JSONObject j) {
-        this.position = new Position(j.getJSONObject("position"));
+        this.position = null;
+        if (j.has("position")) {
+            this.position = new Position(j.getJSONObject("position"));
+        }
         this.entityId = j.getString("id");
     }
 

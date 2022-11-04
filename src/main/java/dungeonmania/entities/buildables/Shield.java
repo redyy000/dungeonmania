@@ -5,19 +5,20 @@ import org.json.JSONObject;
 
 import dungeonmania.Game;
 import dungeonmania.battles.BattleStatistics;
+import dungeonmania.entities.BattleItem;
 
-public class Shield extends Buildable {
+public class Shield extends Buildable implements BattleItem {
     private int durability;
     private double defence;
 
     public Shield(int durability, double defence) {
-        super(null);
+        super();
         this.durability = durability;
         this.defence = defence;
     }
 
     public Shield(JSONObject j) {
-        super(null);
+        super(j);
         this.durability = j.getInt("durability");
         this.defence = j.getDouble("defence");
     }
@@ -40,10 +41,6 @@ public class Shield extends Buildable {
             1));
     }
 
-    @Override
-    public int getDurability() {
-        return durability;
-    }
 
     @Override
     public JSONObject getJSON() {

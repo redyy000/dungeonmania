@@ -23,7 +23,7 @@ public class ResponseBuilder {
                 entityResponse,
                 (game.getPlayer() != null) ? getInventoryResponse(game.getPlayer().getInventory()) : null,
                 game.getBattleFacade().getBattleResponses(),
-                (game.getPlayer() != null) ? game.getPlayer().getBuildables() : null,
+                (game.getPlayer() != null) ? game.getPlayer().getBuildables(game.getMap()) : null,
                 (game.getGoals().achieved(game)) ? ""
                         : game.getGoals().toString(game));
     }

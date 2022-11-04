@@ -43,11 +43,6 @@ public abstract class Potion extends Collectable implements BattleItem {
     }
 
     @Override
-    public int getDurability() {
-        return 1;
-    }
-
-    @Override
     public JSONObject getJSON() {
         JSONObject j = super.getJSON();
         j.put("duration", this.duration);
