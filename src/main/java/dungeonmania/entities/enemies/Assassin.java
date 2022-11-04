@@ -21,6 +21,7 @@ public class Assassin extends Mercenary {
 
     private double failBribeProb = Assassin.DEFAULT_BRIBE_PROBABILITY;
     private Random rng;
+    private Integer seed = null;
 
     public Assassin(Position position, double health, double attack,
                     int bribeAmount, int bribeRadius, double failBribeProb) {
@@ -30,7 +31,14 @@ public class Assassin extends Mercenary {
     }
     public Assassin(JSONObject j) {
         super(j);
-        //TODO. DebugAssassin should like search for seed in setting the json.
+        this.failBribeProb = j.getDouble("failBribeProb");
+
+        if (j.has("seed")) {
+            this.seed = j.getInt("seed");
+            this.rng = new Random(this.seed);
+        } else {
+            this.rng = new Random();
+        }
     }
 
     // Assassin for debugging bribe odds.
@@ -38,7 +46,8 @@ public class Assassin extends Mercenary {
     int bribeAmount, int bribeRadius, double failBribeProb, int seed) {
         super(position, health, attack, bribeAmount, bribeRadius);
         this.failBribeProb = failBribeProb;
-        this.rng = new Random(seed);
+        this.seed = seed;
+        this.rng = new Random(this.seed);
     }
 
     /**
@@ -76,5 +85,15 @@ public class Assassin extends Mercenary {
     @Override
     public boolean isInteractable(Player player) {
         return !this.isAllied() && this.canBeBribed(player);
+    }
+
+    @Override
+    public JSONObject getJSON() {
+        JSONObject j = super.getJSON();
+        j.put("failBribeProb", this.failBribeProb);
+        if (this.seed != null) {
+            j.put("seed", (int) this.seed);
+        }
+        return j;
     }
 }
