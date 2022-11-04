@@ -15,6 +15,7 @@ import dungeonmania.entities.Player;
 import dungeonmania.entities.SavedEntityFactory;
 import dungeonmania.entities.buildables.Bow;
 import dungeonmania.entities.buildables.BuildableFactory;
+import dungeonmania.entities.buildables.Sceptre;
 import dungeonmania.entities.buildables.Shield;
 
 import dungeonmania.entities.collectables.Sword;
@@ -106,6 +107,9 @@ public class Inventory {
         return getFirst(Sword.class) != null || getFirst(Bow.class) != null;
     }
 
+    public boolean hasSceptre() {
+        return getFirst(Sceptre.class) != null;
+    }
     public BattleItem getWeapon() {
         BattleItem weapon = getFirst(Sword.class);
         if (weapon == null)

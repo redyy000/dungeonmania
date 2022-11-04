@@ -23,6 +23,7 @@ public class Mercenary extends Enemy implements Interactable {
     private int bribeRadius = Mercenary.DEFAULT_BRIBE_RADIUS;
     private boolean allied = false;
     private EnemyMovement movementStrategy = new HostileMovement();
+    private int ticksUntilUnmindcontrolled = 0;
 
     public Mercenary(Position position, double health, double attack, int bribeAmount, int bribeRadius) {
         super(position, health, attack);
@@ -53,6 +54,7 @@ public class Mercenary extends Enemy implements Interactable {
      * @return
      */
     protected boolean canBeBribed(Player player) {
+        // TODO bribeRadius more than 0??
         int nCoins = player.countEntityOfType(Treasure.class);
         return bribeRadius >= 0 && nCoins >= bribeAmount;
     }
@@ -66,10 +68,15 @@ public class Mercenary extends Enemy implements Interactable {
         }
     }
 
+    // interacting was valid. Let bribing take priority.
     @Override
     public void interact(Player player, Game game) {
         allied = true;
-        bribe(player);
+        if (canBeBribed(player)) {
+            bribe(player);
+        } else if (player.hasSceptre()) {
+            this.ticksUntilUnmindcontrolled = 3;
+        }
     }
 
     @Override
@@ -84,7 +91,7 @@ public class Mercenary extends Enemy implements Interactable {
 
     @Override
     public boolean isInteractable(Player player) {
-        return !allied && canBeBribed(player);
+        return !allied && (canBeBribed(player) || player.hasSceptre());
     }
 
     public JSONObject getJSON() {
@@ -101,5 +108,19 @@ public class Mercenary extends Enemy implements Interactable {
     }
     protected void setAllied(boolean b) {
         this.allied = b;
+    }
+
+    //mind control:
+    public void onTick(int tick) {
+        if (ticksUntilUnmindcontrolled == 0) {
+            this.allied = false;
+        }
+        if (ticksUntilUnmindcontrolled > 0) {
+            ticksUntilUnmindcontrolled -= 1;
+        }
+    }
+
+    protected void setTickUntilUnmindcontrolled(int ticks) {
+        this.ticksUntilUnmindcontrolled = ticks;
     }
 }
