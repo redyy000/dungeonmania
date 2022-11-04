@@ -22,9 +22,7 @@ public class Mercenary extends Enemy implements Interactable {
     private int bribeAmount = Mercenary.DEFAULT_BRIBE_AMOUNT;
     private int bribeRadius = Mercenary.DEFAULT_BRIBE_RADIUS;
     private boolean allied = false;
-    private boolean controlled = false;
     private EnemyMovement movementStrategy = new HostileMovement();
-    private int ticksUntilUnmindcontrolled = 0;
 
     public Mercenary(Position position, double health, double attack, int bribeAmount, int bribeRadius) {
         super(position, health, attack);
@@ -55,7 +53,6 @@ public class Mercenary extends Enemy implements Interactable {
      * @return
      */
     protected boolean canBeBribed(Player player) {
-        // TODO bribeRadius more than 0??
         int nCoins = player.countEntityOfType(Treasure.class);
         return bribeRadius >= 0 && nCoins >= bribeAmount;
     }
@@ -69,16 +66,10 @@ public class Mercenary extends Enemy implements Interactable {
         }
     }
 
-    // interacting was valid. Let bribing take priority.
     @Override
     public void interact(Player player, Game game) {
         allied = true;
-        if (canBeBribed(player)) {
-            bribe(player);
-        } else if (player.hasSceptre()) {
-            controlled = true;
-            this.ticksUntilUnmindcontrolled = 3;
-        }
+        bribe(player);
     }
 
     @Override
@@ -93,7 +84,7 @@ public class Mercenary extends Enemy implements Interactable {
 
     @Override
     public boolean isInteractable(Player player) {
-        return !allied && (canBeBribed(player) || player.hasSceptre());
+        return !allied && canBeBribed(player);
     }
 
     public JSONObject getJSON() {
@@ -110,23 +101,5 @@ public class Mercenary extends Enemy implements Interactable {
     }
     protected void setAllied(boolean b) {
         this.allied = b;
-    }
-
-    //mind control:
-    public void onTick(int tick) {
-        if (ticksUntilUnmindcontrolled == 0 && controlled) {
-            this.allied = false;
-            this.controlled = false;
-        }
-        if (ticksUntilUnmindcontrolled > 0) {
-            ticksUntilUnmindcontrolled -= 1;
-        }
-    }
-
-    protected void setTickUntilUnmindcontrolled(int ticks) {
-        this.ticksUntilUnmindcontrolled = ticks;
-    }
-    protected void setControlled(boolean b) {
-        this.controlled = b;
     }
 }
