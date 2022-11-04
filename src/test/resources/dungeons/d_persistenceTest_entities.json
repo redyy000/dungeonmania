@@ -1,0 +1,86 @@
+{
+    "entities": [
+        {
+            "type" : "player",
+            "x" : 1,
+            "y" : 1
+        }, {
+            "type" : "treasure",
+            "x" : 2,
+            "y" : 1
+        },  {
+            "type" : "bomb",
+            "x" : 3,
+            "y" : 1
+        }, {
+            "type" : "boulder",
+            "x" : 4,
+            "y" : 1
+        }, {
+            "type" : "switch",
+            "x" : 5,
+            "y" : 1
+        }, {
+            "type" : "sword",
+            "x" : 6,
+            "y" : 1
+        }, {
+            "type" : "exit",
+            "x" : 8,
+            "y" : 8
+        }, {
+            "type" : "wood",
+            "x" : 7,
+            "y" : 1
+        }, {
+            "type" : "arrow",
+            "x" : 8,
+            "y" : 1
+        }, {
+            "type" : "wall",
+            "x" : 9,
+            "y" : 1
+        }, {
+            "type" : "invincibility_potion",
+            "x" : 1,
+            "y" : 2
+        }, {
+            "type" : "invisibility_potion",
+            "x" : 2,
+            "y" : 2
+        }, {
+            "type" : "key",
+            "x" : 3,
+            "y" : 2,
+            "key" : 1
+        },{
+            "type" : "door",
+            "x" : 4,
+            "y" : 2,
+            "key" : 1
+        }, {
+            "type" : "mercenary",
+            "x" : 5,
+            "y" : 2
+        },  {
+            "type": "zombie_toast",
+            "x" : 6,
+            "y" : 2
+        }, {
+            "type" : "assassin",
+            "x" : 7,
+            "y" : 2
+        }, {
+            "type" : "zombie_toast_spawner",
+            "x" : 8,
+            "y" : 2
+        }, {
+            "type" : "spider",
+            "x" : 9,
+            "y" : 2
+        }
+        
+    
+    ],
+    "goal-condition": {"goal": "exit"}
+}

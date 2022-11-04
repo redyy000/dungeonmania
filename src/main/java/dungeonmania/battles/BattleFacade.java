@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import dungeonmania.Game;
 import dungeonmania.entities.BattleItem;
 import dungeonmania.entities.Entity;
@@ -17,6 +20,17 @@ import dungeonmania.util.NameConverter;
 
 public class BattleFacade {
     private List<BattleResponse> battleResponses = new ArrayList<>();
+
+    public BattleFacade() {
+        return;
+    }
+
+    public BattleFacade(JSONObject j) {
+        JSONArray responses = j.getJSONArray("battleResponses");
+        for (int i = 0; i < responses.length(); i++) {
+            this.battleResponses.add(new BattleResponse(responses.getJSONObject(i)));
+        }
+    }
 
     public void battle(Game game, Player player, Enemy enemy) {
         // 0. init
@@ -75,5 +89,14 @@ public class BattleFacade {
 
     public List<BattleResponse> getBattleResponses() {
         return battleResponses;
+    }
+
+    public JSONObject getJSON() {
+        JSONObject j = new JSONObject();
+        JSONArray responsesJ = new JSONArray();
+        this.battleResponses.stream()
+            .forEach((BattleResponse r) -> responsesJ.put(r.getJSON()));
+        j.put("battleResponses", responsesJ);
+        return j;
     }
 }

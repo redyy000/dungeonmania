@@ -9,7 +9,7 @@ public interface Goal {
 
     public boolean achieved(Game game);
     public String toString(Game game);
-    public JSONObject getJson();
+    public JSONObject getJSON();
 
     /**
      * @return true if the goal has been achieved, false otherwise

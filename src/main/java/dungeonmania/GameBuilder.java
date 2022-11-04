@@ -4,14 +4,11 @@ import java.io.IOException;
 
 import org.json.JSONObject;
 
-import dungeonmania.entities.Entity;
 import dungeonmania.entities.EntityFactory;
-import dungeonmania.entities.Player;
 import dungeonmania.goals.Goal;
 import dungeonmania.goals.GoalFactory;
 import dungeonmania.map.GameMap;
-import dungeonmania.map.GraphNode;
-import dungeonmania.map.GraphNodeFactory;
+
 import dungeonmania.util.FileLoader;
 
 /**
@@ -65,20 +62,22 @@ public class GameBuilder {
 
     // Load saved file build-game.
     public Game buildGame(JSONObject savedJson) {
-        this.config = savedJson.getJSONObject("config");
-        this.dungeon = savedJson.getJSONObject("dungeon");
-        this.configName = null; // set the names to null. Hopefully should not rely on them if loading from save.
-        this.dungeonName = null;
-        if (dungeon == null && config == null) {
-            return null; // something went wrong
+        /* KEys:
+         * config,  goal-condition, game, gameMap.
+         * this.config should remain null. Collect the config from the save file instead.
+         */
+        JSONObject savedConfig = savedJson.getJSONObject("config");
+        Game game = new Game(savedJson.getJSONObject("game"));
+        game.setEntityFactory(new EntityFactory(savedConfig));
+        // SavedEntityFactory factory = new SavedEntityFactory(config); //create entities considering they're saved.
+        // game.setEntityFactory(factory);
+        GameMap map = new GameMap(game, savedJson.getJSONArray("gameMap"));
+        game.setMap(map);
+        if (!savedJson.isNull("goal-condition")) {
+            Goal goal = GoalFactory.createGoal(savedJson.getJSONObject("goal-condition"), savedConfig);
+            game.setGoals(goal);
         }
-
-        Game game = new Game(dungeonName);
-        EntityFactory factory = new EntityFactory(config);
-        game.setEntityFactory(factory);
-        buildMap(game);
-        buildGoals(game);
-        game.init();
+        game.initSavedGame();
 
         return game;
     }
@@ -103,20 +102,7 @@ public class GameBuilder {
     }
 
     private void buildMap(Game game) {
-        GameMap map = new GameMap();
-        map.setGame(game);
-
-        dungeon.getJSONArray("entities").forEach(e -> {
-            JSONObject jsonEntity = (JSONObject) e;
-            GraphNode newNode = GraphNodeFactory.createEntity(jsonEntity, game.getEntityFactory());
-            Entity entity = newNode.getEntities().get(0);
-
-            if (newNode != null)
-                map.addNode(newNode);
-
-            if (entity instanceof Player)
-                map.setPlayer((Player) entity);
-        });
+        GameMap map = new GameMap(game, this.dungeon);
         game.setMap(map);
     }
 

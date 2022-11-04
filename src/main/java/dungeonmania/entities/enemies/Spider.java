@@ -1,6 +1,10 @@
 package dungeonmania.entities.enemies;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import dungeonmania.Game;
 import dungeonmania.entities.Boulder;
@@ -31,6 +35,18 @@ public class Spider extends Enemy {
         nextPositionElement = 1;
         forward = true;
     };
+
+    public Spider(JSONObject j) {
+        super(j);
+        this.movementTrajectory = new ArrayList<Position>();
+        JSONArray trajectoriesJ = j.getJSONArray("movementTrajectory");
+        for (int i = 0; i < trajectoriesJ.length(); i++) {
+            this.movementTrajectory.add(new Position(trajectoriesJ.getJSONObject(i)));
+        }
+        this.forward = j.getBoolean("forward");
+        this.nextPositionElement = j.getInt("nextPositionElement");
+
+    }
 
     private void updateNextPosition() {
         if (forward) {
@@ -85,5 +101,17 @@ public class Spider extends Enemy {
 
     public void setNextPositionElement(int nextPositionElement) {
         this.nextPositionElement = nextPositionElement;
+    }
+
+    public JSONObject getJSON() {
+        JSONObject j = super.getJSON();
+
+        JSONArray movementsJsons = new JSONArray();
+        this.movementTrajectory.stream()
+                            .forEach((Position p) -> movementsJsons.put(p.getJSON()));
+        j.put("movementTrajectory", movementsJsons);
+        j.put("forward", this.forward);
+        j.put("nextPositionElement", this.nextPositionElement);
+        return j;
     }
 }

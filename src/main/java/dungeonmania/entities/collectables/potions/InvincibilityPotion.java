@@ -1,5 +1,7 @@
 package dungeonmania.entities.collectables.potions;
 
+import org.json.JSONObject;
+
 import dungeonmania.battles.BattleStatistics;
 import dungeonmania.util.Position;
 
@@ -9,6 +11,11 @@ public class InvincibilityPotion extends Potion {
     public InvincibilityPotion(Position position, int duration) {
         super(position, duration);
     }
+
+    public InvincibilityPotion(JSONObject j) {
+        super(j);
+    }
+
 
     @Override
     public BattleStatistics applyBuff(BattleStatistics origin) {

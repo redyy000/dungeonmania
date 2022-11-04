@@ -3,6 +3,8 @@ package dungeonmania.entities;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.json.JSONObject;
+
 import dungeonmania.entities.enemies.Mercenary;
 import dungeonmania.entities.enemies.ZombieToast;
 import dungeonmania.map.GameMap;
@@ -15,6 +17,11 @@ public class Portal extends Entity {
     public Portal(Position position, ColorCodedType color) {
         super(position);
         this.color = color;
+    }
+
+    public Portal(JSONObject j) {
+        super(j);
+        this.color = j.getEnum(ColorCodedType.class, "color");
     }
 
     @Override
@@ -73,5 +80,11 @@ public class Portal extends Entity {
         if (portal != null) {
             portal.bind(this);
         }
+    }
+
+    public JSONObject getJSON() {
+        JSONObject j = super.getJSON();
+        j.put("color", this.color);
+        return j; //no need to put in pair, init will work it out later.
     }
 }

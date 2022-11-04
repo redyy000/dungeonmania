@@ -1,5 +1,7 @@
 package dungeonmania.entities.collectables;
 
+import org.json.JSONObject;
+
 import dungeonmania.entities.Entity;
 import dungeonmania.entities.Player;
 import dungeonmania.map.GameMap;
@@ -10,7 +12,9 @@ public abstract class Collectable extends Entity {
     public Collectable(Position position) {
         super(position);
     }
-
+    public Collectable(JSONObject j) {
+        super(j);
+    }
     @Override
     public void onOverlap(GameMap map, Entity entity) {
         if (entity instanceof Player) {

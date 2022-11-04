@@ -3,6 +3,8 @@ package dungeonmania.entities;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONObject;
+
 import dungeonmania.entities.collectables.Bomb;
 import dungeonmania.map.GameMap;
 import dungeonmania.util.Position;
@@ -13,6 +15,12 @@ public class Switch extends Entity {
 
     public Switch(Position position) {
         super(position.asLayer(Entity.ITEM_LAYER));
+    }
+
+    public Switch(JSONObject j) {
+        super(j);
+        this.activated = j.getBoolean("activated");
+        // set activated. Hopefully bombs subscribe elsewehere too.
     }
 
     public void subscribe(Bomb b) {
@@ -52,5 +60,12 @@ public class Switch extends Entity {
 
     public boolean isActivated() {
         return activated;
+    }
+
+    @Override
+    public JSONObject getJSON() {
+        JSONObject j = super.getJSON();
+        j.put("activated", this.activated);
+        return j;
     }
 }

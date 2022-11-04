@@ -7,6 +7,9 @@ import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.stream.Collectors;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import dungeonmania.Game;
 import dungeonmania.entities.Entity;
 import dungeonmania.entities.Player;
@@ -28,6 +31,42 @@ public class GameMap {
      * Initialise the game map
      * 1. pair up portals
      */
+
+    public GameMap(Game game, JSONObject dungeon) {
+        this.game = game;
+        dungeon.getJSONArray("entities").forEach(e -> {
+            JSONObject jsonEntity = (JSONObject) e;
+            GraphNode newNode = GraphNodeFactory.createEntity(jsonEntity, game.getEntityFactory());
+            Entity entity = newNode.getEntities().get(0);
+
+            if (newNode != null)
+                addNode(newNode);
+
+            if (entity instanceof Player)
+                setPlayer((Player) entity); //Might not need this, because Game can set Player with JSON.
+        });
+        init(); // added by me
+    }
+
+    public GameMap(Game game, JSONArray gameMapJson) {
+        /*
+         * {[{position, node}, {position, node}]"}
+         */
+        this.game = game;
+        for (int i = 0; i < gameMapJson.length(); i++) {
+            JSONObject nodeJson = gameMapJson.getJSONObject(i);
+            Position nodePosition = new Position(nodeJson.getJSONObject("position"));
+            GraphNode nodeNode = new GraphNode(nodeJson.getJSONObject("node"));
+            if (nodeNode.tryGetPlayer() != null) {
+                //set player when found
+                this.player = nodeNode.tryGetPlayer();
+            }
+            this.nodes.put(nodePosition, nodeNode);
+        }
+        init();
+    }
+
+
     public void init() {
         initPairPortals();
         initRegisterMovables();
@@ -79,7 +118,7 @@ public class GameMap {
         zts.forEach(e -> {
             game.register(() -> e.spawn(game), Game.AI_MOVEMENT, e.getId());
         });
-        game.register(() -> game.getEntityFactory().spawnSpider(game), Game.AI_MOVEMENT, "zombieToastSpawner");
+        game.register(() -> game.getEntityFactory().spawnSpider(game), Game.AI_MOVEMENT, "spiderSpawner");
     }
 
     public void moveTo(Entity entity, Position position) {
@@ -96,7 +135,7 @@ public class GameMap {
         if (!canMoveTo(entity, Position.translateBy(entity.getPosition(), direction))) return;
         triggerMovingAwayEvent(entity);
         removeNode(entity);
-        entity.translate(direction);
+        entity.setPosition(Position.translateBy(entity.getPosition(), direction));
         addEntity(entity);
         triggerOverlapEvent(entity);
     }
@@ -268,5 +307,22 @@ public class GameMap {
 
     public void setGame(Game game) {
         this.game = game;
+    }
+
+
+    public JSONArray getJSON() {
+        //NOTe that gameMap returns a JSONARRAY rather than Object.
+        /*
+         * [{position, node}, {position, node}]
+         */
+        // create an array of position and graphNode, to mirror a Map.
+        JSONArray mapJson = new JSONArray();
+        for (Position key: this.nodes.keySet()) {
+            JSONObject nodeJson = new JSONObject();
+            nodeJson.put("position", key.getJSON());
+            nodeJson.put("node", this.nodes.get(key).getJSON());
+            mapJson.put(nodeJson);
+        }
+        return mapJson;
     }
 }

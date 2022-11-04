@@ -1,5 +1,7 @@
 package dungeonmania.entities.playerState;
 
+import org.json.JSONObject;
+
 import dungeonmania.entities.Player;
 
 public class PlayerState {
@@ -13,6 +15,11 @@ public class PlayerState {
         this.isInvisible = isInvisible;
     }
 
+    public PlayerState(Player player, JSONObject j) {
+        this.player = player;
+        this.isInvincible = j.getBoolean("isInvincible");
+        this.isInvisible = j.getBoolean("isInvisible");
+    }
     public boolean isInvincible() {
         return isInvincible;
     };
@@ -36,5 +43,12 @@ public class PlayerState {
     public void transitionBase() {
         this.isInvisible = false;
         this.isInvincible = false;
+    }
+
+    public JSONObject getJSON() {
+        JSONObject j = new JSONObject();
+        j.put("isInvisible", isInvisible);
+        j.put("isInvincible", isInvincible);
+        return j;
     }
 }
