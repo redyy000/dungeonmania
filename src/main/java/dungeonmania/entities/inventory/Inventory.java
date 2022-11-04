@@ -72,9 +72,10 @@ public class Inventory {
         return bf.getBuildables(map);
     }
 
-    public InventoryItem tryBuildItem(Player p, boolean remove, String itemType, EntityFactory factory, GameMap map) {
+    public InventoryItem tryBuildItem(Player p, boolean remove, String itemType,
+                                    EntityFactory factory, GameMap map) {
         BuildableFactory bf = new BuildableFactory(this.items);
-        InventoryItem newItem = bf.tryBuildItem(remove, itemType, factory, map); //expect these inventory items to go away.
+        InventoryItem newItem = bf.tryBuildItem(remove, itemType, factory, map);
         return newItem;
     }
 
