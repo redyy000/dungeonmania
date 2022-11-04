@@ -69,6 +69,7 @@ public class Assassin extends Mercenary {
             setAllied(bribe(player));
         } else if (player.hasSceptre()) {
             setAllied(true);
+            setControlled(true);
             setTickUntilUnmindcontrolled(3);
         }
     }

@@ -22,6 +22,7 @@ public class Mercenary extends Enemy implements Interactable {
     private int bribeAmount = Mercenary.DEFAULT_BRIBE_AMOUNT;
     private int bribeRadius = Mercenary.DEFAULT_BRIBE_RADIUS;
     private boolean allied = false;
+    private boolean controlled = false;
     private EnemyMovement movementStrategy = new HostileMovement();
     private int ticksUntilUnmindcontrolled = 0;
 
@@ -75,6 +76,7 @@ public class Mercenary extends Enemy implements Interactable {
         if (canBeBribed(player)) {
             bribe(player);
         } else if (player.hasSceptre()) {
+            controlled = true;
             this.ticksUntilUnmindcontrolled = 3;
         }
     }
@@ -112,8 +114,9 @@ public class Mercenary extends Enemy implements Interactable {
 
     //mind control:
     public void onTick(int tick) {
-        if (ticksUntilUnmindcontrolled == 0) {
+        if (ticksUntilUnmindcontrolled == 0 && controlled) {
             this.allied = false;
+            this.controlled = false;
         }
         if (ticksUntilUnmindcontrolled > 0) {
             ticksUntilUnmindcontrolled -= 1;
@@ -122,5 +125,8 @@ public class Mercenary extends Enemy implements Interactable {
 
     protected void setTickUntilUnmindcontrolled(int ticks) {
         this.ticksUntilUnmindcontrolled = ticks;
+    }
+    protected void setControlled(boolean b) {
+        this.controlled = b;
     }
 }

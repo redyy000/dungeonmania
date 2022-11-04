@@ -10,11 +10,11 @@
         "y" : 1
       },{
         "type" : "mercenary",
-        "x" : 5,
+        "x" : 6,
         "y" : 1
       }, {
         "type" : "mercenary",
-        "x" : 6,
+        "x" : 8,
         "y" : 1
       }, {
         "type": "exit",
