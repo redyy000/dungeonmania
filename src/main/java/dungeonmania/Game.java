@@ -42,7 +42,7 @@ public class Game {
 
     public Game(String dungeonName) {
         this.name = dungeonName;
-        // this.map = new GameMap(); //uesless, gameMap set by builder.
+        //this.map = new GameMap(); //uesless, gameMap set by builder.
         this.battleFacade = new BattleFacade();
     }
 
@@ -52,7 +52,7 @@ public class Game {
         // goals set by gameBuilder.
         // map set by gameBuilder
         // player set by initSavedGame()
-        this.battleFacade = new BattleFacade(); //TODO
+        this.battleFacade = new BattleFacade();
         // entityFactory set by gameBuilder
         this.isInTick = j.getBoolean("isInTick");
         this.killedEnemies = j.getInt("killedEnemies");
@@ -68,7 +68,7 @@ public class Game {
         register(() -> player.onTick(tickCount), PLAYER_MOVEMENT, "potionQueue");
     }
 
-    public void initSavedGame() { //shold remove this. TODO
+    public void initSavedGame() {
         player = map.getPlayer();
         register(() -> player.onTick(tickCount), PLAYER_MOVEMENT, "potionQueue");
     }

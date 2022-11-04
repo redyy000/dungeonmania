@@ -78,7 +78,6 @@ public class Player extends Entity implements Battleable {
             this.facing = j.getEnum(Direction.class, "facing");
         if (j.has("inEffective"))
             this.inEffective = (Potion) SavedEntityFactory.createEntity((j.getJSONObject("inEffective")));
-            //TODO If have time, this potion creation looks wrong
 
     }
 

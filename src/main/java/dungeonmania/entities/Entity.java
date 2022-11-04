@@ -30,23 +30,6 @@ public abstract class Entity {
         return false;
     }
 
-    // use setPosition
-    // @Deprecated(forRemoval = true)
-    // public void translate(Direction direction) {
-    //     previousPosition = this.position;
-    //     this.position = Position.translateBy(this.position, direction);
-    //     if (!previousPosition.equals(this.position)) {
-    //         previousDistinctPosition = previousPosition;
-    //     }
-    // }
-
-    // use setPosition
-    @Deprecated(forRemoval = true)
-    public void translate(Position offset) {
-        this.position = Position.translateBy(this.position, offset);
-    }
-
-
     public void onOverlap(GameMap map, Entity entity) {
         return;
     }
@@ -75,7 +58,9 @@ public abstract class Entity {
     public JSONObject getJSON() {
         JSONObject j = new JSONObject();
         j.put("type", NameConverter.toSnakeCase(this.getClass().getSimpleName())); //use the string version.
-        j.put("position", this.position.getJSON());
+        if (this.position != null) {
+            j.put("position", this.position.getJSON());
+        }
         j.put("id", this.entityId);
         return j;
     }

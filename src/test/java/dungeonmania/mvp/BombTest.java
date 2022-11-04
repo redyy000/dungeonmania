@@ -243,4 +243,43 @@ public class BombTest {
         assertEquals(1, TestUtils.getEntities(res, "player").size());
     }
 
+    @Test
+    @DisplayName(
+        "Test some that if bomb spawns away from switch it can still be used")
+    public void placeCardinallyActivated2() throws InvalidActionException {
+        DungeonManiaController dmc;
+        dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_bombTest_placeCardinalActive2",
+                                            "c_bombTest_placeCardinallyActivated");
+
+        assertEquals(1, TestUtils.getEntities(res, "bomb").size());
+        assertEquals(1, TestUtils.getEntities(res, "boulder").size());
+        assertEquals(1, TestUtils.getEntities(res, "switch").size());
+        assertEquals(1, TestUtils.getEntities(res, "wall").size());
+        assertEquals(1, TestUtils.getEntities(res, "treasure").size());
+        assertEquals(1, TestUtils.getEntities(res, "player").size());
+
+        // Pick up Bomb
+        res = dmc.tick(Direction.LEFT);
+        res = dmc.tick(Direction.RIGHT);
+        res = dmc.tick(Direction.RIGHT);
+        assertEquals(1, TestUtils.getInventory(res, "bomb").size());
+
+        // Place Cardinally Adjacent
+        res = dmc.tick(TestUtils.getInventory(res, "bomb").get(0).getId());
+
+        // Activate Switch
+        res = dmc.tick(Direction.DOWN);
+        res = dmc.tick(Direction.DOWN);
+        res = dmc.tick(Direction.RIGHT);
+        res = dmc.tick(Direction.UP);
+
+        // Check Bomb exploded
+        assertEquals(0, TestUtils.getEntities(res, "bomb").size());
+        assertEquals(0, TestUtils.getEntities(res, "boulder").size());
+        assertEquals(0, TestUtils.getEntities(res, "switch").size());
+        assertEquals(0, TestUtils.getEntities(res, "wall").size());
+        assertEquals(0, TestUtils.getEntities(res, "treasure").size());
+        assertEquals(1, TestUtils.getEntities(res, "player").size());
+    }
 }
