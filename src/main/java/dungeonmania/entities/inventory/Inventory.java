@@ -12,17 +12,16 @@ import dungeonmania.entities.BattleItem;
 import dungeonmania.entities.Entity;
 import dungeonmania.entities.EntityFactory;
 import dungeonmania.entities.Player;
+import dungeonmania.entities.SavedEntityFactory;
 import dungeonmania.entities.buildables.Bow;
 import dungeonmania.entities.buildables.Shield;
 import dungeonmania.entities.collectables.Arrow;
-import dungeonmania.entities.collectables.Bomb;
 import dungeonmania.entities.collectables.Key;
 import dungeonmania.entities.collectables.SunStone;
 import dungeonmania.entities.collectables.Sword;
 import dungeonmania.entities.collectables.Treasure;
 import dungeonmania.entities.collectables.Wood;
-import dungeonmania.entities.collectables.potions.InvincibilityPotion;
-import dungeonmania.entities.collectables.potions.InvisibilityPotion;
+
 
 public class Inventory {
     private List<InventoryItem> items = new ArrayList<>();
@@ -45,27 +44,19 @@ public class Inventory {
         String type = itemJson.getString("type");
         switch (type) {
         case "treasure":
-            return new Treasure(itemJson);
         case "sun_stone":
-            return new SunStone(itemJson);
         case "wood":
-            return new Wood(itemJson);
         case "arrow":
-            return new Arrow(itemJson);
         case "bomb":
-            return new Bomb(itemJson);
         case "invisibility_potion":
-            return new InvisibilityPotion(itemJson);
         case "invincibility_potion":
-            return new InvincibilityPotion(itemJson);
         case "sword":
-            return new Sword(itemJson);
+        case "key":
+            return (InventoryItem) SavedEntityFactory.createEntity(itemJson);
         case "shield":
             return new Shield(itemJson);
         case "bow":
             return new Bow(itemJson);
-        case "key":
-            return new Key(itemJson);
         default:
             throw new JSONException("can't create into inventory: " + type);
         }
