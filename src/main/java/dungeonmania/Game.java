@@ -11,6 +11,7 @@ import dungeonmania.entities.Entity;
 import dungeonmania.entities.EntityFactory;
 import dungeonmania.entities.Interactable;
 import dungeonmania.entities.Player;
+import dungeonmania.entities.SwampTile;
 import dungeonmania.entities.collectables.Bomb;
 import dungeonmania.entities.collectables.potions.Potion;
 import dungeonmania.entities.enemies.Enemy;
@@ -71,11 +72,23 @@ public class Game {
         for (Mercenary m : mercs) {
             register(() -> m.onTick(tickCount), AI_MOVEMENT, "mindControlTimer" + m.getId());
         }
+        List<SwampTile> swampTiles = map.getEntities(SwampTile.class);
+        for (SwampTile s : swampTiles) {
+            register(() -> s.onTick(), AI_MOVEMENT, "swampTilesSlow " + s.getId());
+        }
     }
 
     public void initSavedGame() {
         player = map.getPlayer();
         register(() -> player.onTick(tickCount), PLAYER_MOVEMENT, "potionQueue");
+        List<Mercenary> mercs = map.getEntities(Mercenary.class);
+        for (Mercenary m : mercs) {
+            register(() -> m.onTick(tickCount), AI_MOVEMENT, "mindControlTimer" + m.getId());
+        }
+        List<SwampTile> swampTiles = map.getEntities(SwampTile.class);
+        for (SwampTile s : swampTiles) {
+            register(() -> s.onTick(), AI_MOVEMENT, "swampTilesSlow " + s.getId());
+        }
     }
 
     public Game tick(Direction movementDirection) {
