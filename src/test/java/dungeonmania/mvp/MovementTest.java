@@ -191,6 +191,8 @@ public class MovementTest {
         // Mercenary should never be on these swamp tiles
         assertNotEquals(new Position(3, 2), getMercPos(res));
         assertNotEquals(new Position(3, 3), getMercPos(res));
+        // Check merc is on the correct tile
+        assertEquals(new Position(3, 4), getMercPos(res));
 
         // move player right (tick 5)
         res = dmc.tick(Direction.RIGHT);
@@ -198,6 +200,71 @@ public class MovementTest {
         // Mercenary should never be on these swamp tiles
         assertNotEquals(new Position(3, 2), getMercPos(res));
         assertNotEquals(new Position(3, 3), getMercPos(res));
+        // Check merc is on the correct tile
+        assertEquals(new Position(3, 4), getMercPos(res));
+    }
+
+    @Test
+    @DisplayName("Test that an enemy is slowed correctly where there are multiple swamp tiles")
+    public void testStuckThroughManySwampTiles() {
+        // Wall     Wall     Wall     Wall    Wall    Wall    Wall
+        //                   Sw                               Wall
+        // P1       P2       Sw                       M1      Wall
+        //                   Sw                               Wall
+        // Wall     Wall     Wall     Wall    Wall    Wall    Wall
+        // Mercenary should path through the bottom swap tile to reach the player
+        DungeonManiaController dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame(
+            "d_movementTest_testMercenarySwampTiles", "c_movementTest_testMercenarySwampTiles");
+        EntityResponse player = TestUtils.getPlayer(res).get();
+
+        // move player right (tick 1)
+        res = dmc.tick(Direction.RIGHT);
+        player = TestUtils.getPlayer(res).get();
+
+        // move player left (tick 2)
+        res = dmc.tick(Direction.LEFT);
+        player = TestUtils.getPlayer(res).get();
+
+        // move player right (tick 3)
+        res = dmc.tick(Direction.RIGHT);
+        player = TestUtils.getPlayer(res).get();
+
+        // move player left (tick 4)
+        res = dmc.tick(Direction.LEFT);
+        player = TestUtils.getPlayer(res).get();
+        // Check merc is on the correct tile
+        assertEquals(new Position(3, 4), getMercPos(res));
+
+        // move player right (tick 5)
+        res = dmc.tick(Direction.RIGHT);
+        player = TestUtils.getPlayer(res).get();
+        // Check merc is stuck on the correct tile
+        assertEquals(new Position(3, 4), getMercPos(res));
+
+        // move player left (tick 6)
+        res = dmc.tick(Direction.LEFT);
+        player = TestUtils.getPlayer(res).get();
+        // Check merc is stuck on the correct tile
+        assertEquals(new Position(3, 4), getMercPos(res));
+
+        // move player right (tick 7)
+        res = dmc.tick(Direction.RIGHT);
+        player = TestUtils.getPlayer(res).get();
+        // Check merc is stuck on the correct tile
+        assertEquals(new Position(3, 4), getMercPos(res));
+
+        // move player left (tick 8)
+        res = dmc.tick(Direction.LEFT);
+        player = TestUtils.getPlayer(res).get();
+        // Check merc is stuck on the correct tile
+        assertEquals(new Position(3, 4), getMercPos(res));
+
+        // move player up (tick 0)
+        res = dmc.tick(Direction.UP);
+        player = TestUtils.getPlayer(res).get();
+        // Check merc has moved off the swamp correct tile
+        assertNotEquals(new Position(3, 4), getMercPos(res));
     }
 
     private Position getMercPos(DungeonResponse res) {
