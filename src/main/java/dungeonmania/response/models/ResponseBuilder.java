@@ -1,6 +1,5 @@
 package dungeonmania.response.models;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -13,22 +12,10 @@ import dungeonmania.util.NameConverter;
 
 public class ResponseBuilder {
     public static DungeonResponse getDungeonResponse(Game game) {
-        List<EntityResponse> entityResponse = new ArrayList<>();
-        game.getMap().getEntities().forEach(e -> {
-            entityResponse.add(ResponseBuilder.getEntityResponse(game, e));
-        });
-        return new DungeonResponse(
-                game.getId(),
-                game.getName(),
-                entityResponse,
-                (game.getPlayer() != null) ? getInventoryResponse(game.getPlayer().getInventory()) : null,
-                game.getBattleFacade().getBattleResponses(),
-                (game.getPlayer() != null) ? game.getPlayer().getBuildables(game.getMap()) : null,
-                (game.getGoals().achieved(game)) ? ""
-                        : game.getGoals().toString(game));
+        return game.getDungeonResponse();
     }
 
-    private static List<ItemResponse> getInventoryResponse(Inventory inventory) {
+    public static List<ItemResponse> getInventoryResponse(Inventory inventory) {
         return inventory.getEntities()
                         .stream()
                         .map(ResponseBuilder::getItemResponse)
