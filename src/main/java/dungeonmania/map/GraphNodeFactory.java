@@ -4,6 +4,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import dungeonmania.entities.EntityFactory;
+import dungeonmania.entities.SwampTile;
 
 public class GraphNodeFactory {
     public static GraphNode createEntity(JSONObject jsonEntity, EntityFactory factory) {
@@ -34,8 +35,10 @@ public class GraphNodeFactory {
         case "door":
         case "key":
         case "sun_stone":
-        case "swamp_tile":
             return new GraphNode(factory.createEntity(jsonEntity));
+        case "swamp_tile":
+            SwampTile tile = (SwampTile) factory.createEntity(jsonEntity);
+            return new GraphNode(tile, tile.getPosition(), tile.getMovementFactor());
         default:
             throw new JSONException("Graph Node Factory can't make " + jsonEntity.getString("type"));
         }

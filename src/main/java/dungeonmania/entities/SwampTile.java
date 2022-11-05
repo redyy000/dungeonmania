@@ -57,4 +57,8 @@ public class SwampTile extends Entity {
             this.subscribeEntity(entity);
         }
     }
+
+    public int getMovementFactor() {
+        return this.factor;
+    }
 }

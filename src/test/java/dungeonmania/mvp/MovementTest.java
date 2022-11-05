@@ -122,10 +122,8 @@ public class MovementTest {
     @Test
     @DisplayName("Test that an enemy avoids a costly swamp tile in path to player")
     public void testDijkstraThroughSwampTile() {
-        //                                                  Wall    Wall    Wall    Wall
-        // P1       P2              Sw              M3      M2      M1      .       Wall
-        //                                                  Wall    Wall    Wall    Wall
         // Mercenary should never walk on swamp tile while unallied
+        // swamp tile at x = 6, merc at 8.
         DungeonManiaController dmc = new DungeonManiaController();
         DungeonResponse res = dmc.newGame(
             "d_movementTest_testMercenaryDijkstra", "c_movementTest_testMercenaryDijkstra");
@@ -133,28 +131,34 @@ public class MovementTest {
 
         // move player right (tick 1)
         res = dmc.tick(Direction.RIGHT);
-        player = TestUtils.getPlayer(res).get();
         assertEquals(new Position(7, 1), getMercPos(res));
 
-        // move player left (tick 2)
-        res = dmc.tick(Direction.LEFT);
-        player = TestUtils.getPlayer(res).get();
-        assertEquals(new Position(6, 1), getMercPos(res));
+        // should go down or up
+        res = dmc.tick(Direction.RIGHT);
+        assertNotEquals(new Position(6, 1), getMercPos(res));
+        System.out.println(getMercPos(res));
 
-        // move player right (tick 3)
+        // should be above or below swamp tile
         res = dmc.tick(Direction.RIGHT);
         player = TestUtils.getPlayer(res).get();
-        assertNotEquals(new Position(4, 1), getMercPos(res));
+        assertNotEquals(new Position(6, 1), getMercPos(res));
+        System.out.println(getMercPos(res));
 
-        // move player left (tick 4)
+        // should be top left/bottom right of swamp tile
+        res = dmc.tick(Direction.RIGHT); //player at 5 after tick
+        player = TestUtils.getPlayer(res).get();
+        assertNotEquals(new Position(6, 1), getMercPos(res));
+        System.out.println(getMercPos(res));
+
+        // then i don't know when the merc will come back to y = 1
+        // just confirm that in enough time, the guy indeed fights
+        res = dmc.tick(Direction.LEFT); //4 after tick
+        System.out.println(getMercPos(res));
+        
         res = dmc.tick(Direction.LEFT);
-        player = TestUtils.getPlayer(res).get();
-        assertNotEquals(new Position(4, 1), getMercPos(res));
-
-        // move player right (tick 5)
         res = dmc.tick(Direction.RIGHT);
-        player = TestUtils.getPlayer(res).get();
-        assertNotEquals(new Position(4, 1), getMercPos(res));
+        assertEquals(0, TestUtils.getEntities(res, "mercenary").size());
+
     }
 
     private Position getMercPos(DungeonResponse res) {

@@ -25,6 +25,7 @@ public class ZombieToast extends Enemy {
 
     @Override
     public void move(Game game) {
+        if (isSlowed()) return;
         this.moveStrategy.move(game, this);
     }
 

@@ -85,7 +85,7 @@ public class Mercenary extends Enemy implements Interactable {
     public void move(Game game) {
         if (!(allied && game.getPlayer().isCardinallyAdjacentToOrEqual(this.getPosition()))
             && isSlowed()) {
-            return;
+            return; // not slowed if allied AND cardinally adjacent.
         }
         // if allied, next to and not yet attached, do attach.
         if (allied && game.getPlayer().isCardinallyAdjacentToOrEqual(this.getPosition())
