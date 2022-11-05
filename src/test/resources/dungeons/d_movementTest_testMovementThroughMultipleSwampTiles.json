@@ -5,28 +5,32 @@
         "x" : 1,
         "y" : 1
       },{
-        "type" : "treasure",
-        "x" : 2,
+        "type" : "mercenary",
+        "x" : 8,
         "y" : 1
       },{
-        "type" : "treasure",
-        "x" : 3,
+        "type" : "wall",
+        "x" : 10,
         "y" : 1
-      },{
-        "type" : "treasure",
-        "x" : 4,
-        "y" : 1
-      }, {
-        "type" : "assassin_debug",
-        "x" : 11,
-        "y" : 1,
-        "seed": 100,
-        "bribe_prob": -1
       }, {
         "type": "exit",
         "x": 5,
         "y": 5
       }, {
+        "type": "swamp_tile",
+        "x": 4,
+        "y": 1,
+        "movement_factor": 3
+      }, {
+        "type": "swamp_tile",
+        "x": 5,
+        "y": 1,
+        "movement_factor": 2
+      }, {
+        "type": "wall",
+        "x": 4,
+        "y": 0
+      }, {
         "type": "wall",
         "x": 5,
         "y": 0
@@ -34,6 +38,18 @@
         "type": "wall",
         "x": 6,
         "y": 0
+      }, {
+        "type": "wall",
+        "x": 4,
+        "y": 2
+      }, {
+        "type": "wall",
+        "x": 5,
+        "y": 2
+      }, {
+        "type": "wall",
+        "x": 6,
+        "y": 2
       }, {
         "type": "wall",
         "x": 7,
@@ -48,12 +64,8 @@
         "y": 0
       }, {
         "type": "wall",
-        "x": 5,
-        "y": 2
-      }, {
-        "type": "wall",
-        "x": 6,
-        "y": 2
+        "x": 10,
+        "y": 0
       }, {
         "type": "wall",
         "x": 7,
@@ -65,6 +77,10 @@
       }, {
         "type": "wall",
         "x": 9,
+        "y": 2
+      }, {
+        "type": "wall",
+        "x": 10,
         "y": 2
       }
     ],

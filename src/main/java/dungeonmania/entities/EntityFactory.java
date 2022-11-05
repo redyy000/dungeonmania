@@ -202,13 +202,16 @@ public class EntityFactory {
         case "key":
             return new Key(pos, jsonEntity.getInt("key"));
         case "sceptre":
-            return buildSceptre();
+            return buildSceptre(); //TODO shouldn't need.
         case "midnight_armour":
             return buildMidnightArmour();
         case "time_turner":
             return new TimeTurner(pos);
         case "time_travelling_portal":
             return new TimeTravellingPortal(pos);
+        case "swamp_tile":
+            int factor = jsonEntity.getInt("movement_factor");
+            return new SwampTile(pos, factor);
         default:
             return null;
         }
