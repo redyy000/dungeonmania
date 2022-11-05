@@ -299,7 +299,7 @@ public class Game {
         if (!canRewind()) {
             throw new InvalidActionException("no time turner on player");
         }
-        registerOnce(() -> revertToState(ticks), AI_MOVEMENT_CALLBACK, "rewind " + ticks + " ticks");
+        registerOnce(() -> revertToState(ticks), PLAYER_MOVEMENT, "rewind " + ticks + " ticks");
         // Don't know/understand the priority. If one tick, nothing changes since it lets the tick happen
         // and then rewinds, apparently.
         tick();
@@ -315,6 +315,10 @@ public class Game {
         JSONObject state = this.gameStates.pop(); // if 0, get first.
         for (int stateI = 0; stateI < ticks; stateI++) {
             state = this.gameStates.pop();
+        }
+        // remove all old entities callbacks, ie no old entities should move on the new game
+        for (Entity e: map.getEntities()) {
+            unsubscribe(e.getId());
         }
         this.setMap(new GameMap(this, state.getJSONArray("gameMap")));
     }

@@ -28,8 +28,13 @@ public class TimeTravelTest {
 
         // use
         res = dmc.rewind(1);
-
         assertEquals(new Position(8, 1), getMercPos(res));
+
+        //afterwards should be normal
+        res = dmc.tick(Direction.RIGHT);
+        assertEquals(1, TestUtils.getEntities(res, "mercenary").size());
+        assertEquals(new Position(7, 1), getMercPos(res));
+        assertEquals(1, TestUtils.getInventory(res, "time_turner").size());
     }
 
     @Test
@@ -61,7 +66,13 @@ public class TimeTravelTest {
         assertEquals(getMercPos(startRes), getMercPos(res));
         assertEquals(TestUtils.getEntities(startRes, "treasure").size(),
                         TestUtils.getEntities(res, "treasure").size());
-        assertEquals(1, res.getBattles().size());  //A battle happens (happens if move, then rewind.) QUESTIONABLE
+        assertEquals(0, res.getBattles().size()); //A battle did not happen, since rewind before move.
+                                                        //(happens if the order is move, then rewind.) QUESTIONABLE
+
+         //Should be similar afterwards.
+         res = dmc.tick(Direction.RIGHT);
+         assertEquals(new Position(7, 1), getMercPos(res));
+         assertEquals(1, TestUtils.getEntities(startRes, "mercenary").size());
     }
 
     private Position getMercPos(DungeonResponse res) {
