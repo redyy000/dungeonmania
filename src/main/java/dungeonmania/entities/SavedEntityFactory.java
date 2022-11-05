@@ -1,6 +1,8 @@
 package dungeonmania.entities;
 
 
+import java.util.Queue;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -9,15 +11,18 @@ import dungeonmania.entities.collectables.Bomb;
 import dungeonmania.entities.collectables.Key;
 import dungeonmania.entities.collectables.SunStone;
 import dungeonmania.entities.collectables.Sword;
+import dungeonmania.entities.collectables.TimeTurner;
 import dungeonmania.entities.collectables.Treasure;
 import dungeonmania.entities.collectables.Wood;
 import dungeonmania.entities.collectables.potions.InvincibilityPotion;
 import dungeonmania.entities.collectables.potions.InvisibilityPotion;
 import dungeonmania.entities.enemies.Assassin;
 import dungeonmania.entities.enemies.Mercenary;
+import dungeonmania.entities.enemies.PlayerGhost;
 import dungeonmania.entities.enemies.Spider;
 import dungeonmania.entities.enemies.ZombieToast;
 import dungeonmania.entities.enemies.ZombieToastSpawner;
+import dungeonmania.util.Position;
 
 public class SavedEntityFactory {
     // Unloads saved entities. Note that the JSON objects of saved entities are
@@ -30,6 +35,9 @@ public class SavedEntityFactory {
         return constructEntity(jsonEntity);
     }
 
+    public static PlayerGhost createPlayerGhost(JSONObject jsonEntity, Queue<Position> moveHistory) {
+        return new PlayerGhost(jsonEntity, moveHistory);
+    }
 
     private static Entity constructEntity(JSONObject jsonEntity) {
         switch (jsonEntity.getString("type")) {
@@ -77,6 +85,10 @@ public class SavedEntityFactory {
             return new InvincibilityPotion(jsonEntity);
         case "portal":
             return new Portal(jsonEntity);
+        case "time_turner":
+            return new TimeTurner(jsonEntity);
+        case "time_travelling_portal":
+            return new TimeTravellingPortal(jsonEntity);
         default:
             throw new JSONException(jsonEntity.getString("type") + " can't be made from save");
         }

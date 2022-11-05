@@ -41,6 +41,11 @@ public class TestUtils {
                     .filter(it -> it.getType().startsWith(type))
                     .filter(it -> !it.getType().startsWith("zombie_toast_spawner"));
         }
+        if (type.equals("player")) { //similarly, it will confusing player and playerGhost.
+            return res.getEntities().stream()
+                    .filter(it -> it.getType().startsWith(type))
+                    .filter(it -> !it.getType().startsWith("player_ghost"));
+        }
         return res.getEntities().stream().filter(it -> it.getType().startsWith(type));
     }
 
