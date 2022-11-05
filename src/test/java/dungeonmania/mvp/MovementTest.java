@@ -271,7 +271,7 @@ public class MovementTest {
     }
 
     @Test
-    @DisplayName("Test that an enemy avoids a costly swamp tile in path to player")
+    @DisplayName("Test that an enemy moves correctly through multiple swamp tiles")
     public void testMovementThroughMultipleSwampTiles() {
         //                          Wall    Wall    Wall    Wall    Wall    Wall    Wall
         // P1       P2              Sw      Sw      M3      M2      M1      .       Wall
