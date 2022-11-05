@@ -19,6 +19,7 @@ import dungeonmania.entities.buildables.Sceptre;
 import dungeonmania.entities.buildables.Shield;
 
 import dungeonmania.entities.collectables.Sword;
+import dungeonmania.entities.collectables.TimeTurner;
 import dungeonmania.map.GameMap;
 
 
@@ -57,6 +58,8 @@ public class Inventory {
             return new Shield(itemJson);
         case "bow":
             return new Bow(itemJson);
+        case "time_turner":
+            return new TimeTurner(itemJson);
         //TODO sceptre
         default:
             throw new JSONException("can't create into inventory: " + type);

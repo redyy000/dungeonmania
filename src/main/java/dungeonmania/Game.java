@@ -1,7 +1,10 @@
 package dungeonmania;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.PriorityQueue;
+import java.util.Queue;
+import java.util.Stack;
 import java.util.UUID;
 
 import org.json.JSONObject;
@@ -21,6 +24,7 @@ import dungeonmania.exceptions.InvalidActionException;
 import dungeonmania.goals.Goal;
 import dungeonmania.map.GameMap;
 import dungeonmania.util.Direction;
+import dungeonmania.util.Position;
 
 public class Game {
     private String id;
@@ -42,6 +46,9 @@ public class Game {
     private int tickCount = 0;
     private PriorityQueue<ComparableCallback> sub = new PriorityQueue<>();
     private PriorityQueue<ComparableCallback> addingSub = new PriorityQueue<>();
+
+    private Stack<JSONObject> gameStates = new Stack<>(); //earliest states accessed last.
+    private Stack<Position> moveHistory = new Stack<>(); //the last moves are the ones the ghost takes
 
     public Game(String dungeonName) {
         this.name = dungeonName;
@@ -68,7 +75,10 @@ public class Game {
         // map.init();
         this.tickCount = 0;
         player = map.getPlayer();
+
         register(() -> player.onTick(tickCount), PLAYER_MOVEMENT, "potionQueue");
+        register(() -> saveGameState(), AI_MOVEMENT_CALLBACK, "saveGameState");
+        saveGameState();
         List<Mercenary> mercs = map.getEntities(Mercenary.class);
         List<SwampTile> swampTiles = map.getEntities(SwampTile.class);
         for (Mercenary m : mercs) {
@@ -287,5 +297,61 @@ public class Game {
         // private PriorityQueue<ComparableCallback> sub = new PriorityQueue<>();
         // private PriorityQueue<ComparableCallback> addingSub = new PriorityQueue<>();
         return j;
+    }
+
+    public void saveGameState() {
+        // similar to DMC SaveGame(); Don't worry about config though.
+        // currently probably saves too much.
+        JSONObject newStateJson = new JSONObject();
+        // newStateJson.put("goal-condition", this.getGoals().getJSON());
+        // newStateJson.put("game", this.getJSON());
+        newStateJson.put("gameMap", this.getMap().getJSON());
+        // newStateJson.put("player", this.getPlayer().getJSON());
+        moveHistory.add(player.getPosition());
+        this.gameStates.push(newStateJson);
+    }
+
+    public Game rewind(int ticks) throws InvalidActionException {
+        if (!canRewind()) {
+            throw new InvalidActionException("no time turner on player");
+        }
+        registerOnce(() -> revertToState(ticks), PLAYER_MOVEMENT, "rewind " + ticks + " ticks");
+        tick();
+        return this;
+    }
+    public Game registerRewind(int ticks) {
+        registerOnce(() -> revertToState(ticks), PLAYER_MOVEMENT, "rewind " + ticks + " ticks");
+        return this;
+    }
+    private boolean canRewind() {
+        return player.getTimeTurnerID() != null;
+    }
+    public void revertToState(int ticks) {
+        JSONObject state = this.gameStates.pop(); // if 0, get first.
+        int nStates = gameStates.size();
+        for (int stateI = 0; stateI < Math.min(ticks, nStates); stateI++) {
+            state = this.gameStates.pop();
+        }
+        // remove all old entities callbacks, ie no old entities should move on the new game
+        for (Entity e: map.getEntities()) {
+            unsubscribe(e.getId());
+        }
+        Queue<Position> ghostMoves = getGhostMoves(ticks);
+        this.setMap(new GameMap(this.player, this, state.getJSONArray("gameMap"), ghostMoves));
+    }
+
+    private Queue<Position> getGhostMoves(int ticks) {
+        Stack<Position> moves = new Stack<>();
+        int nMovesHistory = moveHistory.size();
+        for (int i = 0; i < Math.min(ticks, nMovesHistory); i++) {
+            moves.push(moveHistory.pop());
+        }
+        // added in wrong order. Reverse.
+        Queue<Position> movesInOrder = new LinkedList<>();
+        int n = moves.size();
+        for (int i = 0; i < n; i++) {
+            movesInOrder.add(moves.pop());
+        }
+        return movesInOrder;
     }
 }
