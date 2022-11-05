@@ -9,7 +9,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class MovementTest {
     @Test
@@ -100,26 +100,18 @@ public class MovementTest {
     public void testMovementRightThroughSwamp() {
         DungeonManiaController dmc = new DungeonManiaController();
         DungeonResponse initDungonRes = dmc.newGame(
-            "d_movementTest_swampTileBasicMovement", "c_movementTest_testMovementRight");
+            "d_movementTest_testMovementThroughSwampTile", "c_movementTest_testMovementRight");
         EntityResponse initPlayer = TestUtils.getPlayer(initDungonRes).get();
 
         // create the expected result
         EntityResponse expectedPlayer = new EntityResponse(initPlayer.getId(),
         initPlayer.getType(), new Position(3, 1), false);
 
-        // move player right (tick 1)
+        // move player right (tick 1 onto swamp)
         DungeonResponse actualDungonRes = dmc.tick(Direction.RIGHT);
         EntityResponse actualPlayer = TestUtils.getPlayer(actualDungonRes).get();
 
-        // move player right (tick 2)
-        actualDungonRes = dmc.tick(Direction.RIGHT);
-        actualPlayer = TestUtils.getPlayer(actualDungonRes).get();
-
-        // move player right (tick 3)
-        actualDungonRes = dmc.tick(Direction.RIGHT);
-        actualPlayer = TestUtils.getPlayer(actualDungonRes).get();
-
-        // move player right (tick 4)
+        // move player right (tick 2 out of swamp)
         actualDungonRes = dmc.tick(Direction.RIGHT);
         actualPlayer = TestUtils.getPlayer(actualDungonRes).get();
 
@@ -127,4 +119,45 @@ public class MovementTest {
         assertTrue(TestUtils.entityResponsesEqual(expectedPlayer, actualPlayer));
     }
 
+    @Test
+    @DisplayName("Test that an enemy avoids a costly swamp tile in path to player")
+    public void testDijkstraThroughSwampTile() {
+        //                                                  Wall    Wall    Wall    Wall
+        // P1       P2              Sw              M3      M2      M1      .       Wall
+        //                                                  Wall    Wall    Wall    Wall
+        // Mercenary should never walk on swamp tile while unallied
+        DungeonManiaController dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame(
+            "d_movementTest_testMercenaryDijkstra", "c_movementTest_testMercenaryDijkstra");
+        EntityResponse player = TestUtils.getPlayer(res).get();
+
+        // move player right (tick 1)
+        res = dmc.tick(Direction.RIGHT);
+        player = TestUtils.getPlayer(res).get();
+        assertEquals(new Position(7, 1), getMercPos(res));
+
+        // move player left (tick 2)
+        res = dmc.tick(Direction.LEFT);
+        player = TestUtils.getPlayer(res).get();
+        assertEquals(new Position(6, 1), getMercPos(res));
+
+        // move player right (tick 3)
+        res = dmc.tick(Direction.RIGHT);
+        player = TestUtils.getPlayer(res).get();
+        assertNotEquals(new Position(4, 1), getMercPos(res));
+
+        // move player left (tick 4)
+        res = dmc.tick(Direction.LEFT);
+        player = TestUtils.getPlayer(res).get();
+        assertNotEquals(new Position(4, 1), getMercPos(res));
+
+        // move player right (tick 5)
+        res = dmc.tick(Direction.RIGHT);
+        player = TestUtils.getPlayer(res).get();
+        assertNotEquals(new Position(4, 1), getMercPos(res));
+    }
+
+    private Position getMercPos(DungeonResponse res) {
+        return TestUtils.getEntities(res, "mercenary").get(0).getPosition();
+    }
 }
