@@ -1,5 +1,6 @@
 package dungeonmania;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.PriorityQueue;
@@ -46,7 +47,7 @@ public class Game {
     private PriorityQueue<ComparableCallback> addingSub = new PriorityQueue<>();
 
     private Stack<JSONObject> gameStates = new Stack<>(); //earliest states accessed last.
-    private Queue<Position> moveHistory = new LinkedList<>();
+    private Stack<Position> moveHistory = new Stack<>(); //the last moves are the ones the ghost takes
 
     public Game(String dungeonName) {
         this.name = dungeonName;
@@ -78,7 +79,7 @@ public class Game {
         List<Mercenary> mercs = map.getEntities(Mercenary.class);
         for (Mercenary m : mercs) {
             register(() -> m.onTick(tickCount), AI_MOVEMENT, "mindControlTimer" + m.getId());
-        }
+        } //TODO copy to init below
     }
 
     public void initSavedGame() {
@@ -300,8 +301,6 @@ public class Game {
             throw new InvalidActionException("no time turner on player");
         }
         registerOnce(() -> revertToState(ticks), PLAYER_MOVEMENT, "rewind " + ticks + " ticks");
-        // Don't know/understand the priority. If one tick, nothing changes since it lets the tick happen
-        // and then rewinds, apparently.
         tick();
         return this;
     }
@@ -309,9 +308,6 @@ public class Game {
         return player.getTimeTurnerID() != null;
     }
     public void revertToState(int ticks) {
-        // if rewind 0, will actually go back to the start of the tick that the rewind was called??
-                // So it's like nothing happened?
-        // rewind 1 goes back to the start of the previous tick??
         JSONObject state = this.gameStates.pop(); // if 0, get first.
         for (int stateI = 0; stateI < ticks; stateI++) {
             state = this.gameStates.pop();
@@ -320,6 +316,22 @@ public class Game {
         for (Entity e: map.getEntities()) {
             unsubscribe(e.getId());
         }
-        this.setMap(new GameMap(this, state.getJSONArray("gameMap")));
+        Queue<Position> ghostMoves = getGhostMoves(ticks);
+        this.setMap(new GameMap(this.player, this, state.getJSONArray("gameMap"), ghostMoves));
+    }
+
+    private Queue<Position> getGhostMoves(int ticks) {
+        Stack<Position> moves = new Stack<>();
+        int nMovesHistory = moveHistory.size();
+        for (int i = 0; i < Math.min(ticks, nMovesHistory); i++) {
+            moves.push(moveHistory.pop());
+        }
+        // added in wrong order. Reverse.
+        Queue<Position> movesInOrder = new LinkedList<>();
+        int n = moves.size();
+        for (int i = 0; i < n; i++) {
+            movesInOrder.add(moves.pop());
+        }
+        return movesInOrder;
     }
 }

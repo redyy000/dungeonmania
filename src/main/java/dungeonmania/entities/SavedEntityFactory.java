@@ -1,6 +1,8 @@
 package dungeonmania.entities;
 
 
+import java.util.Queue;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -16,9 +18,11 @@ import dungeonmania.entities.collectables.potions.InvincibilityPotion;
 import dungeonmania.entities.collectables.potions.InvisibilityPotion;
 import dungeonmania.entities.enemies.Assassin;
 import dungeonmania.entities.enemies.Mercenary;
+import dungeonmania.entities.enemies.PlayerGhost;
 import dungeonmania.entities.enemies.Spider;
 import dungeonmania.entities.enemies.ZombieToast;
 import dungeonmania.entities.enemies.ZombieToastSpawner;
+import dungeonmania.util.Position;
 
 public class SavedEntityFactory {
     // Unloads saved entities. Note that the JSON objects of saved entities are
@@ -31,6 +35,9 @@ public class SavedEntityFactory {
         return constructEntity(jsonEntity);
     }
 
+    public static PlayerGhost createPlayerGhost(JSONObject jsonEntity, Queue<Position> moveHistory) {
+        return new PlayerGhost(jsonEntity, moveHistory);
+    }
 
     private static Entity constructEntity(JSONObject jsonEntity) {
         switch (jsonEntity.getString("type")) {

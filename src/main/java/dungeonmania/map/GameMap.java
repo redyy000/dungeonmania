@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
+import java.util.Queue;
 import java.util.stream.Collectors;
 
 import org.json.JSONArray;
@@ -26,8 +27,6 @@ public class GameMap {
     private Game game;
     private Map<Position, GraphNode> nodes = new HashMap<>();
     private Player player;
-
-    private Player oldPlayer; //TODO change to enemy Player.
 
     /**
      * Initialise the game map
@@ -68,25 +67,44 @@ public class GameMap {
         init();
     }
 
-    public GameMap(Player realPlayer, Game game, JSONArray gameMapJson) {
+    /**
+     * Create the game map after rewinding. Creates a player ghost.
+     * @param game
+     * @param gameMapJson
+     * @param moveHistory
+     */
+    public GameMap(Player realPlayer, Game game, JSONArray gameMapJson, Queue<Position> moveHistory) {
         /*
          * {[{position, node}, {position, node}]"}
          */
         this.game = game;
         this.player = realPlayer;
+        GraphNode playerNode = new GraphNode(realPlayer);
+        this.nodes.put(playerNode.getPosition(), playerNode);
+
         for (int i = 0; i < gameMapJson.length(); i++) {
             JSONObject nodeJson = gameMapJson.getJSONObject(i);
             Position nodePosition = new Position(nodeJson.getJSONObject("position"));
-            GraphNode nodeNode = new GraphNode(nodeJson.getJSONObject("node"));
-            if (nodeNode.tryGetPlayer() != null) {
-                //set player when found
-                this.oldPlayer = nodeNode.tryGetPlayer(); // cast to Enemy Player.
-            }
+            GraphNode nodeNode = new GraphNode(nodeJson.getJSONObject("node"), moveHistory);
             this.nodes.put(nodePosition, nodeNode);
         }
         init();
     }
 
+    // return the array of entities but cast "player" to "player_ghost". Only difference
+    // between normal node and rewind node.
+    private JSONObject graphNodeRewind(JSONObject node) {
+        JSONArray newEntities = new JSONArray();
+        JSONArray entitiesJson = node.getJSONArray("entities");
+        for (int i = 0; i < entitiesJson.length(); i++) {
+            JSONObject entityJson = entitiesJson.getJSONObject(i);
+            if (entityJson.getString("type").equals("player")) {
+                entityJson.put("type", "player_ghost");
+            }
+            newEntities.put(entityJson);
+        }
+        return node.put("entities", newEntities);
+    }
     public void init() {
         initPairPortals();
         initRegisterMovables();

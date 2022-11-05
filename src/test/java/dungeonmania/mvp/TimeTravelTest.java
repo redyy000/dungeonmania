@@ -97,8 +97,8 @@ public class TimeTravelTest {
         // use
         res = dmc.rewind(5);
         assertEquals(1, TestUtils.getEntities(res, "player_ghost").size()); //the old player will be named like so
-        assertEquals(new Position(6, 1), TestUtils.getPlayerPos(res));
         assertEquals(new Position(1, 1), getPlayerGhostPos(res));
+        assertEquals(new Position(6, 1), TestUtils.getPlayerPos(res));
 
          //Should be similar afterwards.
          res = dmc.tick(Direction.LEFT);
