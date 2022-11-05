@@ -161,44 +161,6 @@ public class MovementTest {
     }
 
     @Test
-    @DisplayName("Test that an enemy avoids a costly swamp tile in path to player")
-    public void testDijkstraThroughSwampTile() {
-        //                                                  Wall    Wall    Wall    Wall
-        // P1       P2              Sw              M3      M2      M1      .       Wall
-        //                                                  Wall    Wall    Wall    Wall
-        // Mercenary should never walk on swamp tile while unallied
-        DungeonManiaController dmc = new DungeonManiaController();
-        DungeonResponse res = dmc.newGame(
-            "d_movementTest_testMercenaryDijkstra", "c_movementTest_testMercenaryDijkstra");
-        EntityResponse player = TestUtils.getPlayer(res).get();
-
-        // move player right (tick 1)
-        res = dmc.tick(Direction.RIGHT);
-        player = TestUtils.getPlayer(res).get();
-        assertEquals(new Position(7, 1), getMercPos(res));
-
-        // move player left (tick 2)
-        res = dmc.tick(Direction.LEFT);
-        player = TestUtils.getPlayer(res).get();
-        assertEquals(new Position(6, 1), getMercPos(res));
-
-        // move player right (tick 3)
-        res = dmc.tick(Direction.RIGHT);
-        player = TestUtils.getPlayer(res).get();
-        assertNotEquals(new Position(4, 1), getMercPos(res));
-
-        // move player left (tick 4)
-        res = dmc.tick(Direction.LEFT);
-        player = TestUtils.getPlayer(res).get();
-        assertNotEquals(new Position(4, 1), getMercPos(res));
-
-        // move player right (tick 5)
-        res = dmc.tick(Direction.RIGHT);
-        player = TestUtils.getPlayer(res).get();
-        assertNotEquals(new Position(4, 1), getMercPos(res));
-    }
-
-    @Test
     @DisplayName("Test that an enemy takes the least costly swamp tile in path to player")
     public void testDijkstraThroughManySwampTiles() {
         // Wall     Wall     Wall     Wall    Wall    Wall    Wall
