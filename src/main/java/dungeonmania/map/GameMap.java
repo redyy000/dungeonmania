@@ -14,6 +14,7 @@ import dungeonmania.Game;
 import dungeonmania.entities.Entity;
 import dungeonmania.entities.Player;
 import dungeonmania.entities.Portal;
+import dungeonmania.entities.SwampTile;
 import dungeonmania.entities.Switch;
 import dungeonmania.entities.collectables.Bomb;
 import dungeonmania.entities.enemies.Enemy;
@@ -154,7 +155,7 @@ public class GameMap {
     private void triggerOverlapEvent(Entity entity) {
         List<Runnable> overlapCallbacks = new ArrayList<>();
         getEntities(entity.getPosition()).forEach(e -> {
-            if (e != entity)
+            if (e != entity || e instanceof SwampTile)
             overlapCallbacks.add(() -> e.onOverlap(this, entity));
         });
         overlapCallbacks.forEach(callback -> {

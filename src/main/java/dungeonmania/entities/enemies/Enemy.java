@@ -12,6 +12,7 @@ import dungeonmania.util.Position;
 
 public abstract class Enemy extends Entity implements Battleable {
     private BattleStatistics battleStatistics;
+    private boolean slowed;
 
     public Enemy(Position position, double health, double attack) {
         super(position.asLayer(Entity.CHARACTER_LAYER));
@@ -69,5 +70,13 @@ public abstract class Enemy extends Entity implements Battleable {
         JSONObject j = super.getJSON();
         j.put("battleStatistics", this.battleStatistics.getJSON());
         return j;
+    }
+
+    public void setSlowed(boolean slowed) {
+        this.slowed = slowed;
+    }
+
+    public boolean isSlowed() {
+        return this.slowed;
     }
 }
