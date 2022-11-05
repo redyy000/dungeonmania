@@ -320,8 +320,8 @@ public class BattleTest {
 
     @Test
     @Tag("11-17")
-    @DisplayName("Test attack twice with bow - spider")
-    public void testBowAttackTwiceSpider() throws InvalidActionException {
+    @DisplayName("Test attack doubles with bow - spider")
+    public void testBowAttackDoubleSpider() throws InvalidActionException {
         DungeonManiaController controller;
         controller = new DungeonManiaController();
         String config = "c_battleTests_bowDoubleAttack";
@@ -341,11 +341,11 @@ public class BattleTest {
         BattleResponse battle = res.getBattles().get(0);
         RoundResponse firstRound = battle.getRounds().get(0);
 
-        // check the bow was used twice in the round using calculations
-        // Note that the bow does not add extra damage to the attack
+        // check the bow doubles attack
         int playerAttack = Integer.parseInt(TestUtils.getValueFromConfigFile("player_attack", config));
         // Delta health is negative so take negative here
-        assertEquals(playerAttack / 5, -firstRound.getDeltaEnemyHealth(), 0.001);
+        assertEquals(2 * playerAttack / 5, -firstRound.getDeltaEnemyHealth(), 0.001);
+        assertEquals(2 * playerAttack / 5, -battle.getRounds().get(1).getDeltaEnemyHealth(), 0.001);
     }
 
     @Test
