@@ -63,6 +63,29 @@ public class SwampTileTest {
         assertEquals(new Position(6, 1), getAssPos(res));
     }
 
+    @Test
+    @DisplayName("Testing a spider gets slowed. Factor 2")
+    public void spiderSlowed() {
+        DungeonManiaController dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_swampTile_testSpider", "c_spiderTest_wallMovement");
+
+        // Make sure spider has moved onto swamp tile
+        res = dmc.tick(Direction.RIGHT);
+        assertEquals(new Position(5, 4), TestUtils.getEntities(res, "spider").get(0).getPosition());
+
+        // Make sure spider is still on swamp tile (tick 1())
+        res = dmc.tick(Direction.LEFT);
+        assertEquals(new Position(5, 4), TestUtils.getEntities(res, "spider").get(0).getPosition());
+
+        // Make sure spider is still on swamp tile (tick 2)
+        res = dmc.tick(Direction.RIGHT);
+        assertEquals(new Position(5, 4), TestUtils.getEntities(res, "spider").get(0).getPosition());
+
+        // Make sure spider has moved off swamp tile
+        res = dmc.tick(Direction.LEFT);
+        assertEquals(new Position(6, 4), TestUtils.getEntities(res, "spider").get(0).getPosition());
+    }
+
     private Position getMercPos(DungeonResponse res) {
         return TestUtils.getEntities(res, "mercenary").get(0).getPosition();
     }
