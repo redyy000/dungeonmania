@@ -35,8 +35,9 @@ public class Game {
     private int nCollectedTreasure = 0;
     public static final int PLAYER_MOVEMENT = 0;
     public static final int PLAYER_MOVEMENT_CALLBACK = 1;
-    public static final int AI_MOVEMENT = 2;
-    public static final int AI_MOVEMENT_CALLBACK = 3;
+    public static final int BEFORE_AI_MOVE = 2;
+    public static final int AI_MOVEMENT = 3;
+    public static final int AI_MOVEMENT_CALLBACK = 4;
 
     private int tickCount = 0;
     private PriorityQueue<ComparableCallback> sub = new PriorityQueue<>();
@@ -69,12 +70,12 @@ public class Game {
         player = map.getPlayer();
         register(() -> player.onTick(tickCount), PLAYER_MOVEMENT, "potionQueue");
         List<Mercenary> mercs = map.getEntities(Mercenary.class);
-        for (Mercenary m : mercs) {
-            register(() -> m.onTick(tickCount), AI_MOVEMENT, "mindControlTimer" + m.getId());
-        }
         List<SwampTile> swampTiles = map.getEntities(SwampTile.class);
+        for (Mercenary m : mercs) {
+            register(() -> m.onTick(tickCount), BEFORE_AI_MOVE, "mindControlTimer" + m.getId());
+        }
         for (SwampTile s : swampTiles) {
-            register(() -> s.onTick(), AI_MOVEMENT, "swampTilesSlow " + s.getId());
+            register(() -> s.onTick(), BEFORE_AI_MOVE, "swampTilesSlow " + s.getId());
         }
     }
 

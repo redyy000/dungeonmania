@@ -31,7 +31,7 @@ public class SwampTile extends Entity {
         List<Entity> entitiesToFree = new ArrayList<>();
         for (Map.Entry<Entity, Integer> entry : this.ticksLeftForEntities.entrySet()) {
             int ticksLeft = entry.getValue() - 1;
-            if (ticksLeft <= 0) {
+            if (ticksLeft < 0) {
                 Entity e = entry.getKey();
                 entitiesToFree.add(e);
                 if (e instanceof Enemy) {
