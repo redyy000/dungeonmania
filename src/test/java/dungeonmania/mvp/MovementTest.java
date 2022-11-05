@@ -154,7 +154,7 @@ public class MovementTest {
         // just confirm that in enough time, the guy indeed fights
         res = dmc.tick(Direction.LEFT); //4 after tick
         System.out.println(getMercPos(res));
-        
+
         res = dmc.tick(Direction.LEFT);
         res = dmc.tick(Direction.RIGHT);
         assertEquals(0, TestUtils.getEntities(res, "mercenary").size());
@@ -279,7 +279,8 @@ public class MovementTest {
 
         DungeonManiaController dmc = new DungeonManiaController();
         DungeonResponse res = dmc.newGame(
-            "d_movementTest_testMovementThroughMultipleSwampTiles", "c_movementTest_testMovementThroughMultipleSwampTiles");
+            "d_movementTest_testMovementThroughMultipleSwampTiles",
+            "c_movementTest_testMovementThroughMultipleSwampTiles");
         EntityResponse player = TestUtils.getPlayer(res).get();
 
         // move player right (tick 1)

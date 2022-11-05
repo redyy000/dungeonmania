@@ -73,7 +73,7 @@ public class SwampTileTest {
         res = dmc.tick(Direction.RIGHT);
         assertEquals(new Position(5, 4), TestUtils.getEntities(res, "spider").get(0).getPosition());
 
-        // Make sure spider is still on swamp tile (tick 1())
+        // Make sure spider is still on swamp tile (tick 1)
         res = dmc.tick(Direction.LEFT);
         assertEquals(new Position(5, 4), TestUtils.getEntities(res, "spider").get(0).getPosition());
 
