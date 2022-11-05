@@ -107,9 +107,9 @@ public class SwampTileTest {
         res = dmc.tick(Direction.DOWN);
         assertEquals(new Position(3, 3), TestUtils.getEntities(res, "zombie_toast").get(0).getPosition());
 
-        // Make sure spider has moved off swamp tile
+        // Make sure zombie has moved off swamp tile
         res = dmc.tick(Direction.UP);
-        assertEquals(new Position(3, 4), TestUtils.getEntities(res, "zombie_toast").get(0).getPosition());
+        assertNotEquals(new Position(3, 3), TestUtils.getEntities(res, "zombie_toast").get(0).getPosition());
     }
 
     private Position getMercPos(DungeonResponse res) {
