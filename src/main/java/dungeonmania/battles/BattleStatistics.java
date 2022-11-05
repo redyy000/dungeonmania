@@ -88,8 +88,8 @@ public class BattleStatistics {
                 origin.health + buff.health,
                 origin.attack + buff.attack,
                 origin.defence + buff.defence,
-                origin.magnifier,
-                origin.reducer,
+                origin.magnifier * buff.magnifier,
+                origin.reducer * buff.reducer,
                 buff.isInvincible(),
                 buff.isEnabled());
     }
