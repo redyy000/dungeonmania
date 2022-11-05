@@ -1,5 +1,6 @@
 package dungeonmania;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.PriorityQueue;
@@ -23,6 +24,9 @@ import dungeonmania.entities.enemies.ZombieToastSpawner;
 import dungeonmania.exceptions.InvalidActionException;
 import dungeonmania.goals.Goal;
 import dungeonmania.map.GameMap;
+import dungeonmania.response.models.DungeonResponse;
+import dungeonmania.response.models.EntityResponse;
+import dungeonmania.response.models.ResponseBuilder;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
@@ -353,5 +357,21 @@ public class Game {
             movesInOrder.add(moves.pop());
         }
         return movesInOrder;
+    }
+
+    public DungeonResponse getDungeonResponse() {
+        List<EntityResponse> entityResponse = new ArrayList<>();
+        getMap().getEntities().forEach(e -> {
+            entityResponse.add(ResponseBuilder.getEntityResponse(this, e));
+        });
+        return new DungeonResponse(
+                getId(),
+                getName(),
+                entityResponse,
+                (getPlayer() != null) ? ResponseBuilder.getInventoryResponse(getPlayer().getInventory()) : null,
+                getBattleFacade().getBattleResponses(),
+                (getPlayer() != null) ? getPlayer().getBuildables(getMap()) : null,
+                (getGoals().achieved(this)) ? ""
+                        : getGoals().toString(this));
     }
 }
