@@ -50,16 +50,18 @@ public class TimeTravelTest {
         assertEquals(1, TestUtils.getInventory(res, "time_turner").size());
 
         //avoid each other for 4 more ticks (let merc move 5 steps).
-        res = dmc.tick(Direction.RIGHT); //player at 3
+        res = dmc.tick(Direction.RIGHT); //player at 3, pikc up treasure
+        res = dmc.tick(Direction.RIGHT); //at 4, pick up treasure
+        res = dmc.tick(Direction.LEFT); //3
         res = dmc.tick(Direction.LEFT); //2
-        res = dmc.tick(Direction.LEFT); //1
-        res = dmc.tick(Direction.LEFT); //0
         assertEquals(new Position(3, 1), getMercPos(res));
 
         // use
         res = dmc.rewind(5);
         assertEquals(getMercPos(startRes), getMercPos(res));
-        assertEquals(1, TestUtils.getInventory(res, "time_turner").size());
+        assertEquals(TestUtils.getEntities(startRes, "treasure").size(),
+                        TestUtils.getEntities(res, "treasure").size());
+        assertEquals(1, res.getBattles().size());  //A battle happens (happens if move, then rewind.) QUESTIONABLE
     }
 
     private Position getMercPos(DungeonResponse res) {
