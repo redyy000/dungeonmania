@@ -86,6 +86,33 @@ public class SwampTileTest {
         assertEquals(new Position(6, 4), TestUtils.getEntities(res, "spider").get(0).getPosition());
     }
 
+    @Test
+    @DisplayName("Testing a zombie gets slowed. Factor 2")
+    public void zombieSlowed() {
+        //  W   W   W   W
+        //  P   W   Z   W
+        //      W   S   W
+        //           
+        DungeonManiaController dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_swampTile_testZombie", "c_zombieTest_doorsAndWalls");
+
+        // Make sure zombie has moved onto swamp tile
+        res = dmc.tick(Direction.DOWN);
+        assertEquals(new Position(3, 3), TestUtils.getEntities(res, "zombie_toast").get(0).getPosition());
+
+        // Make sure zombie is still on swamp tile (tick 1)
+        res = dmc.tick(Direction.UP);
+        assertEquals(new Position(3, 3), TestUtils.getEntities(res, "zombie_toast").get(0).getPosition());
+
+        // Make sure zombie is still on swamp tile (tick 2)
+        res = dmc.tick(Direction.DOWN);
+        assertEquals(new Position(3, 3), TestUtils.getEntities(res, "zombie_toast").get(0).getPosition());
+
+        // Make sure spider has moved off swamp tile
+        res = dmc.tick(Direction.UP);
+        assertEquals(new Position(3, 4), TestUtils.getEntities(res, "zombie_toast").get(0).getPosition());
+    }
+
     private Position getMercPos(DungeonResponse res) {
         return TestUtils.getEntities(res, "mercenary").get(0).getPosition();
     }
