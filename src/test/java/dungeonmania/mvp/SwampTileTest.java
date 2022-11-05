@@ -92,7 +92,6 @@ public class SwampTileTest {
         //  W   W   W   W
         //  P   W   Z   W
         //      W   S   W
-        //           
         DungeonManiaController dmc = new DungeonManiaController();
         DungeonResponse res = dmc.newGame("d_swampTile_testZombie", "c_zombieTest_doorsAndWalls");
 
