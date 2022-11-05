@@ -35,6 +35,7 @@ public class GraphNodeFactory {
         case "key":
         case "sun_stone":
         case "time_turner":
+        case "time_travelling_portal":
             return new GraphNode(factory.createEntity(jsonEntity));
         default:
             throw new JSONException("Graph Node Factory can't make " + jsonEntity.getString("type"));

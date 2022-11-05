@@ -97,21 +97,52 @@ public class TimeTravelTest {
         // use
         res = dmc.rewind(5);
         assertEquals(1, TestUtils.getEntities(res, "player_ghost").size()); //the old player will be named like so
-        assertEquals(new Position(1, 1), getPlayerGhostPos(res));
         assertEquals(new Position(6, 1), TestUtils.getPlayerPos(res));
+        assertEquals(new Position(1, 1), getPlayerGhostPos(res));
 
          //Should be similar afterwards.
          res = dmc.tick(Direction.LEFT);
          assertEquals(new Position(2, 1), getPlayerGhostPos(res));
          assertEquals(new Position(5, 1), TestUtils.getPlayerPos(res));
+         assertEquals(2, TestUtils.getEntities(res, "treasure").size());
 
          res = dmc.tick(Direction.LEFT);
          assertEquals(new Position(3, 1), getPlayerGhostPos(res));
          assertEquals(new Position(4, 1), TestUtils.getPlayerPos(res));
+         assertEquals(0, TestUtils.getEntities(res, "treasure").size());
 
          res = dmc.tick(Direction.LEFT);
          assertEquals(1, res.getBattles().size()); //player and ghost battle after moving now.
     }
+
+    @Test
+    @DisplayName("Test tt portal rewinds")
+    public void testTimeTravelPortal() throws IllegalArgumentException {
+        //                                  Wall    Wall   Wall    Wall    Wall    Wall
+        // P1       P2      P3      P4      TT                                    Wall
+        //                                  Wall    Wall   Wall    Wall    Wall    Wall
+        DungeonManiaController dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_timeTravel3", "c_mercenaryTest_simpleMovement");
+
+        //collect 3 treasure
+        res = dmc.tick(Direction.RIGHT);
+        res = dmc.tick(Direction.RIGHT);
+        res = dmc.tick(Direction.RIGHT);
+        assertEquals(3, TestUtils.getInventory(res, "treasure").size());
+
+        res = dmc.tick(Direction.RIGHT); //teleporter
+        assertEquals(new Position(5, 1), TestUtils.getPlayerPos(res));
+        res = dmc.tick(Direction.LEFT); // pick up tresaure again ok
+        assertEquals(1, TestUtils.getEntities(res, "player_ghost").size());
+        assertEquals(new Position(4, 1), TestUtils.getPlayerPos(res));
+        assertEquals(4, TestUtils.getInventory(res, "treasure").size());
+        res = dmc.tick(Direction.LEFT); // pick up tresaure again ok
+        assertEquals(new Position(3, 1), TestUtils.getPlayerPos(res));
+        assertEquals(5, TestUtils.getInventory(res, "treasure").size());
+
+        res = dmc.tick(Direction.LEFT); // fight ghost
+    }
+
 
     private Position getMercPos(DungeonResponse res) {
         return TestUtils.getEntities(res, "mercenary").get(0).getPosition();

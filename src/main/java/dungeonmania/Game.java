@@ -1,6 +1,5 @@
 package dungeonmania;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.PriorityQueue;
@@ -74,7 +73,8 @@ public class Game {
         // map.init();
         this.tickCount = 0;
         player = map.getPlayer();
-        register(() -> saveGameState(), PLAYER_MOVEMENT, "saveGameState");
+        register(() -> saveGameState(), PLAYER_MOVEMENT_CALLBACK, "saveGameState");
+        saveGameState();
         register(() -> player.onTick(tickCount), PLAYER_MOVEMENT, "potionQueue");
         List<Mercenary> mercs = map.getEntities(Mercenary.class);
         for (Mercenary m : mercs) {
@@ -304,12 +304,17 @@ public class Game {
         tick();
         return this;
     }
+    public Game registerRewind(int ticks) {
+        registerOnce(() -> revertToState(ticks), PLAYER_MOVEMENT, "rewind " + ticks + " ticks");
+        return this;
+    }
     private boolean canRewind() {
         return player.getTimeTurnerID() != null;
     }
     public void revertToState(int ticks) {
         JSONObject state = this.gameStates.pop(); // if 0, get first.
-        for (int stateI = 0; stateI < ticks; stateI++) {
+        int nStates = gameStates.size();
+        for (int stateI = 0; stateI < Math.min(ticks, nStates); stateI++) {
             state = this.gameStates.pop();
         }
         // remove all old entities callbacks, ie no old entities should move on the new game

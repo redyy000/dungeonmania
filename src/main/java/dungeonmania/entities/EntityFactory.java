@@ -207,6 +207,8 @@ public class EntityFactory {
             return buildMidnightArmour();
         case "time_turner":
             return new TimeTurner(pos);
+        case "time_travelling_portal":
+            return new TimeTravellingPortal(pos);
         default:
             return null;
         }

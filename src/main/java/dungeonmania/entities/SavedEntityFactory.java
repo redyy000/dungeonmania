@@ -87,6 +87,8 @@ public class SavedEntityFactory {
             return new Portal(jsonEntity);
         case "time_turner":
             return new TimeTurner(jsonEntity);
+        case "time_travelling_portal":
+            return new TimeTravellingPortal(jsonEntity);
         default:
             throw new JSONException(jsonEntity.getString("type") + " can't be made from save");
         }
