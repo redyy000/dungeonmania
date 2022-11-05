@@ -27,6 +27,8 @@ public class GameMap {
     private Map<Position, GraphNode> nodes = new HashMap<>();
     private Player player;
 
+    private Player oldPlayer; //TODO change to enemy Player.
+
     /**
      * Initialise the game map
      * 1. pair up portals
@@ -66,6 +68,24 @@ public class GameMap {
         init();
     }
 
+    public GameMap(Player realPlayer, Game game, JSONArray gameMapJson) {
+        /*
+         * {[{position, node}, {position, node}]"}
+         */
+        this.game = game;
+        this.player = realPlayer;
+        for (int i = 0; i < gameMapJson.length(); i++) {
+            JSONObject nodeJson = gameMapJson.getJSONObject(i);
+            Position nodePosition = new Position(nodeJson.getJSONObject("position"));
+            GraphNode nodeNode = new GraphNode(nodeJson.getJSONObject("node"));
+            if (nodeNode.tryGetPlayer() != null) {
+                //set player when found
+                this.oldPlayer = nodeNode.tryGetPlayer(); // cast to Enemy Player.
+            }
+            this.nodes.put(nodePosition, nodeNode);
+        }
+        init();
+    }
 
     public void init() {
         initPairPortals();

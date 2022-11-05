@@ -205,6 +205,8 @@ public class EntityFactory {
             return buildSceptre();
         case "midnight_armour":
             return buildMidnightArmour();
+        case "time_turner":
+            return new TimeTurner(pos);
         default:
             return null;
         }

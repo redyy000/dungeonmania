@@ -1,7 +1,10 @@
 package dungeonmania;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.PriorityQueue;
+import java.util.Queue;
+import java.util.Stack;
 import java.util.UUID;
 
 import org.json.JSONObject;
@@ -20,6 +23,7 @@ import dungeonmania.exceptions.InvalidActionException;
 import dungeonmania.goals.Goal;
 import dungeonmania.map.GameMap;
 import dungeonmania.util.Direction;
+import dungeonmania.util.Position;
 
 public class Game {
     private String id;
@@ -40,6 +44,9 @@ public class Game {
     private int tickCount = 0;
     private PriorityQueue<ComparableCallback> sub = new PriorityQueue<>();
     private PriorityQueue<ComparableCallback> addingSub = new PriorityQueue<>();
+
+    private Stack<JSONObject> gameStates = new Stack<>(); //earliest states accessed last.
+    private Queue<Position> moveHistory = new LinkedList<>();
 
     public Game(String dungeonName) {
         this.name = dungeonName;
@@ -66,6 +73,7 @@ public class Game {
         // map.init();
         this.tickCount = 0;
         player = map.getPlayer();
+        register(() -> saveGameState(), PLAYER_MOVEMENT, "saveGameState");
         register(() -> player.onTick(tickCount), PLAYER_MOVEMENT, "potionQueue");
         List<Mercenary> mercs = map.getEntities(Mercenary.class);
         for (Mercenary m : mercs) {
@@ -273,5 +281,41 @@ public class Game {
         // private PriorityQueue<ComparableCallback> sub = new PriorityQueue<>();
         // private PriorityQueue<ComparableCallback> addingSub = new PriorityQueue<>();
         return j;
+    }
+
+    public void saveGameState() {
+        // similar to DMC SaveGame(); Don't worry about config though.
+        // currently probably saves too much.
+        JSONObject newStateJson = new JSONObject();
+        // newStateJson.put("goal-condition", this.getGoals().getJSON());
+        // newStateJson.put("game", this.getJSON());
+        newStateJson.put("gameMap", this.getMap().getJSON());
+        // newStateJson.put("player", this.getPlayer().getJSON());
+        moveHistory.add(player.getPosition());
+        this.gameStates.push(newStateJson);
+    }
+
+    public Game rewind(int ticks) throws InvalidActionException {
+        if (!canRewind()) {
+            throw new InvalidActionException("no time turner on player");
+        }
+        registerOnce(() -> revertToState(ticks), AI_MOVEMENT_CALLBACK, "rewind " + ticks + " ticks");
+        // Don't know/understand the priority. If one tick, nothing changes since it lets the tick happen
+        // and then rewinds, apparently.
+        tick();
+        return this;
+    }
+    private boolean canRewind() {
+        return player.getTimeTurnerID() != null;
+    }
+    public void revertToState(int ticks) {
+        // if rewind 0, will actually go back to the start of the tick that the rewind was called??
+                // So it's like nothing happened?
+        // rewind 1 goes back to the start of the previous tick??
+        JSONObject state = this.gameStates.pop(); // if 0, get first.
+        for (int stateI = 0; stateI < ticks; stateI++) {
+            state = this.gameStates.pop();
+        }
+        this.setMap(new GameMap(this, state.getJSONArray("gameMap")));
     }
 }

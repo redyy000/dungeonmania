@@ -9,6 +9,7 @@ import dungeonmania.entities.collectables.Bomb;
 import dungeonmania.entities.collectables.Key;
 import dungeonmania.entities.collectables.SunStone;
 import dungeonmania.entities.collectables.Sword;
+import dungeonmania.entities.collectables.TimeTurner;
 import dungeonmania.entities.collectables.Treasure;
 import dungeonmania.entities.collectables.Wood;
 import dungeonmania.entities.collectables.potions.InvincibilityPotion;
@@ -77,6 +78,8 @@ public class SavedEntityFactory {
             return new InvincibilityPotion(jsonEntity);
         case "portal":
             return new Portal(jsonEntity);
+        case "time_turner":
+            return new TimeTurner(jsonEntity);
         default:
             throw new JSONException(jsonEntity.getString("type") + " can't be made from save");
         }

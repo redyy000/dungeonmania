@@ -203,7 +203,14 @@ public class DungeonManiaController {
      * /game/rewind
      */
     public DungeonResponse rewind(int ticks) throws IllegalArgumentException {
-        return null;
+        Game newState;
+        try {
+            newState = game.rewind(ticks);
+        } catch (InvalidActionException e) {
+            e.printStackTrace();
+            throw new IllegalArgumentException("player cannot rewind. Probably hasn't got a time turner");
+        }
+        return ResponseBuilder.getDungeonResponse(newState);
     }
 
     private JSONObject loadConfig(String configName) throws IOException {
