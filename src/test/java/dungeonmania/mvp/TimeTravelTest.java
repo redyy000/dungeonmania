@@ -75,7 +75,49 @@ public class TimeTravelTest {
          assertEquals(1, TestUtils.getEntities(startRes, "mercenary").size());
     }
 
+    @Test
+    @DisplayName("Test enemy player exists and can fight")
+    public void testEnemyPlayerExists() throws IllegalArgumentException {
+        //                                  Wall    Wall   Wall    Wall    Wall    Wall
+        // P1       P2      P3      P4      M4      M3      M2      M1      .      Wall
+        //                                  Wall    Wall   Wall    Wall    Wall    Wall
+        DungeonManiaController dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_timeTravel2", "c_mercenaryTest_simpleMovement");
+
+        //pick up thing
+        res = dmc.tick(Direction.RIGHT);
+        assertEquals(1, TestUtils.getInventory(res, "time_turner").size());
+
+        //wait for 4 more ticks.
+        res = dmc.tick(Direction.RIGHT);
+        res = dmc.tick(Direction.RIGHT);
+        res = dmc.tick(Direction.RIGHT);
+        res = dmc.tick(Direction.RIGHT);
+        assertEquals(new Position(6, 1), TestUtils.getPlayerPos(res));
+        // use
+        res = dmc.rewind(5);
+        assertEquals(1, TestUtils.getEntities(res, "player_ghost").size()); //the old player will be named like so
+        assertEquals(new Position(6, 1), TestUtils.getPlayerPos(res));
+        assertEquals(new Position(1, 1), getPlayerGhostPos(res));
+
+         //Should be similar afterwards.
+         res = dmc.tick(Direction.LEFT);
+         assertEquals(new Position(2, 1), getPlayerGhostPos(res));
+         assertEquals(new Position(5, 1), TestUtils.getPlayerPos(res));
+
+         res = dmc.tick(Direction.LEFT);
+         assertEquals(new Position(3, 1), getPlayerGhostPos(res));
+         assertEquals(new Position(4, 1), TestUtils.getPlayerPos(res));
+
+         res = dmc.tick(Direction.LEFT);
+         assertEquals(1, res.getBattles().size()); //player and ghost battle after moving now.
+    }
+
     private Position getMercPos(DungeonResponse res) {
         return TestUtils.getEntities(res, "mercenary").get(0).getPosition();
+    }
+
+    private Position getPlayerGhostPos(DungeonResponse res) {
+        return TestUtils.getEntities(res, "player_ghost").get(0).getPosition();
     }
 }
