@@ -11,6 +11,7 @@ import org.json.JSONObject;
 import dungeonmania.entities.Entity;
 import dungeonmania.entities.Player;
 import dungeonmania.entities.Switch;
+import dungeonmania.entities.enemies.PlayerGhost;
 import dungeonmania.map.GameMap;
 
 public class Bomb extends Collectable {
@@ -57,6 +58,9 @@ public class Bomb extends Collectable {
         if (entity instanceof Player) {
             if (!((Player) entity).pickUp(this)) return;
             subs.stream().forEach(s -> s.unsubscribe(this));
+            map.destroyEntity(this);
+        }
+        if (entity instanceof PlayerGhost) {
             map.destroyEntity(this);
         }
         this.state = State.INVENTORY;

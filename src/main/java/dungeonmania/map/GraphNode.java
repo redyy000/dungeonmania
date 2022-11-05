@@ -2,6 +2,7 @@ package dungeonmania.map;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Queue;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -43,6 +44,30 @@ public class GraphNode {
         }
         this.entities = entities;
 
+        this.weight = j.getInt("weight");
+    }
+
+    /**
+     * Create a GraphNode, that will make player_ghost instead of player.
+     * @param j a node JSONObject
+     * @param moveHistory moveHistory of the real player
+     */
+    public GraphNode(JSONObject j, Queue<Position> moveHistory) {
+        this.position = new Position(j.getJSONObject("position"));
+
+        List<Entity> entities = new ArrayList<>();
+        JSONArray entitiesJson = j.getJSONArray("entities");
+        for (int i = 0; i < entitiesJson.length(); i++) {
+            JSONObject entityJson = entitiesJson.getJSONObject(i);
+            Entity entity;
+            if (entityJson.getString("type").equals("player")) {
+                entity = SavedEntityFactory.createPlayerGhost(entityJson, moveHistory);
+            } else {
+                entity = SavedEntityFactory.createEntity(entityJson);
+            }
+            entities.add(entity);
+        }
+        this.entities = entities;
         this.weight = j.getInt("weight");
     }
 
