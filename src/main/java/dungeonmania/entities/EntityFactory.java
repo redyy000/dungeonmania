@@ -201,8 +201,6 @@ public class EntityFactory {
             return new Door(pos, jsonEntity.getInt("key"));
         case "key":
             return new Key(pos, jsonEntity.getInt("key"));
-        case "sceptre":
-            return buildSceptre(); //TODO shouldn't need.
         case "midnight_armour":
             return buildMidnightArmour();
         case "time_turner":
