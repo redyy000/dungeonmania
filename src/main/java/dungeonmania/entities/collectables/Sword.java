@@ -5,8 +5,6 @@ import org.json.JSONObject;
 import dungeonmania.Game;
 import dungeonmania.battles.BattleStatistics;
 import dungeonmania.entities.BattleItem;
-import dungeonmania.entities.Entity;
-import dungeonmania.map.GameMap;
 import dungeonmania.util.Position;
 
 public class Sword extends Collectable implements BattleItem {
@@ -30,10 +28,7 @@ public class Sword extends Collectable implements BattleItem {
         this.attack = j.getDouble("attack");
         this.durability = j.getInt("durability");
     }
-    @Override
-    public boolean canMoveOnto(GameMap map, Entity entity) {
-        return true;
-    }
+
 
     @Override
     public void use(Game game) {

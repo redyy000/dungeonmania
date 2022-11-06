@@ -35,7 +35,7 @@ public class Bomb extends Collectable {
 
     public Bomb(JSONObject j) {
         super(j);
-        this.state = j.getEnum(State.class, "state"); //hope this works.
+        this.state = j.getEnum(State.class, "state");
         this.radius = j.getInt("radius");
     }
 
@@ -45,11 +45,6 @@ public class Bomb extends Collectable {
 
     public void notify(GameMap map) {
         explode(map);
-    }
-
-    @Override
-    public boolean canMoveOnto(GameMap map, Entity entity) {
-        return true;
     }
 
     @Override
@@ -111,9 +106,8 @@ public class Bomb extends Collectable {
     @Override
     public JSONObject getJSON() {
         JSONObject j = super.getJSON();
-        j.put("state", this.state); //puts state in as an object. Hopefully okay..
+        j.put("state", this.state);
         j.put("radius", this.radius);
-        // subs should be initialised when the game starts, in some init() function.
         return j;
     }
 }

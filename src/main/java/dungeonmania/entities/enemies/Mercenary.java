@@ -69,7 +69,6 @@ public class Mercenary extends Enemy implements Interactable {
         }
     }
 
-    // interacting was valid. Let bribing take priority.
     @Override
     public void interact(Player player, Game game) {
         allied = true;
@@ -85,9 +84,8 @@ public class Mercenary extends Enemy implements Interactable {
     public void move(Game game) {
         if (!(allied && game.getPlayer().isCardinallyAdjacentToOrEqual(this.getPosition()))
             && isSlowed()) {
-            return; // not slowed if allied AND cardinally adjacent.
+            return;
         }
-        // if allied, next to and not yet attached, do attach.
         if (allied && game.getPlayer().isCardinallyAdjacentToOrEqual(this.getPosition())
             && !(this.movementStrategy instanceof FollowMovement)) {
             movementStrategy = new FollowMovement();

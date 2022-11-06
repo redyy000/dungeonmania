@@ -24,7 +24,6 @@ public class PlayerGhost extends Enemy  {
 
     @Override
     public void move(Game game) {
-        // TODO swamp tile
         GameMap map = game.getMap();
         Position nextPos = moveQueue.peek();
         if (nextPos == null) {

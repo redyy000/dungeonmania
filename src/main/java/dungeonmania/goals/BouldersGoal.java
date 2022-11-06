@@ -11,7 +11,6 @@ public class BouldersGoal implements Goal {
         if (game.getPlayer() == null) return false;
 
         return game.getMap().getEntities(Switch.class).stream().allMatch(s -> s.isActivated());
-
     }
 
     @Override

@@ -11,7 +11,6 @@ public class Exit extends Entity {
     }
 
     public Exit(JSONObject j) {
-        // create Position with JSON. Expected to be itemLayer already.
         super((new Position(j.getJSONObject("position"))));
     }
 

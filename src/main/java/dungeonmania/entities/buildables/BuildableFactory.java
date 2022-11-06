@@ -104,7 +104,7 @@ public class BuildableFactory {
         int treasure = count(Treasure.class);
         int keys = count(Key.class);
         int sunStones = count(SunStone.class);
-        // Queue is two strings.
+
         Queue<String> combination = new LinkedList<>();
         if (wood >= 1) {
             combination.add("wood");

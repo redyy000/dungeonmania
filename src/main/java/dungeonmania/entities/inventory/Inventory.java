@@ -60,7 +60,8 @@ public class Inventory {
             return new Bow(itemJson);
         case "time_turner":
             return new TimeTurner(itemJson);
-        //TODO sceptre
+        case "sceptre":
+            return new Sceptre(itemJson);
         default:
             throw new JSONException("can't create into inventory: " + type);
         }

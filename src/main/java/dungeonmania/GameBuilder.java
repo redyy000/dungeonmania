@@ -69,8 +69,6 @@ public class GameBuilder {
         JSONObject savedConfig = savedJson.getJSONObject("config");
         Game game = new Game(savedJson.getJSONObject("game"));
         game.setEntityFactory(new EntityFactory(savedConfig));
-        // SavedEntityFactory factory = new SavedEntityFactory(config); //create entities considering they're saved.
-        // game.setEntityFactory(factory);
         GameMap map = new GameMap(game, savedJson.getJSONArray("gameMap"));
         game.setMap(map);
         if (!savedJson.isNull("goal-condition")) {

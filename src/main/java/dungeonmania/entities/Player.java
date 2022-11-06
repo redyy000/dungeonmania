@@ -248,7 +248,7 @@ public class Player extends Entity implements Battleable {
             .put("state", this.state.getJSON())
             .put("nextTrigger", this.nextTrigger)
             .put("previousPosition", this.previousPosition.getJSON())
-            .put("queue", queueJ); // careful of queue into array.
+            .put("queue", queueJ);
         if (this.previousDistinctPosition != null)
             j.put("previousDistinctPosition", this.previousDistinctPosition.getJSON());
         if (this.facing != null) j.put("facing", this.facing);
