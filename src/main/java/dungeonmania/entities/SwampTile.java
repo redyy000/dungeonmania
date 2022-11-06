@@ -9,7 +9,7 @@ import dungeonmania.entities.enemies.Enemy;
 import dungeonmania.map.GameMap;
 import dungeonmania.util.Position;
 
-// uses entity often, but for now only know behaviour for Enemy.
+// Open to affect Entities, but for now we only know behaviour with Enemy's.
 public class SwampTile extends Entity {
     private int factor;
     private Map<Entity, Integer> ticksLeftForEntities = new HashMap<>();
@@ -38,7 +38,7 @@ public class SwampTile extends Entity {
                     ((Enemy) e).setSlowed(false);
                 }
             } else {
-                entry.setValue(ticksLeft); //should write onto the ticksleftforentites hopefully.
+                entry.setValue(ticksLeft);
             }
         }
         for (Entity e: entitiesToFree) {

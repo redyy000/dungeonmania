@@ -11,13 +11,11 @@ import java.util.List;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-
 import dungeonmania.exceptions.InvalidActionException;
 import dungeonmania.response.models.DungeonResponse;
 import dungeonmania.response.models.ResponseBuilder;
 import dungeonmania.util.Direction;
 import dungeonmania.util.FileLoader;
-
 
 public class DungeonManiaController {
     private Game game = null;
@@ -57,7 +55,7 @@ public class DungeonManiaController {
             throw new IllegalArgumentException(configName + " is not a configuration that exists");
         }
 
-        try { //will always work anyway.
+        try { // will always work anyway.
             this.configJson = loadConfig(configName);
         } catch (IOException e1) {
             e1.printStackTrace();
@@ -119,13 +117,6 @@ public class DungeonManiaController {
         System.out.println("Saving");
         JSONObject newgameJson = new JSONObject();
         newgameJson.put("config", this.configJson);
-
-        // // save all entities positions to JSON. Do not use a debug Mercenary when testing saves :).
-        // JSONObject currentDungeon = new JSONObject();
-        // List<JSONObject> entityJsons = game.getMap().getEntities().stream()
-        //                             .map(e -> e.getJSON()) //type and position.
-        //                             .collect(Collectors.toList());
-        // JSONArray entityJsonArray = new JSONArray(entityJsons);
         newgameJson.put("goal-condition", game.getGoals().getJSON());
         newgameJson.put("game", this.game.getJSON());
         newgameJson.put("gameMap", this.game.getMap().getJSON());
@@ -169,11 +160,10 @@ public class DungeonManiaController {
 
         JSONObject savedJson = null;
         String content = new String(Files.readAllBytes(Paths.get(savePath)));
-
-        // String savedString = new String(FileLoader.class.getResourceAsStream(savePath).readAllBytes()); //throws
         savedJson = new JSONObject(content);
         return savedJson;
     }
+
     /**
      * /games/all
      */
