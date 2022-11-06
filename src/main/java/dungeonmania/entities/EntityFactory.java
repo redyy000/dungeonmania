@@ -118,7 +118,7 @@ public class EntityFactory {
         double health = config.optDouble("assassin_health", Assassin.DEFAULT_HEALTH);
         double attack = config.optDouble("assassin_attack", Assassin.DEFAULT_ATTACK);
         int bribeAmount = config.optInt("assassin_bribe_amount", Assassin.DEFAULT_BRIBE_AMOUNT);
-        int bribeRadius = config.optInt("assassin_bribe_radius", Assassin.DEFAULT_BRIBE_RADIUS);
+        int bribeRadius = config.optInt("bribe_radius", Assassin.DEFAULT_BRIBE_RADIUS);
         double failBribeProb = config.optDouble("assassin_bribe_fail_rate", Assassin.DEFAULT_BRIBE_PROBABILITY);
         return new Assassin(pos, health, attack, bribeAmount, bribeRadius, failBribeProb, seed);
     }

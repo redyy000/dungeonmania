@@ -57,7 +57,8 @@ public class Mercenary extends Enemy implements Interactable {
     protected boolean canBeBribed(Player player) {
         // TODO bribeRadius more than 0??
         int nCoins = player.countEntityOfType(Treasure.class);
-        return bribeRadius >= 0 && nCoins >= bribeAmount;
+        int distance = Position.calculatePositionBetween(this.getPosition(), player.getPosition()).magnitude();
+        return distance <= bribeRadius && nCoins >= bribeAmount;
     }
 
     /**
