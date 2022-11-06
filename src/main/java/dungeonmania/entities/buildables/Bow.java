@@ -16,7 +16,7 @@ public class Bow extends Buildable implements BattleItem {
     }
 
     public Bow(JSONObject j) {
-        super(j); //TODO don't know if this is right.
+        super(j);
         this.durability = j.getInt("durability");
     }
 

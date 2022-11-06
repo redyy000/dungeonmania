@@ -31,9 +31,13 @@ public abstract class Collectable extends Entity implements InventoryItem {
     public void onMovedAway(GameMap map, Entity entity) {
         return;
     }
-    //TODO CanmoveOnto return true override;
     @Override
     public void onDestroy(GameMap gameMap) {
         return;
+    }
+
+    @Override
+    public boolean canMoveOnto(GameMap map, Entity entity) {
+        return true;
     }
 }
