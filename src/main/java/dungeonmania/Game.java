@@ -63,11 +63,7 @@ public class Game {
     public Game(JSONObject j) {
         this.id = j.getString("id");
         this.name = j.getString("name");
-        // goals set by gameBuilder.
-        // map set by gameBuilder
-        // player set by initSavedGame()
         this.battleFacade = new BattleFacade();
-        // entityFactory set by gameBuilder
         this.isInTick = j.getBoolean("isInTick");
         this.killedEnemies = j.getInt("killedEnemies");
         this.nCollectedTreasure = j.getInt("nCollectedTreasure");
@@ -289,28 +285,17 @@ public class Game {
         JSONObject j = new JSONObject();
         j.put("id", this.id);
         j.put("name", this.name);
-        // j.put("goals", this.goals.getJSON());
-        // j.put("map", this.map.getJSON());
-        // j.put("player", this.player.getJSON()); //don't know if should do this.
-        // private BattleFacade battleFacade;
-        // private EntityFactory entityFactory;
         j.put("isInTick", this.isInTick);
         j.put("killedEnemies", this.killedEnemies);
         j.put("nCollectedTreasure", this.nCollectedTreasure);
         j.put("tickCount", this.tickCount);
-        // private PriorityQueue<ComparableCallback> sub = new PriorityQueue<>();
-        // private PriorityQueue<ComparableCallback> addingSub = new PriorityQueue<>();
         return j;
     }
 
     public void saveGameState() {
         // similar to DMC SaveGame(); Don't worry about config though.
-        // currently probably saves too much.
         JSONObject newStateJson = new JSONObject();
-        // newStateJson.put("goal-condition", this.getGoals().getJSON());
-        // newStateJson.put("game", this.getJSON());
         newStateJson.put("gameMap", this.getMap().getJSON());
-        // newStateJson.put("player", this.getPlayer().getJSON());
         moveHistory.add(player.getPosition());
         this.gameStates.push(newStateJson);
     }

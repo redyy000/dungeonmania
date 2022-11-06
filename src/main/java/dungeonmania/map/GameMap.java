@@ -45,7 +45,7 @@ public class GameMap {
                 addNode(newNode);
 
             if (entity instanceof Player)
-                setPlayer((Player) entity); //Might not need this, because Game can set Player with JSON.
+                setPlayer((Player) entity);
         });
         init(); // added by me
     }
@@ -92,20 +92,6 @@ public class GameMap {
         init();
     }
 
-    // return the array of entities but cast "player" to "player_ghost". Only difference
-    // between normal node and rewind node.
-    private JSONObject graphNodeRewind(JSONObject node) {
-        JSONArray newEntities = new JSONArray();
-        JSONArray entitiesJson = node.getJSONArray("entities");
-        for (int i = 0; i < entitiesJson.length(); i++) {
-            JSONObject entityJson = entitiesJson.getJSONObject(i);
-            if (entityJson.getString("type").equals("player")) {
-                entityJson.put("type", "player_ghost");
-            }
-            newEntities.put(entityJson);
-        }
-        return node.put("entities", newEntities);
-    }
     public void init() {
         initPairPortals();
         initRegisterMovables();

@@ -85,6 +85,6 @@ public class Portal extends Entity {
     public JSONObject getJSON() {
         JSONObject j = super.getJSON();
         j.put("color", this.color);
-        return j; //no need to put in pair, init will work it out later.
+        return j;
     }
 }

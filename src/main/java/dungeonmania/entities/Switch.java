@@ -20,7 +20,6 @@ public class Switch extends Entity {
     public Switch(JSONObject j) {
         super(j);
         this.activated = j.getBoolean("activated");
-        // set activated. Hopefully bombs subscribe elsewehere too.
     }
 
     public void subscribe(Bomb b) {

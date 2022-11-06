@@ -64,8 +64,6 @@ public class Spider extends Enemy {
 
     @Override
     public void move(Game game) {
-        // EnemyMovement movementStrategy = new SpiderMovement();
-        // movementStrategy.move(game, this);
         if (isSlowed()) return;
         Position nextPos = movementTrajectory.get(nextPositionElement);
         List<Entity> entities = game.getMap().getEntities(nextPos);
