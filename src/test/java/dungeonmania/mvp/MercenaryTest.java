@@ -130,7 +130,6 @@ public class MercenaryTest {
         //                                         Wall     Wall    Wall    Wall  Wall
         DungeonManiaController dmc = new DungeonManiaController();
         DungeonResponse res = dmc.newGame("d_mercenaryTest_bribeRadius", "c_mercenaryTest_bribeRadius");
-
         String mercId = TestUtils.getEntitiesStream(res, "mercenary").findFirst().get().getId();
 
         // pick up treasure
@@ -139,8 +138,27 @@ public class MercenaryTest {
         assertEquals(new Position(7, 1), getMercPos(res));
 
         // attempt bribe
-        assertDoesNotThrow(() -> dmc.interact(mercId));
+        assertThrows(InvalidActionException.class, () ->
+                dmc.interact(mercId)
+        );
         assertEquals(1, TestUtils.getInventory(res, "treasure").size());
+
+        res = dmc.tick(Direction.RIGHT); //3
+        // fail bribe : 6-3 =3 >2
+        assertEquals(new Position(6, 1), getMercPos(res));
+                // attempt bribe
+                assertThrows(InvalidActionException.class, () ->
+                dmc.interact(mercId)
+        );
+        assertEquals(1, TestUtils.getInventory(res, "treasure").size());
+
+        res = dmc.tick(Direction.RIGHT); //4
+        assertEquals(new Position(5, 1), getMercPos(res));
+
+        // in radius, can bribe.
+        res = assertDoesNotThrow(() -> dmc.interact(mercId));
+        assertEquals(0, TestUtils.getInventory(res, "treasure").size());
+
     }
 
     @Test
