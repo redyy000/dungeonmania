@@ -17,7 +17,7 @@ public abstract class Entity {
     private Position position;
     private String entityId;
     public Entity() {
-        this.position = null; //for buildables probrbaly.
+        this.position = null; //for buildables.
         this.entityId = UUID.randomUUID().toString();
     }
 
@@ -64,7 +64,7 @@ public abstract class Entity {
 
     public JSONObject getJSON() {
         JSONObject j = new JSONObject();
-        j.put("type", NameConverter.toSnakeCase(this.getClass().getSimpleName())); //use the string version.
+        j.put("type", NameConverter.toSnakeCase(this.getClass().getSimpleName()));
         if (this.position != null) {
             j.put("position", this.position.getJSON());
         }
