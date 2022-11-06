@@ -51,11 +51,9 @@ public class Assassin extends Mercenary {
      * Give money to the merc. See if it allows allying (return boolean).
      */
     private boolean bribe(Player player) {
-        // use things
         for (int i = 0; i < this.getBribeAmount(); i++) {
             player.use(Treasure.class);
         }
-        // maybe it will allow allying.
         int d = rng.nextInt(100);
         if (d < failBribeProb * 100) {
             return false;

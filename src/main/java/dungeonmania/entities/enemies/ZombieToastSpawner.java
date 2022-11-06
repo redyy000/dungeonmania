@@ -30,7 +30,7 @@ public class ZombieToastSpawner extends Entity implements Interactable {
         g.unsubscribe(getId());
     }
 
-    @Override   // Go into player and condense get inventory and get weapon and use
+    @Override
     public void interact(Player player, Game game) {
         player.useWeapon(game);
         GameMap map = game.getMap();
