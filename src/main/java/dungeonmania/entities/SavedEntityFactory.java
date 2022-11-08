@@ -18,7 +18,7 @@ import dungeonmania.entities.collectables.potions.InvincibilityPotion;
 import dungeonmania.entities.collectables.potions.InvisibilityPotion;
 import dungeonmania.entities.enemies.Assassin;
 import dungeonmania.entities.enemies.Mercenary;
-import dungeonmania.entities.enemies.PlayerGhost;
+import dungeonmania.entities.enemies.OlderPlayer;
 import dungeonmania.entities.enemies.Spider;
 import dungeonmania.entities.enemies.ZombieToast;
 import dungeonmania.entities.enemies.ZombieToastSpawner;
@@ -35,8 +35,8 @@ public class SavedEntityFactory {
         return constructEntity(jsonEntity);
     }
 
-    public static PlayerGhost createPlayerGhost(JSONObject jsonEntity, Queue<Position> moveHistory) {
-        return new PlayerGhost(jsonEntity, moveHistory);
+    public static OlderPlayer createPlayerGhost(JSONObject jsonEntity, Queue<Position> moveHistory) {
+        return new OlderPlayer(jsonEntity, moveHistory);
     }
 
     private static Entity constructEntity(JSONObject jsonEntity) {

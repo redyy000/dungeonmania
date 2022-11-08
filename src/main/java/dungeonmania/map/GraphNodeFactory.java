@@ -37,6 +37,9 @@ public class GraphNodeFactory {
         case "sun_stone":
         case "time_turner":
         case "time_travelling_portal":
+        case "light_bulb":
+        case "wire":
+        case "switch_door":
             return new GraphNode(factory.createEntity(jsonEntity));
         case "swamp_tile":
             SwampTile tile = (SwampTile) factory.createEntity(jsonEntity);
