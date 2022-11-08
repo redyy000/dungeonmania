@@ -20,7 +20,7 @@ public class LogicEntitiesTest {
         DungeonResponse res = dmc.newGame("d_logicEntities1", "c_bombTest_placeDiagonallyActive");
 
         // Check Bomb did not explode
-        assertEquals(1, TestUtils.getEntities(res, "light_bulb").size());
+        assertEquals(1, TestUtils.getEntities(res, "light_bulb_off").size());
         assertEquals(1, TestUtils.getEntities(res, "wire").size());
         assertEquals(1, TestUtils.getEntities(res, "switch_door").size());
     }

@@ -211,8 +211,10 @@ public class EntityFactory {
         case "swamp_tile":
             int factor = jsonEntity.getInt("movement_factor");
             return new SwampTile(pos, factor);
-        case "light_bulb":
-            return new LightBulb(pos);
+        case "light_bulb_on":
+            return new LightBulb(pos, true);
+        case "light_bulb_off":
+            return new LightBulb(pos, false);
         case "switch_door":
             return new SwitchDoor(pos);
         case "wire":
