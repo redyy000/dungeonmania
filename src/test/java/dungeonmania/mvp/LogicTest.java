@@ -31,4 +31,23 @@ public class LogicTest {
         res = dmc.tick(Direction.LEFT);
         assertTrue(TestUtils.countType(res, "light_bulb_on") == 1);
     }
+
+    @Test
+    @DisplayName("Testing Basic Light Bulb Or Function")
+    public void lightBulbBasicOr() {
+        DungeonManiaController dmc;
+        dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_logicTest_lightBulbBasicOr",
+        "c_logicTest_lightBulbBasicOr");
+        // Place boulder on switch and then check that the switch lights up
+        res = dmc.tick(Direction.DOWN);
+        res = dmc.tick(Direction.DOWN);
+        res = dmc.tick(Direction.RIGHT);
+        res = dmc.tick(Direction.RIGHT);
+        res = dmc.tick(Direction.RIGHT);
+        res = dmc.tick(Direction.RIGHT);
+        res = dmc.tick(Direction.UP);
+        res = dmc.tick(Direction.LEFT);
+        assertTrue(TestUtils.countType(res, "light_bulb_on") == 1);
+    }
 }
