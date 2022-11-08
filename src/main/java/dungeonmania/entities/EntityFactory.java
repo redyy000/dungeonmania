@@ -220,7 +220,8 @@ public class EntityFactory {
         case "wire":
             return new Wire(pos);
         case "switch_door":
-            return new SwitchDoor(pos);
+            String logic3 = jsonEntity.getString("logic");
+            return new SwitchDoor(pos, false, logic3);
         default:
             return null;
         }

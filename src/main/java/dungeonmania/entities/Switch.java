@@ -27,7 +27,7 @@ public class Switch extends Conductor {
     public void onOverlap(GameMap map, Entity entity) {
         if (entity instanceof Boulder) {
             setActivated(true);
-            pushActivated(map);
+            push(map, true);
         }
     }
 
@@ -35,6 +35,7 @@ public class Switch extends Conductor {
     public void onMovedAway(GameMap map, Entity entity) {
         if (entity instanceof Boulder) {
             setActivated(false);
+            push(map, false);
         }
     }
 

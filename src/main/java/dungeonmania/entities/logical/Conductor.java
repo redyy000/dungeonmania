@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.json.JSONObject;
 
+import dungeonmania.Game;
 import dungeonmania.entities.Entity;
 import dungeonmania.map.GameMap;
 import dungeonmania.util.Position;
@@ -37,7 +38,7 @@ public abstract class Conductor extends Entity {
     public void subscribe(SwitchObserver s, GameMap map) {
         subscribers.add(s);
         if (activated) {
-            subscribers.stream().forEach(b -> b.notify(map)); //don't think its foreach.
+            push(map, activated); //don't think its for each though.
         }
     }
     public void unsubscribe(SwitchObserver s) {
@@ -53,7 +54,16 @@ public abstract class Conductor extends Entity {
      * Tell all subscribers that this object just activated.
      * @param map
      */
-    protected void pushActivated(GameMap map) {
-        subscribers.stream().forEach(b -> b.notify(map));
+    protected void push(GameMap map, boolean activated) {
+        subscribers.stream().forEach(b -> b.notify(map, activated));
+    }
+
+    @Override
+    public void onDestroy(GameMap map) {
+        Game g = map.getGame();
+        g.unsubscribe(getId());
+        // for (SwitchObserver s: subscribers) { Switch observers don't care if you are gone.
+        //     s.unsubscribe(this);
+        // }
     }
 }

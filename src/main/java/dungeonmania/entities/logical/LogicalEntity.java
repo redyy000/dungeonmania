@@ -1,5 +1,6 @@
 package dungeonmania.entities.logical;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -8,12 +9,13 @@ import dungeonmania.entities.Entity;
 import dungeonmania.map.GameMap;
 import dungeonmania.util.Position;
 
-public abstract class LogicalEntity extends Entity {
+public abstract class LogicalEntity extends Entity implements SwitchObserver {
 
     private boolean activated;
     private String logic;
-    private List<Conductor> nearbyConductors;
-    private int nearbyActivated = 0;
+    private List<Conductor> nearbyConductors = new ArrayList<>();
+
+    private int notificationsThisTick = 0;
 
     public LogicalEntity(Position position, boolean activated, String logic) {
         super(position);
@@ -46,27 +48,54 @@ public abstract class LogicalEntity extends Entity {
 
     // }
 
+    @Override
     public void subscribe(Conductor c) {
         this.nearbyConductors.add(c);
-    }
-
-    public void notify(GameMap map) {
-        nearbyActivated++;
-        if (this.logic.equals("or") && nearbyActivated >= 1) {
-            this.activated = true;
-        }
     }
 
     @Override
     public void onDestroy(GameMap map) {
         Game g = map.getGame();
         g.unsubscribe(getId());
+        for (Conductor c: this.nearbyConductors) {
+            c.unsubscribe(this); //make conductors forget this.
+        }
     }
 
     public boolean isActivated() {
         return activated;
     }
+
+    public void setActivated(boolean activated) {
+        this.activated = activated;
+    }
     public String getLogic() {
         return this.logic;
+    }
+
+    public int nearbyActivated() {
+        return (int) nearbyConductors.stream().filter(c -> c.isActivated()).count();
+    }
+
+    @Override
+    public void notify(GameMap map, boolean activated) {
+        String l = getLogic();
+        int n = nearbyActivated();
+        if (l.equals("or") && n >= 1) {
+            setActivated(true); return;
+        } else if (l.equals("and") && n >= 2 && nearbyConductors.size() == n) {
+            setActivated(true); return;
+        } else if (l.equals("xor") && n == 1) {
+            setActivated(true); return;
+        } else if (l.equals("co_and") && notificationsThisTick >= 2
+                    && n >= 2) {
+            setActivated(true); return;
+        }
+        setActivated(false);
+        return;
+    }
+
+    public void resetNotifsCount() {
+        this.notificationsThisTick = 0;
     }
 }

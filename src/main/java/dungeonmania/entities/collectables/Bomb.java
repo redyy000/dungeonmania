@@ -42,8 +42,8 @@ public class Bomb extends Collectable implements SwitchObserver {
     }
 
     @Override
-    public void notify(GameMap map) {
-        explode(map);
+    public void notify(GameMap map, boolean activated) {
+        if (activated) explode(map);
     }
 
     @Override

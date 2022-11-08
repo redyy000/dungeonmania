@@ -13,5 +13,5 @@ public interface SwitchObserver {
      * This object does something when notify is called. (when nearby is activated)
      * @param map
      */
-    public void notify(GameMap map);
+    public void notify(GameMap map, boolean activated);
 }
