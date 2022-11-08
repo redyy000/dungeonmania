@@ -12,9 +12,11 @@ import dungeonmania.entities.Entity;
 import dungeonmania.entities.Player;
 import dungeonmania.entities.Switch;
 import dungeonmania.entities.enemies.OlderPlayer;
+import dungeonmania.entities.logical.Conductor;
+import dungeonmania.entities.logical.SwitchObserver;
 import dungeonmania.map.GameMap;
 
-public class Bomb extends Collectable {
+public class Bomb extends Collectable implements SwitchObserver {
     public enum State {
         SPAWNED,
         INVENTORY,
@@ -39,10 +41,7 @@ public class Bomb extends Collectable {
         this.radius = j.getInt("radius");
     }
 
-    public void subscribe(Switch s) {
-        this.subs.add(s);
-    }
-
+    @Override
     public void notify(GameMap map) {
         explode(map);
     }
@@ -109,5 +108,12 @@ public class Bomb extends Collectable {
         j.put("state", this.state);
         j.put("radius", this.radius);
         return j;
+    }
+
+    @Override
+    public void subscribe(Conductor s) {
+        if (s instanceof Switch) {
+            this.subs.add((Switch) s);
+        }
     }
 }

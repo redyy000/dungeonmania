@@ -212,13 +212,15 @@ public class EntityFactory {
             int factor = jsonEntity.getInt("movement_factor");
             return new SwampTile(pos, factor);
         case "light_bulb_on":
-            return new LightBulb(pos, true);
+            String logic = jsonEntity.getString("logic");
+            return new LightBulb(pos, true, logic);
         case "light_bulb_off":
-            return new LightBulb(pos, false);
-        case "switch_door":
-            return new SwitchDoor(pos);
+            String logic2 = jsonEntity.getString("logic");
+            return new LightBulb(pos, false, logic2);
         case "wire":
             return new Wire(pos);
+        case "switch_door":
+            return new SwitchDoor(pos);
         default:
             return null;
         }

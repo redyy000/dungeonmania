@@ -1,0 +1,59 @@
+package dungeonmania.entities.logical;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.json.JSONObject;
+
+import dungeonmania.entities.Entity;
+import dungeonmania.map.GameMap;
+import dungeonmania.util.Position;
+
+public abstract class Conductor extends Entity {
+    private List<SwitchObserver> subscribers = new ArrayList<>();
+    private boolean activated;
+
+    public Conductor(Position p) {
+        super(p);
+    }
+
+    public Conductor(JSONObject j) {
+        super(j);
+        //TODO
+    }
+
+    /**
+     * subscribe a given SwithcObserver to this object.
+     * @param s
+     */
+    public void subscribe(SwitchObserver s) {
+        subscribers.add(s);
+    }
+
+    /**
+     * subscribe a given SwithcObserver to this object.
+     * @param s
+     */
+    public void subscribe(SwitchObserver s, GameMap map) {
+        subscribers.add(s);
+        if (activated) {
+            subscribers.stream().forEach(b -> b.notify(map)); //don't think its foreach.
+        }
+    }
+    public void unsubscribe(SwitchObserver s) {
+        subscribers.remove(s);
+    }
+    public boolean isActivated() {
+        return this.activated;
+    }
+    public void setActivated(boolean activated) {
+        this.activated = activated;
+    }
+    /**
+     * Tell all subscribers that this object just activated.
+     * @param map
+     */
+    protected void pushActivated(GameMap map) {
+        subscribers.stream().forEach(b -> b.notify(map));
+    }
+}

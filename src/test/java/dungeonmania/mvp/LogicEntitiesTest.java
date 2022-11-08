@@ -25,4 +25,51 @@ public class LogicEntitiesTest {
         assertEquals(1, TestUtils.getEntities(res, "switch_door").size());
     }
 
+    @Test
+    @DisplayName(
+        "Test light bulb activates")
+    public void lightBulbActivates() throws InvalidActionException {
+        DungeonManiaController dmc;
+        dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_logicEntities1", "c_bombTest_placeDiagonallyActive");
+
+        // iniitallly off
+        assertEquals(0, TestUtils.getEntities(res, "light_bulb_on").size());
+
+        // Activate Switch
+        res = dmc.tick(Direction.RIGHT);
+        assertEquals(1, TestUtils.getEntities(res, "light_bulb_on").size());
+    }
+
+    @Test
+    @DisplayName(
+        "Test light bulb activates through 1 wire")
+    public void lightBulbActivates1() throws InvalidActionException {
+        DungeonManiaController dmc;
+        dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_logicalEntites2", "c_bombTest_placeDiagonallyActive");
+
+        // iniitallly off
+        assertEquals(0, TestUtils.getEntities(res, "light_bulb_on").size());
+
+        // Activate Switch
+        res = dmc.tick(Direction.RIGHT);
+        assertEquals(1, TestUtils.getEntities(res, "light_bulb_on").size());
+    }
+
+    @Test
+    @DisplayName(
+        "Test light bulb activates through 2 wires")
+    public void lightBulbActivates2() throws InvalidActionException {
+        DungeonManiaController dmc;
+        dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_logicEntities3", "c_bombTest_placeDiagonallyActive");
+
+        // iniitallly off
+        assertEquals(0, TestUtils.getEntities(res, "light_bulb_on").size());
+
+        // Activate Switch
+        res = dmc.tick(Direction.RIGHT);
+        assertEquals(1, TestUtils.getEntities(res, "light_bulb_on").size());
+    }
 }
