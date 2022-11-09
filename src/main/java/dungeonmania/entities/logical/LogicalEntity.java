@@ -62,6 +62,7 @@ public abstract class LogicalEntity extends Entity implements SwitchObserver {
     @Override
     public void notify(GameMap map, boolean activated) {
         String l = getLogic();
+        if (activated) notificationsThisTick++;
         int n = nearbyActivated();
         if (l.equals("or") && n >= 1) {
             setActivated(true); return;

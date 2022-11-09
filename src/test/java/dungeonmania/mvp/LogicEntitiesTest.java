@@ -72,4 +72,23 @@ public class LogicEntitiesTest {
         res = dmc.tick(Direction.RIGHT);
         assertEquals(1, TestUtils.getEntities(res, "light_bulb_on").size());
     }
+
+    @Test
+    @DisplayName(
+        "Test light bulb activates through square of wires")
+    public void lightBulbActivates3() throws InvalidActionException {
+        /*   Pl Bou Sw  Wi  Wi
+         *              Wi  Wi  LB
+         */
+        DungeonManiaController dmc;
+        dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_logicEntities4", "c_bombTest_placeDiagonallyActive");
+
+        // iniitallly off
+        assertEquals(0, TestUtils.getEntities(res, "light_bulb_on").size());
+
+        // Activate Switch
+        res = dmc.tick(Direction.RIGHT);
+        assertEquals(1, TestUtils.getEntities(res, "light_bulb_on").size());
+    }
 }
