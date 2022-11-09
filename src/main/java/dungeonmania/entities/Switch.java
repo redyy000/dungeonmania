@@ -15,7 +15,6 @@ public class Switch extends Conductor {
 
     public Switch(JSONObject j) {
         super(j);
-        setActivated(j.getBoolean("activated"));
     }
 
     @Override
@@ -37,13 +36,5 @@ public class Switch extends Conductor {
             setActivated(false);
             push(map, false);
         }
-    }
-
-
-    @Override
-    public JSONObject getJSON() {
-        JSONObject j = super.getJSON();
-        j.put("activated", isActivated());
-        return j;
     }
 }

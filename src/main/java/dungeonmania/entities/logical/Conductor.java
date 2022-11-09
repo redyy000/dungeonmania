@@ -20,7 +20,7 @@ public abstract class Conductor extends Entity {
 
     public Conductor(JSONObject j) {
         super(j);
-        //TODO
+        this.activated = j.getBoolean("activated");
     }
 
     /**
@@ -63,8 +63,12 @@ public abstract class Conductor extends Entity {
     public void onDestroy(GameMap map) {
         Game g = map.getGame();
         g.unsubscribe(getId());
-        // for (SwitchObserver s: subscribers) { Switch observers don't care if you are gone.
-        //     s.unsubscribe(this);
-        // }
+    }
+
+    @Override
+    public JSONObject getJSON() {
+        JSONObject j = super.getJSON();
+        j.put("activated", this.activated);
+        return j;
     }
 }
