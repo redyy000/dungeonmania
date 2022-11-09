@@ -82,9 +82,35 @@
             "type" : "sun_stone",
             "x" : 10,
             "y" : 2
+        }, {
+            "type" : "portal",
+            "x" : 1,
+            "y" : 3,
+            "colour": "BLUE"
+        }, {
+            "type" : "portal",
+            "x" : 2,
+            "y" : 3,
+            "colour": "BLUE"
+        }, {
+            "type" : "time_turner",
+            "x" : 2,
+            "y" : 4
+        }, {
+            "type" : "time_travelling_portal",
+            "x" : 2,
+            "y" : 5
+        }, {
+            "type" : "light_bulb_off",
+            "x" : 2,
+            "y" : 6,
+            "logic" : "or"
+        }, {
+            "type" : "switch_door",
+            "x" : 2,
+            "y" : 7,
+            "logic" : "or"
         }
-        
-    
     ],
     "goal-condition": {"goal": "exit"}
 }

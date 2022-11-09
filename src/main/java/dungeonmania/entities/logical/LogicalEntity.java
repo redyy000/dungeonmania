@@ -3,6 +3,7 @@ package dungeonmania.entities.logical;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONObject;
 
 import dungeonmania.Game;
 import dungeonmania.entities.Entity;
@@ -23,30 +24,11 @@ public abstract class LogicalEntity extends Entity implements SwitchObserver {
         this.logic = logic;
     }
 
-    // public void checkOnTick(GameMap map) {
-    //     List<Entity> nearbyEntities = new ArrayList<>();
-    //     this.getPosition()
-    //         .getCardinallyAdjacentPositions()
-    //         .stream()
-    //         .forEach(position -> nearbyEntities.addAll(map.getEntities(position)));
-
-    //     List<Conductor> nearbySwitches = nearbyEntities.stream()
-    //                     .filter(entity -> entity instanceof Conductor)
-    //                     .map(entity -> (Conductor) entity)
-    //                     .collect(Collectors.toList());
-    //     int countActivatedNearby = 0;
-    //     for (Conductor s: nearbySwitches) {
-    //         if (s.isActivated()) countActivatedNearby++;
-    //     }
-    //     actOnTick(countActivatedNearby);
-    // }
-
-    // private void actOnTick(int nearbyActivated) {
-    //     if (this.logic.equals("or") && nearbyActivated >= 1) {
-    //         this.activated = true;
-    //     }
-
-    // }
+    public LogicalEntity(JSONObject j) {
+        super(j);
+        this.activated = j.getBoolean("activated");
+        this.logic = j.getString("logic");
+    }
 
     @Override
     public void subscribe(Conductor c) {
@@ -97,5 +79,13 @@ public abstract class LogicalEntity extends Entity implements SwitchObserver {
 
     public void resetNotifsCount() {
         this.notificationsThisTick = 0;
+    }
+
+    @Override
+    public JSONObject getJSON() {
+        JSONObject j = super.getJSON();
+        j.put("activated", this.activated);
+        j.put("logic", this.logic);
+        return j;
     }
 }

@@ -1,5 +1,7 @@
 package dungeonmania.entities.logical;
 
+import org.json.JSONObject;
+
 import dungeonmania.entities.Entity;
 import dungeonmania.entities.enemies.Spider;
 import dungeonmania.map.GameMap;
@@ -10,6 +12,9 @@ public class SwitchDoor extends LogicalEntity {
         super(p, activated, logic);
     }
 
+    public SwitchDoor(JSONObject j) {
+        super(j);
+    }
 
     @Override
     public boolean canMoveOnto(GameMap map, Entity entity) {

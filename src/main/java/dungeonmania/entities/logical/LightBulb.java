@@ -1,5 +1,6 @@
 package dungeonmania.entities.logical;
 
+import org.json.JSONObject;
 
 import dungeonmania.util.Position;
 
@@ -9,6 +10,7 @@ public class LightBulb extends LogicalEntity {
         super(p, activated, logic);
     }
 
-
-    //TODO getJson is not usual type. replace "type" key.
+    public LightBulb(JSONObject j) {
+        super(j);
+    }
 }

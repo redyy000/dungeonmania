@@ -22,6 +22,8 @@ import dungeonmania.entities.enemies.OlderPlayer;
 import dungeonmania.entities.enemies.Spider;
 import dungeonmania.entities.enemies.ZombieToast;
 import dungeonmania.entities.enemies.ZombieToastSpawner;
+import dungeonmania.entities.logical.LightBulb;
+import dungeonmania.entities.logical.SwitchDoor;
 import dungeonmania.util.Position;
 
 public class SavedEntityFactory {
@@ -89,6 +91,10 @@ public class SavedEntityFactory {
             return new TimeTurner(jsonEntity);
         case "time_travelling_portal":
             return new TimeTravellingPortal(jsonEntity);
+        case "light_bulb":
+            return new LightBulb(jsonEntity);
+        case "switch_door":
+            return new SwitchDoor(jsonEntity);
         default:
             throw new JSONException(jsonEntity.getString("type") + " can't be made from save");
         }

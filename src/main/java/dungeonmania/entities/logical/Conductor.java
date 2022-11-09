@@ -55,6 +55,7 @@ public abstract class Conductor extends Entity {
      * @param map
      */
     protected void push(GameMap map, boolean activated) {
+        System.out.println(getId() + " is a conductor pushing.");
         subscribers.stream().forEach(b -> b.notify(map, activated));
     }
 
