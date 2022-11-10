@@ -16,7 +16,7 @@
         }, {
             "type" : "boulder",
             "x" : 2,
-            "y" : 3
+            "y" : 2
         }, {
             "type" : "switch",
             "x" : 2,
