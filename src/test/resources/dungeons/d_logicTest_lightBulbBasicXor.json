@@ -1,0 +1,27 @@
+{
+    "entities": [
+        {
+            "type" : "player",
+            "x" : 1,
+            "y" : 1
+        }, {
+            "type" : "exit",
+            "x" : 8,
+            "y" : 8
+        }, {
+            "type": "light_bulb_off",
+            "x": 3,
+            "y": 3,
+            "logic": "xor"
+        }, {
+            "type" : "switch",
+            "x" : 3,
+            "y" : 2
+        }, {
+            "type" : "boulder",
+            "x" : 4,
+            "y" : 2
+        }
+    ],
+    "goal-condition": {"goal": "exit"}
+}
