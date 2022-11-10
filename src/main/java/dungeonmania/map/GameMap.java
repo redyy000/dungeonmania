@@ -20,6 +20,9 @@ import dungeonmania.entities.Switch;
 import dungeonmania.entities.collectables.Bomb;
 import dungeonmania.entities.enemies.Enemy;
 import dungeonmania.entities.enemies.ZombieToastSpawner;
+import dungeonmania.entities.logical.Conductor;
+import dungeonmania.entities.logical.SwitchObserver;
+import dungeonmania.entities.logical.Wire;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
@@ -96,7 +99,8 @@ public class GameMap {
         initPairPortals();
         initRegisterMovables();
         initRegisterSpawners();
-        initRegisterBombsAndSwitches();
+        // initRegisterBombsAndSwitches();
+        initRegisterObserversAndConductors();
     }
 
     private void initRegisterBombsAndSwitches() {
@@ -107,6 +111,27 @@ public class GameMap {
                 if (Position.isAdjacent(b.getPosition(), s.getPosition())) {
                     b.subscribe(s);
                     s.subscribe(b);
+                }
+            }
+        }
+    }
+
+    private void initRegisterObserversAndConductors() {
+        List<Entity> obss = getEntities().stream()
+                            .filter(e -> e instanceof SwitchObserver)
+                            .collect(Collectors.toList());
+        List<Entity> conductors = getEntities().stream()
+                            .filter(e -> e instanceof Conductor)
+                            .map(e -> (Conductor) e)
+                            .collect(Collectors.toList());
+        for (Entity o: obss) {
+            for (Entity c: conductors) {
+                if (Position.isAdjacent(o.getPosition(), c.getPosition())
+                && !(c instanceof Wire && o instanceof Bomb)) {
+                    SwitchObserver observer = (SwitchObserver) o;
+                    Conductor conductor = (Conductor) c;
+                    observer.subscribe(conductor);
+                    conductor.subscribe(observer);
                 }
             }
         }

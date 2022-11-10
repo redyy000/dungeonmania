@@ -8,16 +8,16 @@ import dungeonmania.Game;
 import dungeonmania.map.GameMap;
 import dungeonmania.util.Position;
 
-public class PlayerGhost extends Enemy  {
+public class OlderPlayer extends Enemy  {
     private Queue<Position> moveQueue;
 
-    public PlayerGhost(Position position, double health, double attack,
+    public OlderPlayer(Position position, double health, double attack,
                     Queue<Position> moveHistory) {
         super(position, health, attack);
         this.moveQueue = moveHistory;
     }
 
-    public PlayerGhost(JSONObject j, Queue<Position> moveHistory) {
+    public OlderPlayer(JSONObject j, Queue<Position> moveHistory) {
         super(j);
         this.moveQueue = moveHistory;
     }

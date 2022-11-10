@@ -18,10 +18,12 @@ import dungeonmania.entities.collectables.potions.InvincibilityPotion;
 import dungeonmania.entities.collectables.potions.InvisibilityPotion;
 import dungeonmania.entities.enemies.Assassin;
 import dungeonmania.entities.enemies.Mercenary;
-import dungeonmania.entities.enemies.PlayerGhost;
+import dungeonmania.entities.enemies.OlderPlayer;
 import dungeonmania.entities.enemies.Spider;
 import dungeonmania.entities.enemies.ZombieToast;
 import dungeonmania.entities.enemies.ZombieToastSpawner;
+import dungeonmania.entities.logical.LightBulb;
+import dungeonmania.entities.logical.SwitchDoor;
 import dungeonmania.util.Position;
 
 public class SavedEntityFactory {
@@ -35,8 +37,8 @@ public class SavedEntityFactory {
         return constructEntity(jsonEntity);
     }
 
-    public static PlayerGhost createPlayerGhost(JSONObject jsonEntity, Queue<Position> moveHistory) {
-        return new PlayerGhost(jsonEntity, moveHistory);
+    public static OlderPlayer createPlayerGhost(JSONObject jsonEntity, Queue<Position> moveHistory) {
+        return new OlderPlayer(jsonEntity, moveHistory);
     }
 
     private static Entity constructEntity(JSONObject jsonEntity) {
@@ -89,6 +91,10 @@ public class SavedEntityFactory {
             return new TimeTurner(jsonEntity);
         case "time_travelling_portal":
             return new TimeTravellingPortal(jsonEntity);
+        case "light_bulb":
+            return new LightBulb(jsonEntity);
+        case "switch_door":
+            return new SwitchDoor(jsonEntity);
         default:
             throw new JSONException(jsonEntity.getString("type") + " can't be made from save");
         }

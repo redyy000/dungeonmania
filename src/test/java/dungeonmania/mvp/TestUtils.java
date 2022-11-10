@@ -44,7 +44,7 @@ public class TestUtils {
         if (type.equals("player")) { //similarly, it will confusing player and playerGhost.
             return res.getEntities().stream()
                     .filter(it -> it.getType().startsWith(type))
-                    .filter(it -> !it.getType().startsWith("player_ghost"));
+                    .filter(it -> !it.getType().startsWith("older_player"));
         }
         return res.getEntities().stream().filter(it -> it.getType().startsWith(type));
     }

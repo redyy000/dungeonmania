@@ -7,6 +7,9 @@ import dungeonmania.entities.buildables.Sceptre;
 import dungeonmania.entities.buildables.Shield;
 import dungeonmania.entities.collectables.*;
 import dungeonmania.entities.enemies.*;
+import dungeonmania.entities.logical.LightBulb;
+import dungeonmania.entities.logical.SwitchDoor;
+import dungeonmania.entities.logical.Wire;
 import dungeonmania.map.GameMap;
 import dungeonmania.entities.collectables.potions.InvincibilityPotion;
 import dungeonmania.entities.collectables.potions.InvisibilityPotion;
@@ -208,6 +211,17 @@ public class EntityFactory {
         case "swamp_tile":
             int factor = jsonEntity.getInt("movement_factor");
             return new SwampTile(pos, factor);
+        case "light_bulb_on":
+            String logic = jsonEntity.getString("logic");
+            return new LightBulb(pos, true, logic);
+        case "light_bulb_off":
+            String logic2 = jsonEntity.getString("logic");
+            return new LightBulb(pos, false, logic2);
+        case "wire":
+            return new Wire(pos);
+        case "switch_door":
+            String logic3 = jsonEntity.getString("logic");
+            return new SwitchDoor(pos, false, logic3);
         default:
             return null;
         }
