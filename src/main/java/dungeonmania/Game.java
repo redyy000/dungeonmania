@@ -21,6 +21,7 @@ import dungeonmania.entities.collectables.potions.Potion;
 import dungeonmania.entities.enemies.Enemy;
 import dungeonmania.entities.enemies.Mercenary;
 import dungeonmania.entities.enemies.ZombieToastSpawner;
+import dungeonmania.entities.logical.LogicalEntity;
 import dungeonmania.exceptions.InvalidActionException;
 import dungeonmania.goals.Goal;
 import dungeonmania.map.GameMap;
@@ -81,11 +82,17 @@ public class Game {
         saveGameState();
         List<Mercenary> mercs = map.getEntities(Mercenary.class);
         List<SwampTile> swampTiles = map.getEntities(SwampTile.class);
+        List<LogicalEntity> logicalEntities = map.getEntities(LogicalEntity.class);
+
         for (Mercenary m : mercs) {
             register(() -> m.onTick(tickCount), BEFORE_AI_MOVE, "mindControlTimer" + m.getId());
         }
         for (SwampTile s : swampTiles) {
             register(() -> s.onTick(), BEFORE_AI_MOVE, "swampTilesSlow " + s.getId());
+        }
+        for (LogicalEntity l : logicalEntities) {
+            register(() -> l.resetNotifsCount(), AI_MOVEMENT_CALLBACK,
+                    "reset count notifs for tick on LogicEnttiy " + l.getId());
         }
     }
 

@@ -4,7 +4,7 @@ import org.json.JSONObject;
 
 import dungeonmania.entities.Entity;
 import dungeonmania.entities.Player;
-import dungeonmania.entities.enemies.PlayerGhost;
+import dungeonmania.entities.enemies.OlderPlayer;
 import dungeonmania.map.GameMap;
 import dungeonmania.util.Position;
 
@@ -22,7 +22,7 @@ public abstract class AnyTreasure extends Collectable {
             if (!((Player) entity).pickUp(this)) return;
             map.getGame().increaseNCollectedTreasure();
             map.destroyEntity(this);
-        } else if (entity instanceof PlayerGhost) {
+        } else if (entity instanceof OlderPlayer) {
             map.destroyEntity(this);
         }
     }

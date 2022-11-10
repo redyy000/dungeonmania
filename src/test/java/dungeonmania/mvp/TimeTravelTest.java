@@ -96,7 +96,7 @@ public class TimeTravelTest {
         assertEquals(new Position(6, 1), TestUtils.getPlayerPos(res));
         // use
         res = dmc.rewind(5);
-        assertEquals(1, TestUtils.getEntities(res, "player_ghost").size()); //the old player will be named like so
+        assertEquals(1, TestUtils.getEntities(res, "older_player").size()); //the old player will be named like so
         assertEquals(new Position(6, 1), TestUtils.getPlayerPos(res));
         assertEquals(new Position(1, 1), getPlayerGhostPos(res));
 
@@ -133,7 +133,7 @@ public class TimeTravelTest {
         res = dmc.tick(Direction.RIGHT); //teleporter
         assertEquals(new Position(5, 1), TestUtils.getPlayerPos(res));
         res = dmc.tick(Direction.LEFT); // pick up tresaure again ok
-        assertEquals(1, TestUtils.getEntities(res, "player_ghost").size());
+        assertEquals(1, TestUtils.getEntities(res, "older_player").size());
         assertEquals(new Position(4, 1), TestUtils.getPlayerPos(res));
         assertEquals(4, TestUtils.getInventory(res, "treasure").size());
         res = dmc.tick(Direction.LEFT); // pick up tresaure again ok
@@ -149,6 +149,6 @@ public class TimeTravelTest {
     }
 
     private Position getPlayerGhostPos(DungeonResponse res) {
-        return TestUtils.getEntities(res, "player_ghost").get(0).getPosition();
+        return TestUtils.getEntities(res, "older_player").get(0).getPosition();
     }
 }

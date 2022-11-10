@@ -4,7 +4,7 @@ import org.json.JSONObject;
 
 import dungeonmania.entities.Entity;
 import dungeonmania.entities.Player;
-import dungeonmania.entities.enemies.PlayerGhost;
+import dungeonmania.entities.enemies.OlderPlayer;
 import dungeonmania.entities.inventory.InventoryItem;
 import dungeonmania.map.GameMap;
 import dungeonmania.util.Position;
@@ -22,7 +22,7 @@ public abstract class Collectable extends Entity implements InventoryItem {
         if (entity instanceof Player) {
             if (!((Player) entity).pickUp(this)) return;
             map.destroyEntity(this);
-        } else if (entity instanceof PlayerGhost) {
+        } else if (entity instanceof OlderPlayer) {
             map.destroyEntity(this);
         }
     }
