@@ -126,5 +126,5 @@ public class LogicTest {
         assertTrue(TestUtils.countType(res, "light_bulb_on") == 0);
         assertTrue(TestUtils.countType(res, "light_bulb_off") == 1);
     }
-    
+
 }
