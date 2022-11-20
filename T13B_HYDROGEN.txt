@@ -1,0 +1,304 @@
+Final Result = 111.0/160.0
+(Automark = 18.48 / 20)
+(Commit being used in the automark: f45a4ae)
+
+
+100. Enemy Goal
+
+Test 100-1: Test achieving a basic enemy goal kill spider
+SUCCESS DONE
+
+Test 100-2: Test achieving a basic enemy goal kill zombie toast
+SUCCESS DONE
+
+Test 100-3: Test achieving a basic enemy goal kill mercenary
+SUCCESS DONE
+
+Test: Hidden Test
+FAILED - Test output redacted
+
+Test 100-5: Testing a map with 4 conjunction goal
+SUCCESS DONE
+
+Test 100-6: Testing a map with 4 disjunction goal
+SUCCESS DONE
+
+Test: Hidden Test
+SUCCESS DONE
+
+101. Allies
+
+Test 101-1: Testing an allied mercenary does not battle the player
+SUCCESS DONE
+
+Test 101-2: Testing an allied mercenary follows the Player around but being too far away
+SUCCESS DONE
+
+Test 101-3: Testing an allied mercenary finds the player then follow the player
+SUCCESS DONE
+
+Test: Hidden Test
+SUCCESS DONE
+
+102. Bosses (Assassin)
+
+Test 102-1: Testing an assassin in line with Player moves towards them
+SUCCESS DONE
+
+Test 102-2: Test assassins can not move through walls and closed doors
+SUCCESS DONE
+
+Test 102-3: Testing bribing an assassin with 0 fail rate
+BossTest > Testing bribing an assassin with 0 fail rate FAILED org.opentest4j.AssertionFailedError: Unexpected exception thrown: dungeonmania.exceptions.InvalidActionException: Entity cannot be interacted at app//org.junit.jupiter.api.AssertDoesNotThrow.createAssertionFailedError(AssertDoesNotThrow.java:83) at app//org.junit.jupiter.api.AssertDoesNotThrow.assertDoesNotThrow(AssertDoesNotThrow.java:76) at app//org.junit.jupiter.api.AssertDoesNotThrow.assertDoesNotThrow(AssertDoesNotThrow.java:59) at app//org.junit.jupiter.api.Assertions.assertDoesNotThrow(Assertions.java:3195) at app//dungeonmania.automarking.BossTest.testAssassinBribeSuccess(BossTest.java:74) Caused by: dungeonmania.exceptions.InvalidActionException: Entity cannot be interacted at app//dungeonmania.Game.interact(Game.java:167) at app//dungeonmania.DungeonManiaController.interact(DungeonManiaController.java:110) at app//dungeonmania.automarking.BossTest.lambda$testAssassinBribeSuccess$0(BossTest.java:74) at app//org.junit.jupiter.api.AssertDoesNotThrow.assertDoesNotThrow(AssertDoesNotThrow.java:72) ... 3 more FAILURE DONE 1 test completed, 1 failed FAILURE: Build failed with an exception. blog.md build build.gradle checkstyle.xml client config_template.json design.pdf extract_coverage.sh gradle gradlew gradlew.bat README.md src What went wrong: Execution failed for task ':test'. > There were failing tests. See the report at: file:///root/assignment-ii-automarking/groups/T13B_HYDROGEN/build/reports/tests/test/index.html blog.md build build.gradle checkstyle.xml client config_template.json design.pdf extract_coverage.sh gradle gradlew gradlew.bat README.md src Try: Run with --stacktrace option to get the stack trace. Run with --info or --debug option to get more log output. Run with --scan to get full insights. blog.md build build.gradle checkstyle.xml client config_template.json design.pdf extract_coverage.sh gradle gradlew gradlew.bat README.md src Get more help at https://help.gradle.org BUILD FAILED in 2s
+
+Test 102-4: Testing bribed assassin should act as an ally
+BossTest > Testing bribed assassin should act as an ally FAILED org.opentest4j.AssertionFailedError: Unexpected exception thrown: dungeonmania.exceptions.InvalidActionException: Entity cannot be interacted at app//org.junit.jupiter.api.AssertDoesNotThrow.createAssertionFailedError(AssertDoesNotThrow.java:83) at app//org.junit.jupiter.api.AssertDoesNotThrow.assertDoesNotThrow(AssertDoesNotThrow.java:76) at app//org.junit.jupiter.api.AssertDoesNotThrow.assertDoesNotThrow(AssertDoesNotThrow.java:59) at app//org.junit.jupiter.api.Assertions.assertDoesNotThrow(Assertions.java:3195) at app//dungeonmania.automarking.BossTest.testAssassinAllied(BossTest.java:110) Caused by: dungeonmania.exceptions.InvalidActionException: Entity cannot be interacted at app//dungeonmania.Game.interact(Game.java:167) at app//dungeonmania.DungeonManiaController.interact(DungeonManiaController.java:110) at app//dungeonmania.automarking.BossTest.lambda$testAssassinAllied$1(BossTest.java:110) at app//org.junit.jupiter.api.AssertDoesNotThrow.assertDoesNotThrow(AssertDoesNotThrow.java:72) ... 3 more FAILURE DONE 1 test completed, 1 failed FAILURE: Build failed with an exception. blog.md build build.gradle checkstyle.xml client config_template.json design.pdf extract_coverage.sh gradle gradlew gradlew.bat README.md src What went wrong: Execution failed for task ':test'. > There were failing tests. See the report at: file:///root/assignment-ii-automarking/groups/T13B_HYDROGEN/build/reports/tests/test/index.html blog.md build build.gradle checkstyle.xml client config_template.json design.pdf extract_coverage.sh gradle gradlew gradlew.bat README.md src Try: Run with --stacktrace option to get the stack trace. Run with --info or --debug option to get more log output. Run with --scan to get full insights. blog.md build build.gradle checkstyle.xml client config_template.json design.pdf extract_coverage.sh gradle gradlew gradlew.bat README.md src Get more help at https://help.gradle.org BUILD FAILED in 2s
+
+Test 102-5: Testing bribing an assassin with 100% fail rate and no refund
+BossTest > Testing bribing an assassin with 100% fail rate, and no refund FAILED org.opentest4j.AssertionFailedError: Unexpected exception thrown: dungeonmania.exceptions.InvalidActionException: Entity cannot be interacted at app//org.junit.jupiter.api.AssertDoesNotThrow.createAssertionFailedError(AssertDoesNotThrow.java:83) at app//org.junit.jupiter.api.AssertDoesNotThrow.assertDoesNotThrow(AssertDoesNotThrow.java:76) at app//org.junit.jupiter.api.AssertDoesNotThrow.assertDoesNotThrow(AssertDoesNotThrow.java:59) at app//org.junit.jupiter.api.Assertions.assertDoesNotThrow(Assertions.java:3195) at app//dungeonmania.automarking.BossTest.testAssassinBribeFail(BossTest.java:152) Caused by: dungeonmania.exceptions.InvalidActionException: Entity cannot be interacted at app//dungeonmania.Game.interact(Game.java:167) at app//dungeonmania.DungeonManiaController.interact(DungeonManiaController.java:110) at app//dungeonmania.automarking.BossTest.lambda$testAssassinBribeFail$2(BossTest.java:152) at app//org.junit.jupiter.api.AssertDoesNotThrow.assertDoesNotThrow(AssertDoesNotThrow.java:72) ... 3 more FAILURE DONE 1 test completed, 1 failed FAILURE: Build failed with an exception. blog.md build build.gradle checkstyle.xml client config_template.json design.pdf extract_coverage.sh gradle gradlew gradlew.bat README.md src What went wrong: Execution failed for task ':test'. > There were failing tests. See the report at: file:///root/assignment-ii-automarking/groups/T13B_HYDROGEN/build/reports/tests/test/index.html blog.md build build.gradle checkstyle.xml client config_template.json design.pdf extract_coverage.sh gradle gradlew gradlew.bat README.md src Try: Run with --stacktrace option to get the stack trace. Run with --info or --debug option to get more log output. Run with --scan to get full insights. blog.md build build.gradle checkstyle.xml client config_template.json design.pdf extract_coverage.sh gradle gradlew gradlew.bat README.md src Get more help at https://help.gradle.org BUILD FAILED in 2s
+
+Test: Hidden Test
+SUCCESS DONE
+
+Test: Hidden Test
+FAILED - Test output redacted
+
+103. Bosses (Hydra)
+
+Test 103-1: Testing basic movement for hydra
+BossTest > Testing basic movement for hydra FAILED java.lang.IllegalArgumentException: Graph Node Factory can't make hydra at dungeonmania.DungeonManiaController.newGame(DungeonManiaController.java:69) at dungeonmania.automarking.BossTest.hydraMovement(BossTest.java:256) FAILURE DONE 1 test completed, 1 failed FAILURE: Build failed with an exception. blog.md build build.gradle checkstyle.xml client config_template.json design.pdf extract_coverage.sh gradle gradlew gradlew.bat README.md src What went wrong: Execution failed for task ':test'. > There were failing tests. See the report at: file:///root/assignment-ii-automarking/groups/T13B_HYDROGEN/build/reports/tests/test/index.html blog.md build build.gradle checkstyle.xml client config_template.json design.pdf extract_coverage.sh gradle gradlew gradlew.bat README.md src Try: Run with --stacktrace option to get the stack trace. Run with --info or --debug option to get more log output. Run with --scan to get full insights. blog.md build build.gradle checkstyle.xml client config_template.json design.pdf extract_coverage.sh gradle gradlew gradlew.bat README.md src Get more help at https://help.gradle.org BUILD FAILED in 2s
+
+Test 103-2: Testing hydras cannot move through closed doors and walls
+BossTest > Testing hydras cannot move through closed doors and walls FAILED java.lang.IllegalArgumentException: Graph Node Factory can't make hydra at dungeonmania.DungeonManiaController.newGame(DungeonManiaController.java:69) at dungeonmania.automarking.BossTest.hydraDoorsAndWalls(BossTest.java:283) FAILURE DONE 1 test completed, 1 failed FAILURE: Build failed with an exception. blog.md build build.gradle checkstyle.xml client config_template.json design.pdf extract_coverage.sh gradle gradlew gradlew.bat README.md src What went wrong: Execution failed for task ':test'. > There were failing tests. See the report at: file:///root/assignment-ii-automarking/groups/T13B_HYDROGEN/build/reports/tests/test/index.html blog.md build build.gradle checkstyle.xml client config_template.json design.pdf extract_coverage.sh gradle gradlew gradlew.bat README.md src Try: Run with --stacktrace option to get the stack trace. Run with --info or --debug option to get more log output. Run with --scan to get full insights. blog.md build build.gradle checkstyle.xml client config_template.json design.pdf extract_coverage.sh gradle gradlew gradlew.bat README.md src Get more help at https://help.gradle.org BUILD FAILED in 2s
+
+Test 103-3: Test player wins a battle against hydra when hydra does not increase health when taking damage
+BossTest > Test player wins a battle against hydra when hydra does not increase health when taking damage FAILED java.lang.IllegalArgumentException: Graph Node Factory can't make hydra at dungeonmania.DungeonManiaController.newGame(DungeonManiaController.java:69) at dungeonmania.automarking.BossTest.testPlayerWinsHydraBattle(BossTest.java:299) FAILURE DONE 1 test completed, 1 failed FAILURE: Build failed with an exception. blog.md build build.gradle checkstyle.xml client config_template.json design.pdf extract_coverage.sh gradle gradlew gradlew.bat README.md src What went wrong: Execution failed for task ':test'. > There were failing tests. See the report at: file:///root/assignment-ii-automarking/groups/T13B_HYDROGEN/build/reports/tests/test/index.html blog.md build build.gradle checkstyle.xml client config_template.json design.pdf extract_coverage.sh gradle gradlew gradlew.bat README.md src Try: Run with --stacktrace option to get the stack trace. Run with --info or --debug option to get more log output. Run with --scan to get full insights. blog.md build build.gradle checkstyle.xml client config_template.json design.pdf extract_coverage.sh gradle gradlew gradlew.bat README.md src Get more help at https://help.gradle.org BUILD FAILED in 2s
+
+Test: Hidden Test
+FAILED - Test output redacted
+
+Test 103-5: Test health calculation when the hydra increases its health
+BossTest > Test health calculation when the hydra increases its health FAILED java.lang.IllegalArgumentException: Graph Node Factory can't make hydra at dungeonmania.DungeonManiaController.newGame(DungeonManiaController.java:69) at dungeonmania.automarking.BossTest.testHydraIncreasesHealthCalculation(BossTest.java:354) FAILURE DONE 1 test completed, 1 failed FAILURE: Build failed with an exception. blog.md build build.gradle checkstyle.xml client config_template.json design.pdf extract_coverage.sh gradle gradlew gradlew.bat README.md src What went wrong: Execution failed for task ':test'. > There were failing tests. See the report at: file:///root/assignment-ii-automarking/groups/T13B_HYDROGEN/build/reports/tests/test/index.html blog.md build build.gradle checkstyle.xml client config_template.json design.pdf extract_coverage.sh gradle gradlew gradlew.bat README.md src Try: Run with --stacktrace option to get the stack trace. Run with --info or --debug option to get more log output. Run with --scan to get full insights. blog.md build build.gradle checkstyle.xml client config_template.json design.pdf extract_coverage.sh gradle gradlew gradlew.bat README.md src Get more help at https://help.gradle.org BUILD FAILED in 2s
+
+Test: Hidden Test
+FAILED - Test output redacted
+
+104. Sunstone + Buildables
+
+Test 104-1: Testing picking up a sun stone from the map adds to inventory
+SUCCESS DONE
+
+Test 104-2: Testing using a sun stone to open two doors and the sun stone is retained
+SUCCESS DONE
+
+Test: Hidden Test
+SUCCESS DONE
+
+Test: Hidden Test
+SUCCESS DONE
+
+Test 104-5: Test sunstone counts towards the treasure goal
+SUCCESS DONE
+
+Test: Hidden Test
+SUCCESS DONE
+
+Test 104-7: (arrows x2) + (key x1) + (sun stone x1) => (sceptre x1)
+SUCCESS DONE
+
+Test: Hidden Test
+SUCCESS DONE
+
+Test: Hidden Test
+SUCCESS DONE
+
+Test 104-10: (sword x1) + (sun stone x1) + (zombie x1) => (midnight armour x0) + InvalidActionException
+SUCCESS DONE
+
+Test: Hidden Test
+SUCCESS DONE
+
+Test 104-12: Using sceptre to mind control a mercenary
+SUCCESS DONE
+
+Test 104-13: Test for mind control duration
+BuildablesM3Test > Test for mind control duration FAILED org.opentest4j.AssertionFailedError: expected: <1> but was: <0> at app//org.junit.jupiter.api.AssertionUtils.fail(AssertionUtils.java:55) at app//org.junit.jupiter.api.AssertionUtils.failNotEqual(AssertionUtils.java:62) at app//org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:150) at app//org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:145) at app//org.junit.jupiter.api.Assertions.assertEquals(Assertions.java:527) at app//dungeonmania.automarking.BuildablesM3Test.testSceptreMindControlDuration(BuildablesM3Test.java:321) FAILURE DONE 1 test completed, 1 failed FAILURE: Build failed with an exception. blog.md build build.gradle checkstyle.xml client config_template.json design.pdf extract_coverage.sh gradle gradlew gradlew.bat README.md src What went wrong: Execution failed for task ':test'. > There were failing tests. See the report at: file:///root/assignment-ii-automarking/groups/T13B_HYDROGEN/build/reports/tests/test/index.html blog.md build build.gradle checkstyle.xml client config_template.json design.pdf extract_coverage.sh gradle gradlew gradlew.bat README.md src Try: Run with --stacktrace option to get the stack trace. Run with --info or --debug option to get more log output. Run with --scan to get full insights. blog.md build build.gradle checkstyle.xml client config_template.json design.pdf extract_coverage.sh gradle gradlew gradlew.bat README.md src Get more help at https://help.gradle.org BUILD FAILED in 2s
+
+Test 104-14: Use midnight armour to attack - player battles for less rounds to win
+SUCCESS DONE
+
+Test: Hidden Test
+SUCCESS DONE
+
+105. Swamp Tile
+
+Test 105-1: Testing mercenary gets stuck in swamp
+SUCCESS DONE
+
+Test 105-2: Testing if mercenaries take into account movement factor when pathfinding
+SUCCESS DONE
+
+Test 105-3: Testing player does not get slowed by swamp tile
+SUCCESS DONE
+
+Test: Hidden Test
+SUCCESS DONE
+
+Test 105-5: Testing multiple swamp tiles all slow
+SUCCESS DONE
+
+Test: Hidden Test
+SUCCESS DONE
+
+Test: Hidden Test
+SUCCESS DONE
+
+106. Persistence
+
+Test 106-1: Test saving and loading a simple maze map
+SUCCESS DONE
+
+Test 106-2: Test saving and loading a map with boulders
+SUCCESS DONE
+
+Test 106-3: Test saving and loading a map with enemies and collectables
+SUCCESS DONE
+
+Test 106-4: Test saving on a map containing all types of entities
+SUCCESS DONE
+
+Test: Hidden Test
+SUCCESS DONE
+
+Test: Hidden Test
+SUCCESS DONE
+
+Test 106-7: Test saving then reloading a map twice consecutively
+SaveLoadTest > Test saving, then reloading a map twice, consecutively FAILED java.lang.IllegalArgumentException: Savefile d_advancedSaveTwiceis broken. JSONObject["config"] not found. at dungeonmania.DungeonManiaController.loadGame(DungeonManiaController.java:152) at dungeonmania.automarking.SaveLoadTest.testConsecutiveSaveLoads(SaveLoadTest.java:147) FAILURE DONE 1 test completed, 1 failed FAILURE: Build failed with an exception. blog.md build build.gradle checkstyle.xml client config_template.json design.pdf extract_coverage.sh gradle gradlew gradlew.bat README.md src What went wrong: Execution failed for task ':test'. > There were failing tests. See the report at: file:///root/assignment-ii-automarking/groups/T13B_HYDROGEN/build/reports/tests/test/index.html blog.md build build.gradle checkstyle.xml client config_template.json design.pdf extract_coverage.sh gradle gradlew gradlew.bat README.md src Try: Run with --stacktrace option to get the stack trace. Run with --info or --debug option to get more log output. Run with --scan to get full insights. blog.md build build.gradle checkstyle.xml client config_template.json design.pdf extract_coverage.sh gradle gradlew gradlew.bat README.md src Get more help at https://help.gradle.org BUILD FAILED in 2s
+
+Test: Hidden Test
+SUCCESS DONE
+
+Test 106-9: Test inventory remains consistent when saving and loading
+SaveLoadTest > Test inventory remains consistent when saving and loading FAILED java.lang.IllegalArgumentException: Savefile d_saveLoadInventoryTest1is broken. JSONObject["config"] not found. at dungeonmania.DungeonManiaController.loadGame(DungeonManiaController.java:152) at dungeonmania.automarking.SaveLoadTest.testInventorySave(SaveLoadTest.java:198) FAILURE DONE 1 test completed, 1 failed FAILURE: Build failed with an exception. blog.md build build.gradle checkstyle.xml client config_template.json design.pdf extract_coverage.sh gradle gradlew gradlew.bat README.md src What went wrong: Execution failed for task ':test'. > There were failing tests. See the report at: file:///root/assignment-ii-automarking/groups/T13B_HYDROGEN/build/reports/tests/test/index.html blog.md build build.gradle checkstyle.xml client config_template.json design.pdf extract_coverage.sh gradle gradlew gradlew.bat README.md src Try: Run with --stacktrace option to get the stack trace. Run with --info or --debug option to get more log output. Run with --scan to get full insights. blog.md build build.gradle checkstyle.xml client config_template.json design.pdf extract_coverage.sh gradle gradlew gradlew.bat README.md src Get more help at https://help.gradle.org BUILD FAILED in 2s
+
+Test 106-10: Test that invisibility state is persistent across a save/load
+SUCCESS DONE
+
+Test 106-11: Test saving and loading with bribing mercenary
+SUCCESS DONE
+
+Test: Hidden Test
+SUCCESS DONE
+
+Test 106-13: Test key door relationship is maintained after saving
+SUCCESS DONE
+
+Test: Hidden Test
+FAILED - Test output redacted
+
+Test: Hidden Test
+SUCCESS DONE
+
+107. Time Travel
+
+Test 107-1: Testing rewinding fails with illegal ticks
+TimeTravelTest > Testing rewinding fails with illegal ticks FAILED org.opentest4j.AssertionFailedError: Expected java.lang.reflect.InvocationTargetException to be thrown, but nothing was thrown. at app//org.junit.jupiter.api.AssertThrows.assertThrows(AssertThrows.java:71) at app//org.junit.jupiter.api.AssertThrows.assertThrows(AssertThrows.java:37) at app//org.junit.jupiter.api.Assertions.assertThrows(Assertions.java:3082) at app//dungeonmania.automarking.TimeTravelTest.testRewindMethod(TimeTravelTest.java:47) FAILURE DONE 1 test completed, 1 failed FAILURE: Build failed with an exception. blog.md build build.gradle checkstyle.xml client config_template.json design.pdf extract_coverage.sh gradle gradlew gradlew.bat README.md src What went wrong: Execution failed for task ':test'. > There were failing tests. See the report at: file:///root/assignment-ii-automarking/groups/T13B_HYDROGEN/build/reports/tests/test/index.html blog.md build build.gradle checkstyle.xml client config_template.json design.pdf extract_coverage.sh gradle gradlew gradlew.bat README.md src Try: Run with --stacktrace option to get the stack trace. Run with --info or --debug option to get more log output. Run with --scan to get full insights. blog.md build build.gradle checkstyle.xml client config_template.json design.pdf extract_coverage.sh gradle gradlew gradlew.bat README.md src Get more help at https://help.gradle.org BUILD FAILED in 2s
+
+Test 107-2: Test picking up a time turner adds to inventory
+SUCCESS DONE
+
+Test 107-3: Test using a time turner 5 ticks back then check entity positions
+SUCCESS DONE
+
+Test: Hidden Test
+SUCCESS DONE
+
+Test 107-5: Test time travel portals less than 30 ticks takes game back to beginning state
+TimeTravelTest > Test time travel portals less than 30 ticks takes game back to beginning state FAILED org.opentest4j.AssertionFailedError: expected: <1> but was: <0> at app//org.junit.jupiter.api.AssertionUtils.fail(AssertionUtils.java:55) at app//org.junit.jupiter.api.AssertionUtils.failNotEqual(AssertionUtils.java:62) at app//org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:150) at app//org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:145) at app//org.junit.jupiter.api.Assertions.assertEquals(Assertions.java:527) at app//dungeonmania.automarking.TimeTravelTest.testTimeTravellingPortalLessThan30Ticks(TimeTravelTest.java:158) FAILURE DONE 1 test completed, 1 failed FAILURE: Build failed with an exception. blog.md build build.gradle checkstyle.xml client config_template.json design.pdf extract_coverage.sh gradle gradlew gradlew.bat README.md src What went wrong: Execution failed for task ':test'. > There were failing tests. See the report at: file:///root/assignment-ii-automarking/groups/T13B_HYDROGEN/build/reports/tests/test/index.html blog.md build build.gradle checkstyle.xml client config_template.json design.pdf extract_coverage.sh gradle gradlew gradlew.bat README.md src Try: Run with --stacktrace option to get the stack trace. Run with --info or --debug option to get more log output. Run with --scan to get full insights. blog.md build build.gradle checkstyle.xml client config_template.json design.pdf extract_coverage.sh gradle gradlew gradlew.bat README.md src Get more help at https://help.gradle.org BUILD FAILED in 2s
+
+Test: Hidden Test
+FAILED - Test output redacted
+
+Test: Hidden Test
+SUCCESS DONE
+
+Test 107-8: Test older self is present when time travelling through portal
+TimeTravelTest > Test older self is present when time travelling through portal FAILED org.opentest4j.AssertionFailedError: expected: <1> but was: <0> at app//org.junit.jupiter.api.AssertionUtils.fail(AssertionUtils.java:55) at app//org.junit.jupiter.api.AssertionUtils.failNotEqual(AssertionUtils.java:62) at app//org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:150) at app//org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:145) at app//org.junit.jupiter.api.Assertions.assertEquals(Assertions.java:527) at app//dungeonmania.automarking.TimeTravelTest.testOlderSelfTimeTravellingPortal(TimeTravelTest.java:256) FAILURE DONE 1 test completed, 1 failed FAILURE: Build failed with an exception. blog.md build build.gradle checkstyle.xml client config_template.json design.pdf extract_coverage.sh gradle gradlew gradlew.bat README.md src What went wrong: Execution failed for task ':test'. > There were failing tests. See the report at: file:///root/assignment-ii-automarking/groups/T13B_HYDROGEN/build/reports/tests/test/index.html blog.md build build.gradle checkstyle.xml client config_template.json design.pdf extract_coverage.sh gradle gradlew gradlew.bat README.md src Try: Run with --stacktrace option to get the stack trace. Run with --info or --debug option to get more log output. Run with --scan to get full insights. blog.md build build.gradle checkstyle.xml client config_template.json design.pdf extract_coverage.sh gradle gradlew gradlew.bat README.md src Get more help at https://help.gradle.org BUILD FAILED in 2s
+
+Test 107-9: Test battle with older self occurs afters time travelling through portal
+TimeTravelTest > Test battle with older self occurs afters time travelling through portal FAILED org.opentest4j.AssertionFailedError: expected: <1> but was: <0> at app//org.junit.jupiter.api.AssertionUtils.fail(AssertionUtils.java:55) at app//org.junit.jupiter.api.AssertionUtils.failNotEqual(AssertionUtils.java:62) at app//org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:150) at app//org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:145) at app//org.junit.jupiter.api.Assertions.assertEquals(Assertions.java:527) at app//dungeonmania.automarking.TimeTravelTest.testBattleOlderSelfTimeTravellingPortal(TimeTravelTest.java:277) FAILURE DONE 1 test completed, 1 failed FAILURE: Build failed with an exception. blog.md build build.gradle checkstyle.xml client config_template.json design.pdf extract_coverage.sh gradle gradlew gradlew.bat README.md src What went wrong: Execution failed for task ':test'. > There were failing tests. See the report at: file:///root/assignment-ii-automarking/groups/T13B_HYDROGEN/build/reports/tests/test/index.html blog.md build build.gradle checkstyle.xml client config_template.json design.pdf extract_coverage.sh gradle gradlew gradlew.bat README.md src Try: Run with --stacktrace option to get the stack trace. Run with --info or --debug option to get more log output. Run with --scan to get full insights. blog.md build build.gradle checkstyle.xml client config_template.json design.pdf extract_coverage.sh gradle gradlew gradlew.bat README.md src Get more help at https://help.gradle.org BUILD FAILED in 2s
+
+Test: Hidden Test
+SUCCESS DONE
+
+Test: Hidden Test
+FAILED - Test output redacted
+
+Test 107-12: Test older self follows correct path
+TimeTravelTest > Test older self follows correct path FAILED java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0 at java.base/jdk.internal.util.Preconditions.outOfBounds(Preconditions.java:64) at java.base/jdk.internal.util.Preconditions.outOfBoundsCheckIndex(Preconditions.java:70) at java.base/jdk.internal.util.Preconditions.checkIndex(Preconditions.java:248) at java.base/java.util.Objects.checkIndex(Objects.java:372) at java.base/java.util.ArrayList.get(ArrayList.java:459) at dungeonmania.automarking.TimeTravelTest.testOlderSelfTimeTravellingPortalFollowsCorrectPath(TimeTravelTest.java:392) FAILURE DONE 1 test completed, 1 failed FAILURE: Build failed with an exception. blog.md build build.gradle checkstyle.xml client config_template.json design.pdf extract_coverage.sh gradle gradlew gradlew.bat README.md src What went wrong: Execution failed for task ':test'. > There were failing tests. See the report at: file:///root/assignment-ii-automarking/groups/T13B_HYDROGEN/build/reports/tests/test/index.html blog.md build build.gradle checkstyle.xml client config_template.json design.pdf extract_coverage.sh gradle gradlew gradlew.bat README.md src Try: Run with --stacktrace option to get the stack trace. Run with --info or --debug option to get more log output. Run with --scan to get full insights. blog.md build build.gradle checkstyle.xml client config_template.json design.pdf extract_coverage.sh gradle gradlew gradlew.bat README.md src Get more help at https://help.gradle.org BUILD FAILED in 2s
+
+Test: Hidden Test
+FAILED - Test output redacted
+
+108. Logic Switches
+
+Test 108-1: Test walking onto a wire
+SUCCESS DONE
+
+Test 108-2: Test turning on a light bulb
+SUCCESS DONE
+
+Test 108-3: (Deprecated) Test activating a wire and exploding a bomb
+LogicGatesTest > Test activating a wire and exploding a bomb FAILED org.opentest4j.AssertionFailedError: expected: <0> but was: <1> at app//org.junit.jupiter.api.AssertionUtils.fail(AssertionUtils.java:55) at app//org.junit.jupiter.api.AssertionUtils.failNotEqual(AssertionUtils.java:62) at app//org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:150) at app//org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:145) at app//org.junit.jupiter.api.Assertions.assertEquals(Assertions.java:527) at app//dungeonmania.automarking.LogicGatesTest.ActivateWireAndExplodeBomb(LogicGatesTest.java:88) FAILURE DONE 1 test completed, 1 failed FAILURE: Build failed with an exception. blog.md build build.gradle checkstyle.xml client config_template.json design.pdf extract_coverage.sh gradle gradlew gradlew.bat README.md src What went wrong: Execution failed for task ':test'. > There were failing tests. See the report at: file:///root/assignment-ii-automarking/groups/T13B_HYDROGEN/build/reports/tests/test/index.html blog.md build build.gradle checkstyle.xml client config_template.json design.pdf extract_coverage.sh gradle gradlew gradlew.bat README.md src Try: Run with --stacktrace option to get the stack trace. Run with --info or --debug option to get more log output. Run with --scan to get full insights. blog.md build build.gradle checkstyle.xml client config_template.json design.pdf extract_coverage.sh gradle gradlew gradlew.bat README.md src Get more help at https://help.gradle.org BUILD FAILED in 2s
+
+Test 108-4: Test complex logic switches with AND light bulb
+SUCCESS DONE
+
+Test: Hidden Test
+SUCCESS DONE
+
+Test: Hidden Test
+SUCCESS DONE
+
+Test 108-7: Test complex logic switches with XOR light bulb
+SUCCESS DONE
+
+Test 108-8: Test complex logic switches with CO_AND light bulb
+SUCCESS DONE
+
+Test: Hidden Test
+SUCCESS DONE
+
+Test 108-10: Test opening a switch door
+SUCCESS DONE
+
+Test 108-11: Test complex logic switches with AND switch door
+SUCCESS DONE
+
+Test: Hidden Test
+SUCCESS DONE
+
+Test: Hidden Test
+SUCCESS DONE
+
+Test 108-14: Test complex logic switches with CO_AND switch door
+SUCCESS DONE
+
+Test: Hidden Test
+SUCCESS DONE
+
+Test: Hidden Test
+SUCCESS DONE
+
+Test: Hidden Test
+SUCCESS DONE
+
+109. Dungeon Generation
+
+Test 109-1: Test for surrounding walls initial player position and exit position
+GenerateTest > Test for surrounding walls, initial player position and exit position FAILED java.lang.NullPointerException at dungeonmania.automarking.TestHelpers.getEntitiesStream(TestHelpers.java:36) at dungeonmania.automarking.TestHelpers.getEntityAtPos(TestHelpers.java:52) at dungeonmania.automarking.GenerateTest.testGeneratedDungeonSurroundingWalls(GenerateTest.java:64) FAILURE DONE 1 test completed, 1 failed FAILURE: Build failed with an exception. blog.md build build.gradle checkstyle.xml client config_template.json design.pdf extract_coverage.sh gradle gradlew gradlew.bat README.md src What went wrong: Execution failed for task ':test'. > There were failing tests. See the report at: file:///root/assignment-ii-automarking/groups/T13B_HYDROGEN/build/reports/tests/test/index.html blog.md build build.gradle checkstyle.xml client config_template.json design.pdf extract_coverage.sh gradle gradlew gradlew.bat README.md src Try: Run with --stacktrace option to get the stack trace. Run with --info or --debug option to get more log output. Run with --scan to get full insights. blog.md build build.gradle checkstyle.xml client config_template.json design.pdf extract_coverage.sh gradle gradlew gradlew.bat README.md src Get more help at https://help.gradle.org BUILD FAILED in 2s
+
+Test 109-2: Test the maze is solvable
+GenerateTest > Test the maze is solvable FAILED java.lang.NullPointerException at dungeonmania.automarking.GenerateTest.testGeneratedDungeonPath(GenerateTest.java:83) FAILURE DONE 1 test completed, 1 failed FAILURE: Build failed with an exception. blog.md build build.gradle checkstyle.xml client config_template.json design.pdf extract_coverage.sh gradle gradlew gradlew.bat README.md src What went wrong: Execution failed for task ':test'. > There were failing tests. See the report at: file:///root/assignment-ii-automarking/groups/T13B_HYDROGEN/build/reports/tests/test/index.html blog.md build build.gradle checkstyle.xml client config_template.json design.pdf extract_coverage.sh gradle gradlew gradlew.bat README.md src Try: Run with --stacktrace option to get the stack trace. Run with --info or --debug option to get more log output. Run with --scan to get full insights. blog.md build build.gradle checkstyle.xml client config_template.json design.pdf extract_coverage.sh gradle gradlew gradlew.bat README.md src Get more help at https://help.gradle.org BUILD FAILED in 2s
+
